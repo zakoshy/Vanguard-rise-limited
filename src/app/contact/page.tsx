@@ -2,7 +2,7 @@ import { Mail, Phone, MapPin } from 'lucide-react';
 import { ContactForm } from '@/components/contact-form';
 
 const contactDetails = [
-  { icon: <Mail className="h-6 w-6 text-primary" />, label: "Email", value: "info@zenithhorizon.com", href: "mailto:info@zenithhorizon.com" },
+  { icon: <Mail className="h-6 w-6 text-primary" />, label: "Email", value: "info@vanguardrise.com", href: "mailto:info@vanguardrise.com" },
   { icon: <Phone className="h-6 w-6 text-primary" />, label: "Phone", value: "+1 (234) 567-890", href: "tel:+1234567890" },
   { icon: <MapPin className="h-6 w-6 text-primary" />, label: "Office", value: "123 Horizon Plaza, Metropolis, 10101" },
 ];

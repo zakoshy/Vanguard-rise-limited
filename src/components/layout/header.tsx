@@ -2,42 +2,94 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu } from 'lucide-react';
+import { Menu, ChevronDown } from 'lucide-react';
 import { useState } from 'react';
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Icons } from '@/components/icons';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
-const navLinks = [
-  { href: '/', label: 'Home' },
+const serviceLinks = [
   { href: '/project-management', label: 'Project Management' },
   { href: '/investments', label: 'Investments' },
   { href: '/real-estate', label: 'Real Estate' },
   { href: '/philanthropy', label: 'Philanthropy' },
-  { href: '/contact', label: 'Contact' },
 ];
 
 export function Header() {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  const renderNavLinks = (isMobile = false) =>
-    navLinks.map((link) => (
+  const renderNavLinks = (isMobile = false) => (
+    <>
       <Link
-        key={link.href}
-        href={link.href}
+        href="/"
         onClick={() => isMobile && setIsMobileMenuOpen(false)}
         className={cn(
           'text-sm font-medium transition-colors hover:text-primary',
-          pathname === link.href ? 'text-primary font-bold' : 'text-muted-foreground',
+          pathname === '/' ? 'text-primary font-bold' : 'text-muted-foreground',
           isMobile && 'block py-2 text-lg'
         )}
       >
-        {link.label}
+        Home
       </Link>
-    ));
+      
+      {isMobile ? (
+        <div className="flex flex-col space-y-2">
+          <span className="text-lg font-medium text-muted-foreground">Services</span>
+          {serviceLinks.map(link => (
+             <Link
+              key={link.href}
+              href={link.href}
+              onClick={() => setIsMobileMenuOpen(false)}
+              className={cn(
+                'text-sm transition-colors hover:text-primary pl-4',
+                 pathname === link.href ? 'text-primary font-bold' : 'text-muted-foreground',
+                 'block py-2 text-lg'
+              )}
+            >
+              {link.label}
+            </Link>
+          ))}
+        </div>
+      ) : (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" className="flex items-center gap-1 text-sm font-medium text-muted-foreground hover:text-primary px-0">
+              Services
+              <ChevronDown className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            {serviceLinks.map((link) => (
+              <DropdownMenuItem key={link.href} asChild>
+                <Link href={link.href}>{link.label}</Link>
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuContent>
+        </DropdownMenu>
+      )}
+
+      <Link
+        href="/contact"
+        onClick={() => isMobile && setIsMobileMenuOpen(false)}
+        className={cn(
+          'text-sm font-medium transition-colors hover:text-primary',
+          pathname === '/contact' ? 'text-primary font-bold' : 'text-muted-foreground',
+          isMobile && 'block py-2 text-lg'
+        )}
+      >
+        Contact
+      </Link>
+    </>
+  );
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -45,7 +97,7 @@ export function Header() {
         <div className="mr-8 flex">
           <Link href="/" className="flex items-center space-x-2">
             <Icons.logo className="h-6 w-6 text-primary" />
-            <span className="font-bold font-headline text-lg">Zenith Horizon</span>
+            <span className="font-bold font-headline text-lg">Vanguard Rise Limited</span>
           </Link>
         </div>
         <nav className="hidden items-center space-x-6 text-sm font-medium md:flex">
@@ -69,7 +121,7 @@ export function Header() {
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 <Icons.logo className="h-6 w-6 mr-2 text-primary" />
-                <span className="font-bold font-headline text-lg">Zenith Horizon</span>
+                <span className="font-bold font-headline text-lg">Vanguard Rise Limited</span>
               </Link>
               <div className="flex flex-col space-y-4">
                 {renderNavLinks(true)}

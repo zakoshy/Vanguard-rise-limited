@@ -25,7 +25,7 @@ export function Footer() {
           <div className="space-y-4 md:col-span-1 sm:col-span-2">
             <Link href="/" className="flex items-center space-x-2">
               <Icons.logo className="h-6 w-6 text-primary" />
-              <span className="font-bold font-headline text-lg">Zenith Horizon</span>
+              <span className="font-bold font-headline text-lg">Vanguard Rise Limited</span>
             </Link>
             <p className="text-sm text-muted-foreground">
               Professional real estate, project management, and investment consultancy.
@@ -58,7 +58,7 @@ export function Footer() {
             <ul className="space-y-3 text-sm">
               <li className="flex items-center gap-2 text-muted-foreground">
                 <Mail className="h-4 w-4 shrink-0" />
-                <a href="mailto:info@zenithhorizon.com" className="hover:text-primary transition-colors">info@zenithhorizon.com</a>
+                <a href="mailto:info@vanguardrise.com" className="hover:text-primary transition-colors">info@vanguardrise.com</a>
               </li>
               <li className="flex items-center gap-2 text-muted-foreground">
                 <Phone className="h-4 w-4 shrink-0" />
@@ -70,7 +70,7 @@ export function Footer() {
       </div>
       <div className="border-t bg-secondary/50 py-4">
         <div className="container text-center text-xs text-muted-foreground">
-          &copy; {new Date().getFullYear()} Zenith Horizon. All Rights Reserved.
+          &copy; {new Date().getFullYear()} Vanguard Rise Limited. All Rights Reserved.
         </div>
       </div>
     </footer>

@@ -6,7 +6,7 @@ import { Footer } from '@/components/layout/footer';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Zenith Horizon',
+  title: 'Vanguard Rise Limited',
   description: 'Professional real estate, project management, and investment consultancy.',
   keywords: ['real estate', 'project management', 'investment', 'consultancy', 'philanthropy'],
 };

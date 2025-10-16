@@ -55,7 +55,7 @@ export default function Home() {
             Building Visions, Creating Reality
           </h1>
           <p className="mt-4 max-w-2xl text-lg md:text-xl !text-gray-200">
-            Zenith Horizon is your trusted partner in real estate, project management, and investment consultancy, dedicated to excellence and community development.
+            Vanguard Rise Limited is your trusted partner in real estate, project management, and investment consultancy, dedicated to excellence and community development.
           </p>
           <Button asChild size="lg" className="mt-8 bg-accent text-accent-foreground hover:bg-accent/90 shadow-lg">
             <Link href="/contact">
