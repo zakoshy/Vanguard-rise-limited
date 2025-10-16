@@ -21,13 +21,13 @@ export function Footer() {
   return (
     <footer className="border-t bg-secondary/30">
       <div className="container py-12 md:py-16">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
-          <div className="space-y-4 md:col-span-1 sm:col-span-2">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div className="space-y-4 md:col-span-2">
             <Link href="/" className="flex items-center space-x-2">
               <Icons.logo className="h-6 w-6 text-primary" />
               <span className="font-bold font-headline text-lg">Vanguard Rise Limited</span>
             </Link>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-muted-foreground max-w-md">
               Professional real estate, project management, and investment consultancy.
             </p>
             <div className="flex space-x-4 pt-2">
@@ -40,31 +40,33 @@ export function Footer() {
             </div>
           </div>
 
-          <div className="sm:col-start-1 md:col-start-2">
-            <h4 className="font-semibold mb-4 font-headline">Quick Links</h4>
-            <ul className="space-y-2">
-              {quickLinks.map((link) => (
-                <li key={link.href}>
-                  <Link href={link.href} className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+          <div className="grid grid-cols-2 md:grid-cols-2 col-span-1 md:col-span-2 gap-8">
+              <div>
+                <h4 className="font-semibold mb-4 font-headline">Quick Links</h4>
+                <ul className="space-y-2">
+                  {quickLinks.map((link) => (
+                    <li key={link.href}>
+                      <Link href={link.href} className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                        {link.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
 
-          <div>
-            <h4 className="font-semibold mb-4 font-headline">Contact Us</h4>
-            <ul className="space-y-3 text-sm">
-              <li className="flex items-center gap-2 text-muted-foreground">
-                <Mail className="h-4 w-4 shrink-0" />
-                <a href="mailto:info@vanguardrise.com" className="hover:text-primary transition-colors">info@vanguardrise.com</a>
-              </li>
-              <li className="flex items-center gap-2 text-muted-foreground">
-                <Phone className="h-4 w-4 shrink-0" />
-                <a href="tel:+1234567890" className="hover:text-primary transition-colors">+1 (234) 567-890</a>
-              </li>
-            </ul>
+              <div>
+                <h4 className="font-semibold mb-4 font-headline">Contact Us</h4>
+                <ul className="space-y-3 text-sm">
+                  <li className="flex items-start gap-2 text-muted-foreground">
+                    <Mail className="h-4 w-4 shrink-0 mt-1" />
+                    <a href="mailto:info@vanguardrise.com" className="hover:text-primary transition-colors">info@vanguardrise.com</a>
+                  </li>
+                  <li className="flex items-start gap-2 text-muted-foreground">
+                    <Phone className="h-4 w-4 shrink-0 mt-1" />
+                    <a href="tel:+1234567890" className="hover:text-primary transition-colors">+1 (234) 567-890</a>
+                  </li>
+                </ul>
+              </div>
           </div>
         </div>
       </div>

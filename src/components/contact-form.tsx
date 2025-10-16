@@ -18,7 +18,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { useToast } from "@/hooks/use-toast"
-import { Card, CardContent } from "./ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "./ui/card"
 
 
 const formSchema = z.object({
@@ -65,7 +65,10 @@ export function ContactForm() {
 
   return (
     <Card className="shadow-lg">
-        <CardContent className="p-6 md:p-8">
+        <CardHeader>
+          <CardTitle className="font-headline text-2xl md:text-3xl text-center md:text-left">Send us a Message</CardTitle>
+        </CardHeader>
+        <CardContent className="p-6 md:p-8 pt-0">
             <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                 <div className="grid md:grid-cols-2 gap-6">
@@ -122,7 +125,7 @@ export function ContactForm() {
                     </FormItem>
                 )}
                 />
-                <Button type="submit" className="w-full" disabled={isSubmitting}>
+                <Button type="submit" size="lg" className="w-full" disabled={isSubmitting}>
                     {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                     {isSubmitting ? "Sending..." : "Send Message"}
                 </Button>

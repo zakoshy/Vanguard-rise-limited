@@ -51,7 +51,7 @@ export function Header() {
               onClick={() => setIsMobileMenuOpen(false)}
               className={cn(
                 'text-sm transition-colors hover:text-primary pl-4',
-                 pathname === link.href ? 'text-primary font-bold' : 'text-muted-foreground',
+                 pathname.startsWith(link.href) ? 'text-primary font-bold' : 'text-muted-foreground',
                  'block py-2 text-lg'
               )}
             >
@@ -62,15 +62,18 @@ export function Header() {
       ) : (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="flex items-center gap-1 text-sm font-medium text-muted-foreground hover:text-primary px-0">
+            <Button variant="ghost" className={cn(
+              "flex items-center gap-1 text-sm font-medium text-muted-foreground hover:text-primary px-0",
+              serviceLinks.some(l => pathname.startsWith(l.href)) && "text-primary font-bold"
+            )}>
               Services
               <ChevronDown className="h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent>
+          <DropdownMenuContent align="start">
             {serviceLinks.map((link) => (
               <DropdownMenuItem key={link.href} asChild>
-                <Link href={link.href}>{link.label}</Link>
+                <Link href={link.href} className={cn(pathname.startsWith(link.href) && "font-bold")}>{link.label}</Link>
               </DropdownMenuItem>
             ))}
           </DropdownMenuContent>
@@ -94,16 +97,16 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center">
-        <div className="mr-8 flex">
+        <div className="mr-4 md:mr-8 flex">
           <Link href="/" className="flex items-center space-x-2">
             <Icons.logo className="h-6 w-6 text-primary" />
-            <span className="font-bold font-headline text-lg">Vanguard Rise Limited</span>
+            <span className="font-bold font-headline text-lg sm:inline-block">Vanguard Rise Limited</span>
           </Link>
         </div>
         <nav className="hidden items-center space-x-6 text-sm font-medium md:flex">
           {renderNavLinks()}
         </nav>
-        <div className="flex flex-1 items-center justify-end space-x-4">
+        <div className="flex flex-1 items-center justify-end space-x-2 md:space-x-4">
           <Button asChild className="hidden md:inline-flex rounded-full">
             <Link href="/contact">Get in Touch</Link>
           </Button>
@@ -126,7 +129,7 @@ export function Header() {
               <div className="flex flex-col space-y-4">
                 {renderNavLinks(true)}
               </div>
-               <Button asChild className="mt-8 rounded-full">
+               <Button asChild className="mt-8 rounded-full" size="lg">
                   <Link href="/contact" onClick={() => setIsMobileMenuOpen(false)}>Get in Touch</Link>
               </Button>
             </SheetContent>
