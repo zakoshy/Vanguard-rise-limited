@@ -13,12 +13,9 @@ export const Icons = {
     </svg>
   ),
   mpesa: (props: SVGProps<SVGSVGElement>) => (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 40" fill="currentColor" {...props}>
-      <path fill="#e50303" d="M12.923 16.595c.294-.48.44-.73.44-.73l.206-.328.02-.03-.01.017c.214-.343.344-.55.344-.55l7.98-13.015h-9.982L.38 16.595z"/>
-      <path fill="#999" d="m13.363 15.865-4.48 7.336h14.71z"/>
-      <path fill="#e50303" d="m28.073 15.865-10.23 16.73h5.05l7.7-12.595z"/>
-      <path fill="#999" d="M22.823 32.595 34.468 13.1l-4.48-7.336L8.883 23.23z"/>
-      <text x="40" y="27" fill="currentColor" fontFamily="Arial, sans-serif" fontSize="20" fontWeight="bold">M-PESA</text>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 40" {...props}>
+        <rect width="128" height="40" fill="#43BF43" />
+        <text x="30" y="27" fontFamily="Helvetica, Arial, sans-serif" fontSize="18" fontWeight="bold" fill="white">M-PESA</text>
     </svg>
   ),
   crypto: (props: SVGProps<SVGSVGElement>) => (
