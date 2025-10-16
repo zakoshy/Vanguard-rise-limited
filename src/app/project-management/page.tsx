@@ -1,13 +1,13 @@
 import Image from 'next/image';
-import { CheckCircle, GanttChartSquare, Users } from 'lucide-react';
+import { HardHat, Truck, Rocket } from 'lucide-react';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
 const processSteps = [
-  { icon: <GanttChartSquare className="h-8 w-8 text-primary" />, title: 'Initiation & Planning', description: 'Defining project scope, objectives, and creating a detailed roadmap for success.' },
-  { icon: <Users className="h-8 w-8 text-primary" />, title: 'Execution & Monitoring', description: 'Managing resources, timelines, and budgets while ensuring quality standards are met.' },
-  { icon: <CheckCircle className="h-8 w-8 text-primary" />, title: 'Closure & Delivery', description: 'Finalizing all activities, handing over deliverables, and completing project documentation.' },
+  { icon: <HardHat className="h-8 w-8 text-primary" />, title: 'Construction', description: 'Overseeing all phases of construction to ensure quality, safety, and timely completion of projects.' },
+  { icon: <Truck className="h-8 w-8 text-primary" />, title: 'Supply of Equipments', description: 'Procuring and managing the logistics of all necessary equipment for seamless project execution.' },
+  { icon: <Rocket className="h-8 w-8 text-primary" />, title: 'Development Activities', description: 'Leading project development from initial concept to final delivery, ensuring all goals are met.' },
 ];
 
 const successStories = [
@@ -30,7 +30,7 @@ export default function ProjectManagementPage() {
       <section className="py-16 md:py-24 bg-background">
         <div className="container">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-headline font-bold">Our Proven Process</h2>
+            <h2 className="text-3xl md:text-4xl font-headline font-bold">Our Core Services</h2>
             <p className="mt-2 text-lg text-muted-foreground">A structured approach to guarantee project success.</p>
           </div>
           <div className="relative grid md:grid-cols-3 gap-8">
