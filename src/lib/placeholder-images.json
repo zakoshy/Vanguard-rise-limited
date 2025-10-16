@@ -1,3 +1,70 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "hero-1",
+      "description": "Modern glass building facade reaching towards the sky",
+      "imageUrl": "https://picsum.photos/seed/hero1/1920/1080",
+      "imageHint": "modern architecture"
+    },
+    {
+      "id": "project-management-1",
+      "description": "A diverse team of professionals collaborating over architectural blueprints in a modern office",
+      "imageUrl": "https://picsum.photos/seed/pm1/600/400",
+      "imageHint": "team meeting"
+    },
+    {
+      "id": "project-management-2",
+      "description": "A large construction site with a crane against a clear blue sky, signifying progress",
+      "imageUrl": "https://picsum.photos/seed/pm2/600/400",
+      "imageHint": "construction site"
+    },
+    {
+      "id": "investment-1",
+      "description": "A futuristic city skyline at dusk, with glowing lights reflecting on water",
+      "imageUrl": "https://picsum.photos/seed/invest1/400/400",
+      "imageHint": "city skyline"
+    },
+    {
+      "id": "real-estate-1",
+      "description": "The exterior of a luxurious modern house with large windows and a clean design",
+      "imageUrl": "https://picsum.photos/seed/re1/600/400",
+      "imageHint": "luxury house"
+    },
+    {
+      "id": "real-estate-2",
+      "description": "A bright and spacious modern apartment interior with minimalist furniture",
+      "imageUrl": "https://picsum.photos/seed/re2/600/400",
+      "imageHint": "apartment interior"
+    },
+    {
+      "id": "real-estate-3",
+      "description": "A beautiful suburban family home with a well-maintained garden",
+      "imageUrl": "https://picsum.photos/seed/re3/600/400",
+      "imageHint": "family home"
+    },
+    {
+      "id": "philanthropy-1",
+      "description": "A group of happy volunteers planting trees together in a community park",
+      "imageUrl": "https://picsum.photos/seed/phil1/600/400",
+      "imageHint": "volunteers community"
+    },
+    {
+      "id": "philanthropy-2",
+      "description": "Smiling children in a bright, modern classroom, engaged in learning",
+      "imageUrl": "https://picsum.photos/seed/phil2/600/400",
+      "imageHint": "children education"
+    },
+    {
+      "id": "testimonial-1",
+      "description": "A professional portrait of a smiling person, representing a satisfied client",
+      "imageUrl": "https://picsum.photos/seed/test1/100/100",
+      "imageHint": "person portrait"
+    },
+    {
+      "id": "testimonial-2",
+      "description": "A close-up portrait of another happy individual, suitable for a testimonial",
+      "imageUrl": "https://picsum.photos/seed/test2/100/100",
+      "imageHint": "person portrait"
+    }
+  ]
 }

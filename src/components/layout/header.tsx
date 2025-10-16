@@ -1,0 +1,86 @@
+'use client';
+
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { Menu } from 'lucide-react';
+import { useState } from 'react';
+
+import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
+import { Icons } from '@/components/icons';
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+
+const navLinks = [
+  { href: '/', label: 'Home' },
+  { href: '/project-management', label: 'Project Management' },
+  { href: '/investments', label: 'Investments' },
+  { href: '/real-estate', label: 'Real Estate' },
+  { href: '/philanthropy', label: 'Philanthropy' },
+  { href: '/contact', label: 'Contact' },
+];
+
+export function Header() {
+  const pathname = usePathname();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const renderNavLinks = (isMobile = false) =>
+    navLinks.map((link) => (
+      <Link
+        key={link.href}
+        href={link.href}
+        onClick={() => isMobile && setIsMobileMenuOpen(false)}
+        className={cn(
+          'text-sm font-medium transition-colors hover:text-primary',
+          pathname === link.href ? 'text-primary font-bold' : 'text-muted-foreground',
+          isMobile && 'block py-2 text-lg'
+        )}
+      >
+        {link.label}
+      </Link>
+    ));
+
+  return (
+    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="container flex h-16 items-center">
+        <div className="mr-8 flex">
+          <Link href="/" className="flex items-center space-x-2">
+            <Icons.logo className="h-6 w-6 text-primary" />
+            <span className="font-bold font-headline text-lg">Zenith Horizon</span>
+          </Link>
+        </div>
+        <nav className="hidden items-center space-x-6 text-sm font-medium md:flex">
+          {renderNavLinks()}
+        </nav>
+        <div className="flex flex-1 items-center justify-end space-x-4">
+          <Button asChild className="hidden md:inline-flex rounded-full">
+            <Link href="/contact">Get in Touch</Link>
+          </Button>
+          <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
+            <SheetTrigger asChild>
+              <Button variant="ghost" className="md:hidden px-0 text-base hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0">
+                <Menu className="h-6 w-6" />
+                <span className="sr-only">Toggle Menu</span>
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="left" className="pr-0 w-full max-w-sm">
+              <Link
+                href="/"
+                className="flex items-center mb-8"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                <Icons.logo className="h-6 w-6 mr-2 text-primary" />
+                <span className="font-bold font-headline text-lg">Zenith Horizon</span>
+              </Link>
+              <div className="flex flex-col space-y-4">
+                {renderNavLinks(true)}
+              </div>
+               <Button asChild className="mt-8 rounded-full">
+                  <Link href="/contact" onClick={() => setIsMobileMenuOpen(false)}>Get in Touch</Link>
+              </Button>
+            </SheetContent>
+          </Sheet>
+        </div>
+      </div>
+    </header>
+  );
+}
