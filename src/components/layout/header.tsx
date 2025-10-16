@@ -97,10 +97,10 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center">
-        <div className="mr-4 md:mr-8 flex">
+        <div className="mr-4 flex md:mr-8">
           <Link href="/" className="flex items-center space-x-2">
             <Icons.logo className="h-6 w-6 text-primary" />
-            <span className="font-bold font-headline text-lg sm:inline-block">Vanguard Rise Limited</span>
+            <span className="font-bold font-headline text-lg">Vanguard Rise Limited</span>
           </Link>
         </div>
         <nav className="hidden items-center space-x-6 text-sm font-medium md:flex">
