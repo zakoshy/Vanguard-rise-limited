@@ -10,6 +10,7 @@ const socialLinks = [
 
 const quickLinks = [
   { href: '/', label: 'Home' },
+  { href: '/about', label: 'About Us' },
   { href: '/project-management', label: 'Project Management' },
   { href: '/investments', label: 'Investments' },
   { href: '/real-estate', label: 'Real Estate' },

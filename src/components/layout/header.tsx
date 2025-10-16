@@ -40,6 +40,18 @@ export function Header() {
       >
         Home
       </Link>
+
+      <Link
+        href="/about"
+        onClick={() => isMobile && setIsMobileMenuOpen(false)}
+        className={cn(
+          'text-sm font-medium transition-colors hover:text-primary',
+          pathname === '/about' ? 'text-primary font-bold' : 'text-muted-foreground',
+          isMobile && 'block py-2 text-lg'
+        )}
+      >
+        About Us
+      </Link>
       
       {isMobile ? (
         <div className="flex flex-col space-y-2">
@@ -97,16 +109,16 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center">
-        <div className="mr-4 flex md:mr-8">
+        <div className="mr-8 flex">
           <Link href="/" className="flex items-center space-x-2">
             <Icons.logo className="h-6 w-6 text-primary" />
-            <span className="hidden font-bold font-headline text-lg sm:inline-block">Vanguard Rise Limited</span>
+            <span className="font-bold font-headline text-lg">Vanguard Rise Limited</span>
           </Link>
         </div>
         <nav className="hidden items-center space-x-6 text-sm font-medium md:flex">
           {renderNavLinks()}
         </nav>
-        <div className="flex flex-1 items-center justify-end space-x-2 md:space-x-4">
+        <div className="flex flex-1 items-center justify-end space-x-4">
           <Button asChild className="hidden md:inline-flex rounded-full">
             <Link href="/contact">Get in Touch</Link>
           </Button>
