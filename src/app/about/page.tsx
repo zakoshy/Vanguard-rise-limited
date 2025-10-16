@@ -1,15 +1,7 @@
 import Image from 'next/image';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Medal, Target, Eye, Users } from 'lucide-react';
-
-const teamMembers = [
-  { name: 'Alex Johnson', role: 'CEO & Founder', imageId: 'testimonial-1' },
-  { name: 'Jane Doe', role: 'Head of Project Management', imageId: 'testimonial-2' },
-  { name: 'Michael Smith', role: 'Lead Investment Analyst', imageId: 'testimonial-1' },
-  { name: 'Emily White', role: 'Real Estate Director', imageId: 'testimonial-2' },
-];
 
 const coreValues = [
   { icon: <Medal className="h-8 w-8 text-primary" />, title: 'Integrity', description: 'We uphold the highest standards of integrity in all of our actions.' },
@@ -75,30 +67,6 @@ export default function AboutPage() {
                 </CardContent>
               </Card>
             ))}
-          </div>
-        </div>
-      </section>
-      
-      <section className="py-16 md:py-24">
-        <div className="container">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-headline font-bold">Meet the Team</h2>
-            <p className="mt-2 text-lg text-muted-foreground">The experts driving our success.</p>
-          </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {teamMembers.map((member) => {
-              const image = PlaceHolderImages.find(p => p.id === member.imageId);
-              return (
-                <div key={member.name} className="text-center">
-                  <Avatar className="h-24 w-24 mx-auto mb-4 ring-2 ring-primary p-1">
-                    {image && <AvatarImage src={image.imageUrl} alt={image.description} data-ai-hint={image.imageHint} />}
-                    <AvatarFallback>{member.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
-                  </Avatar>
-                  <h3 className="font-bold text-lg">{member.name}</h3>
-                  <p className="text-sm text-primary">{member.role}</p>
-                </div>
-              );
-            })}
           </div>
         </div>
       </section>
