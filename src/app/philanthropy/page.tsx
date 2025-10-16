@@ -1,3 +1,5 @@
+'use client';
+
 import Image from 'next/image';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -5,6 +7,9 @@ import { Button } from '@/components/ui/button';
 import { Icons } from '@/components/icons';
 import { Progress } from '@/components/ui/progress';
 import { Heart, Users } from 'lucide-react';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { DonationForm } from '@/components/donation-form';
+import { useState } from 'react';
 
 const initiatives = [
   {
@@ -31,6 +36,8 @@ const paymentChannels = [
 ];
 
 export default function PhilanthropyPage() {
+  const [dialogOpen, setDialogOpen] = useState(false);
+
   return (
     <>
       <section className="bg-secondary/30 py-16 md:py-24">
@@ -86,7 +93,20 @@ export default function PhilanthropyPage() {
                 Your contribution can help us expand our reach and support more communities. Partner with us or make a donation today.
               </p>
               <div className="mt-6 flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
-                  <Button size="lg"><Heart className="mr-2 h-5 w-5" /> Donate Now</Button>
+                  <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+                    <DialogTrigger asChild>
+                      <Button size="lg"><Heart className="mr-2 h-5 w-5" /> Donate Now</Button>
+                    </DialogTrigger>
+                    <DialogContent className="sm:max-w-[480px]">
+                      <DialogHeader>
+                        <DialogTitle className="font-headline text-2xl">Make a Donation</DialogTitle>
+                        <DialogDescription>
+                          Your support helps us create a lasting impact in our communities.
+                        </DialogDescription>
+                      </DialogHeader>
+                      <DonationForm setDialogOpen={setDialogOpen} />
+                    </DialogContent>
+                  </Dialog>
                   <Button size="lg" variant="outline"><Users className="mr-2 h-5 w-5" /> Become a Partner</Button>
               </div>
             </div>
