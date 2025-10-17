@@ -28,7 +28,10 @@ export function Footer() {
               <Icons.logo className="h-6 w-6 text-primary" />
               <span className="font-bold font-headline text-lg">Vanguard Rise Limited</span>
             </Link>
-            <p className="text-sm text-muted-foreground max-w-md">
+            <p className="text-sm text-muted-foreground max-w-md italic">
+              Building prosperity, touching lives
+            </p>
+            <p className="text-sm text-muted-foreground max-w-md pt-2">
               Professional real estate, project management, and investment consultancy.
             </p>
             <div className="flex space-x-4 pt-2">
