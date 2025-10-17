@@ -1,10 +1,10 @@
 import Link from 'next/link';
-import { Linkedin, Twitter, Facebook, Mail, Phone } from 'lucide-react';
+import { Linkedin, X, Facebook, Mail, Phone } from 'lucide-react';
 import { Icons } from '@/components/icons';
 
 const socialLinks = [
   { name: 'LinkedIn', icon: Linkedin, href: '#' },
-  { name: 'Twitter', icon: Twitter, href: '#' },
+  { name: 'Twitter', icon: X, href: '#' },
   { name: 'Facebook', icon: Facebook, href: '#' },
   { name: 'WhatsApp', icon: Icons.whatsapp, href: '#' },
 ];
