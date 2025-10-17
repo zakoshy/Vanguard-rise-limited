@@ -1,3 +1,4 @@
+
 "use client"
 
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -79,7 +80,7 @@ export function ContactForm() {
                     <FormItem>
                         <FormLabel>Full Name</FormLabel>
                         <FormControl>
-                        <Input placeholder="John Doe" {...field} />
+                        <Input {...field} />
                         </FormControl>
                         <FormMessage />
                     </FormItem>
