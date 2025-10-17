@@ -1,3 +1,4 @@
+
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowRight, Building, Heart, Home as HomeIcon, Briefcase } from 'lucide-react';
@@ -71,7 +72,7 @@ export default function Home() {
           <div className="p-8 rounded-lg">
             <h2 className="text-3xl md:text-4xl font-headline font-bold mb-4">Our Mission</h2>
             <p className="text-muted-foreground text-lg">
-              To be a catalyst for sustainable growth and positive transformation, developing real estate and investment solutions that empower communities, create opportunities and inspire hope across Africa.
+              At Vanguard Rise Limited, our mission is to build a future where progress and compassion go hand in hand. We deliver exceptional real estate, project management and investment solutions while championing social responsibility through philanthropic initiatives that uplift lives, strengthen communities and nurture lasting impact.
             </p>
           </div>
           <div className="p-8 rounded-lg">
