@@ -71,13 +71,13 @@ export default function Home() {
           <div className="p-8 rounded-lg">
             <h2 className="text-3xl md:text-4xl font-headline font-bold mb-4">Our Mission</h2>
             <p className="text-muted-foreground text-lg">
-              To deliver exceptional value and innovative solutions in real estate and investment, fostering sustainable growth and building lasting relationships with our clients and communities.
+              To be a catalyst for sustainable growth and positive transformation, developing real estate and investment solutions that empower communities, create opportunities and inspire hope across Africa.
             </p>
           </div>
           <div className="p-8 rounded-lg">
             <h2 className="text-3xl md:text-4xl font-headline font-bold mb-4">Our Vision</h2>
             <p className="text-muted-foreground text-lg">
-              To be a leader in shaping skylines and communities, recognized for our integrity, professionalism, and commitment to creating a positive impact on society.
+              To be a catalyst for sustainable growth and positive transformation, developing real estate and investment solutions that empower communities, create opportunities and inspire hope across Africa.
             </p>
           </div>
         </div>
