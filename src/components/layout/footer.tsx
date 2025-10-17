@@ -6,6 +6,7 @@ const socialLinks = [
   { name: 'LinkedIn', icon: Linkedin, href: '#' },
   { name: 'Twitter', icon: Twitter, href: '#' },
   { name: 'Facebook', icon: Facebook, href: '#' },
+  { name: 'WhatsApp', icon: Icons.whatsapp, href: '#' },
 ];
 
 const quickLinks = [
