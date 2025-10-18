@@ -1,3 +1,4 @@
+
 'use client';
 
 import Image from 'next/image';
@@ -10,6 +11,7 @@ import { Heart, Users } from 'lucide-react';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { DonationForm } from '@/components/donation-form';
 import { useState } from 'react';
+import Link from 'next/link';
 
 const initiatives = [
   {
@@ -107,7 +109,11 @@ export default function PhilanthropyPage() {
                       <DonationForm setDialogOpen={setDialogOpen} />
                     </DialogContent>
                   </Dialog>
-                  <Button size="lg" variant="outline"><Users className="mr-2 h-5 w-5" /> Become a Partner</Button>
+                  <Button size="lg" variant="outline" asChild>
+                    <Link href="/contact">
+                      <Users className="mr-2 h-5 w-5" /> Become a Partner
+                    </Link>
+                  </Button>
               </div>
             </div>
             <div>
