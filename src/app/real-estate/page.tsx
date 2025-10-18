@@ -1,3 +1,4 @@
+
 import Image from 'next/image';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -9,14 +10,14 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Star, MapPin, Search, BedDouble, Bath } from 'lucide-react';
 
 const properties = [
-  { id: 're1', title: 'Modern Villa', location: 'Beverly Hills, CA', price: '$4,500,000', beds: 5, baths: 6, imageId: 'real-estate-1' },
-  { id: 're2', title: 'Downtown Loft', location: 'New York, NY', price: '$2,100,000', beds: 2, baths: 2, imageId: 'real-estate-2' },
-  { id: 're3', title: 'Suburban Family Home', location: 'Austin, TX', price: '$850,000', beds: 4, baths: 3, imageId: 'real-estate-3' },
+  { id: 're1', title: 'Luxury Apartment', location: 'Kilimani, Nairobi', price: 'KES 25,000,000', beds: 3, baths: 3, imageId: 'real-estate-1' },
+  { id: 're2', title: 'Executive Maisonette', location: 'Lavington, Nairobi', price: 'KES 45,000,000', beds: 4, baths: 4, imageId: 'real-estate-2' },
+  { id: 're3', title: 'Serene Villa with Garden', location: 'Karen, Nairobi', price: 'KES 68,000,000', beds: 5, baths: 5, imageId: 'real-estate-3' },
 ];
 
 const testimonials = [
-  { name: 'Sarah L.', role: 'Home Buyer', text: "The team at Zenith Horizon made our home buying process seamless and stress-free. Their market knowledge is unparalleled.", imageId: 'testimonial-1' },
-  { name: 'Michael B.', role: 'Investor', text: "A truly professional and trustworthy partner. Their insights led to a highly profitable investment.", imageId: 'testimonial-2' },
+  { name: 'Asha Njeri', role: 'Home Buyer', text: "The team at Vanguard Rise made our home buying process seamless and stress-free. Their market knowledge is unparalleled.", imageId: 'testimonial-1' },
+  { name: 'David Odhiambo', role: 'Investor', text: "A truly professional and trustworthy partner. Their insights led to a highly profitable investment in Nairobi's property market.", imageId: 'testimonial-2' },
 ];
 
 export default function RealEstatePage() {
@@ -35,7 +36,7 @@ export default function RealEstatePage() {
         <div className="container">
           <Card className="shadow-lg p-4 md:p-6 -mt-32 md:-mt-40 relative z-10 bg-background">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
-              <Input placeholder="Search by location or keyword..." className="md:col-span-2 h-12 text-base" />
+              <Input placeholder="Search by location e.g. 'Kilimani'..." className="md:col-span-2 h-12 text-base" />
               <Select>
                 <SelectTrigger className="h-12 text-base"><SelectValue placeholder="Property Type" /></SelectTrigger>
                 <SelectContent>
