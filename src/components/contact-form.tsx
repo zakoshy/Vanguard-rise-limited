@@ -4,8 +4,6 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
-import { Loader2 } from "lucide-react"
-import { useState } from "react"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -39,7 +37,6 @@ const formSchema = z.object({
 
 export function ContactForm() {
   const { toast } = useToast();
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -51,36 +48,25 @@ export function ContactForm() {
     },
   })
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    setIsSubmitting(true);
-    
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    const toEmail = "vanguardriselimited@gmail.com";
+    const subject = encodeURIComponent(values.subject);
+    const body = encodeURIComponent(`${values.message}\n\nFrom: ${values.name}\nEmail: ${values.email}`);
+
+    const mailtoLink = `mailto:${toEmail}?subject=${subject}&body=${body}`;
+
     try {
-      const response = await fetch('/api/contact', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(values),
-      });
-
-      if (!response.ok) {
-        throw new Error('Something went wrong.');
-      }
-
-      toast({
-        title: "Message Sent!",
-        description: "Thank you for contacting us. We will get back to you shortly.",
-      });
-      form.reset();
-
+        window.location.href = mailtoLink;
+        toast({
+            title: "Email Client Opened",
+            description: "Please complete sending the email from your email client.",
+        });
     } catch (error) {
-      toast({
-        variant: "destructive",
-        title: "Uh oh! Something went wrong.",
-        description: "There was a problem sending your message. Please try again later.",
+         toast({
+            variant: "destructive",
+            title: "Uh oh! Something went wrong.",
+            description: "Could not open your email client. Please try again.",
       });
-    } finally {
-      setIsSubmitting(false);
     }
   }
 
@@ -146,9 +132,8 @@ export function ContactForm() {
                     </FormItem>
                 )}
                 />
-                <Button type="submit" size="lg" className="w-full" disabled={isSubmitting}>
-                    {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                    {isSubmitting ? "Sending..." : "Send Message"}
+                <Button type="submit" size="lg" className="w-full">
+                    Send Message
                 </Button>
             </form>
             </Form>
