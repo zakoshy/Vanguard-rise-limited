@@ -1,3 +1,4 @@
+
 {
   "entities": {
     "ProjectManagementSuccessStory": {
@@ -6,10 +7,6 @@
       "type": "object",
       "description": "Represents a success story within the Project Management service, editable by an admin.",
       "properties": {
-        "id": {
-          "type": "string",
-          "description": "Unique identifier for the Project Management Success Story."
-        },
         "title": {
           "type": "string",
           "description": "Title of the success story."
@@ -23,6 +20,14 @@
           "description": "URL of the image associated with the success story.",
           "format": "uri"
         },
+        "imageId": {
+          "type": "string",
+          "description": "ID of the placeholder image used for the story."
+        },
+        "category": {
+            "type": "string",
+            "description": "Category of the project (e.g., Commercial, Residential)."
+        },
         "datePublished": {
           "type": "string",
           "description": "Date when the success story was published.",
@@ -30,11 +35,8 @@
         }
       },
       "required": [
-        "id",
         "title",
-        "content",
-        "imageUrl",
-        "datePublished"
+        "content"
       ]
     },
     "InvestmentProject": {
@@ -161,6 +163,17 @@
         "imageUrl",
         "date"
       ]
+    },
+    "user": {
+      "title": "user",
+      "description": "Represents a user profile with an optional admin role.",
+      "type": "object",
+      "properties": {
+        "isAdmin": {
+          "type": "boolean",
+          "description": "Flag indicating if the user has admin privileges."
+        }
+      }
     }
   },
   "auth": {
@@ -170,21 +183,16 @@
     ]
   },
   "firestore": {
+    "rules": "firestore.rules",
     "structure": [
       {
         "path": "/project_management_success_stories/{projectManagementSuccessStoryId}",
         "definition": {
           "entityName": "ProjectManagementSuccessStory",
           "schema": {
-            "$ref": "#/backend/entities/ProjectManagementSuccessStory"
+            "$ref": "#/entities/ProjectManagementSuccessStory"
           },
-          "description": "Collection of project management success stories, editable by admins. Requires admin role check for all operations.",
-          "params": [
-            {
-              "name": "projectManagementSuccessStoryId",
-              "description": "Unique identifier for the project management success story."
-            }
-          ]
+          "description": "Collection of project management success stories, editable by admins. Requires admin role check for all operations."
         }
       },
       {
@@ -192,15 +200,9 @@
         "definition": {
           "entityName": "InvestmentProject",
           "schema": {
-            "$ref": "#/backend/entities/InvestmentProject"
+            "$ref": "#/entities/InvestmentProject"
           },
-          "description": "Collection of investment projects, editable by admins. Requires admin role check for all operations.",
-          "params": [
-            {
-              "name": "investmentProjectId",
-              "description": "Unique identifier for the investment project."
-            }
-          ]
+          "description": "Collection of investment projects, editable by admins. Requires admin role check for all operations."
         }
       },
       {
@@ -208,15 +210,9 @@
         "definition": {
           "entityName": "RealEstateListing",
           "schema": {
-            "$ref": "#/backend/entities/RealEstateListing"
+            "$ref": "#/entities/RealEstateListing"
           },
-          "description": "Collection of real estate listings, editable by admins. Requires admin role check for all operations.",
-          "params": [
-            {
-              "name": "realEstateListingId",
-              "description": "Unique identifier for the real estate listing."
-            }
-          ]
+          "description": "Collection of real estate listings, editable by admins. Requires admin role check for all operations."
         }
       },
       {
@@ -224,34 +220,21 @@
         "definition": {
           "entityName": "PhilanthropicActivity",
           "schema": {
-            "$ref": "#/backend/entities/PhilanthropicActivity"
+            "$ref": "#/entities/PhilanthropicActivity"
           },
-          "description": "Collection of philanthropic activities, editable by admins. Requires admin role check for all operations.",
-          "params": [
-            {
-              "name": "philanthropicActivityId",
-              "description": "Unique identifier for the philanthropic activity."
-            }
-          ]
+          "description": "Collection of philanthropic activities, editable by admins. Requires admin role check for all operations."
         }
       },
       {
-        "path": "/roles_admin/{userId}",
+        "path": "/users/{userId}",
         "definition": {
-          "entityName": "adminRole",
+          "entityName": "user",
           "schema": {
-            "$ref": "#/backend/entities/user"
+            "$ref": "#/entities/user"
           },
-          "description": "Documents in this collection indicate admin status for the associated user ID. Existence of a document grants admin privileges.",
-          "params": [
-            {
-              "name": "userId",
-              "description": "The Firebase Auth UID of the user."
-            }
-          ]
+          "description": "User profile information."
         }
       }
-    ],
-    "reasoning": "The Firestore structure is designed to manage content related to real estate, project management, investment, and philanthropic activities, all editable by admins. Authorization Independence is achieved by leveraging dedicated collections for each entity type, ensuring that each document's access control can be determined independently without needing to fetch parent document data. Since all data is edited by the admin, global role checks will determine authorization.\n\nQAPs (Rules are Not Filters) are supported through structural segregation.  Each entity type (ProjectManagementSuccessStory, InvestmentProject, RealEstateListing, PhilanthropicActivity) resides in its own top-level collection, preventing the need to filter data based on authorization rules during `list` operations.  The admin role check on each collection ensures that only authorized users can access and modify the data, simplifying security rules and improving performance."
+    ]
   }
 }
