@@ -7,11 +7,10 @@ import { Toaster } from '@/components/ui/toaster';
 import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
 import './globals.css';
-import { FirebaseClientProvider } from '@/firebase';
+import { FirebaseClientProvider, useUser } from '@/firebase';
 import { AdminLayout } from '@/components/layout/admin-layout';
-import { useUser } from '@/firebase';
 
-export default function RootLayout({
+function AppLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -20,27 +19,35 @@ export default function RootLayout({
   const { user, isUserLoading } = useUser();
   const isAdminSection = pathname.startsWith('/admin');
 
+  if (isAdminSection) {
+    if (isUserLoading) {
+      return <div className="flex justify-center items-center h-screen"><p>Loading...</p></div>;
+    }
+    if (user) {
+      return <AdminLayout>{children}</AdminLayout>;
+    }
+  }
+  
+  return (
+    <div className={cn("relative flex min-h-screen flex-col bg-background", { 'h-screen': isAdminSection && !user})}>
+      {!isAdminSection && <Header />}
+      <main className="flex-1">{children}</main>
+      {!isAdminSection && <Footer />}
+    </div>
+  );
+}
+
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   const metadata = {
     title: 'Vanguard Rise Limited',
     description: 'Professional real estate, project management, and investment consultancy.',
     keywords: ['real estate', 'project management', 'investment', 'consultancy', 'philanthropy'],
   };
-
-  const renderContent = () => {
-    if (isAdminSection && user) {
-      return <AdminLayout>{children}</AdminLayout>;
-    }
-    if (isAdminSection && isUserLoading) {
-        return <div className="flex justify-center items-center h-screen"><p>Loading...</p></div>
-    }
-    return (
-      <div className="relative flex min-h-screen flex-col bg-background">
-        <Header />
-        <main className="flex-1">{children}</main>
-        <Footer />
-      </div>
-    );
-  }
 
   return (
     <html lang="en" suppressHydrationWarning>
@@ -55,7 +62,7 @@ export default function RootLayout({
       </head>
       <body className={cn('min-h-screen font-body antialiased')}>
         <FirebaseClientProvider>
-            {renderContent()}
+            <AppLayout>{children}</AppLayout>
             <Toaster />
         </FirebaseClientProvider>
       </body>
