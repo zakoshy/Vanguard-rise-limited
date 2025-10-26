@@ -4,7 +4,7 @@
 import { useUser } from '@/firebase';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { RealEstateTable } from '@/components/admin/real-estate-table';
 
 export default function RealEstateAdminPage() {
   const { user, isUserLoading } = useUser();
@@ -25,18 +25,6 @@ export default function RealEstateAdminPage() {
   }
 
   return (
-    <div>
-        <Card>
-            <CardHeader>
-                <CardTitle>Manage Real Estate Listings</CardTitle>
-                <CardDescription>
-                    This section is under construction. Soon you'll be able to add, edit, and delete real estate listings.
-                </CardDescription>
-            </CardHeader>
-            <CardContent>
-                <p>Real estate management functionality will be implemented here.</p>
-            </CardContent>
-        </Card>
-    </div>
+    <RealEstateTable />
   );
 }

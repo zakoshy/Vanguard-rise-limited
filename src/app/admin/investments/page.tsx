@@ -4,7 +4,7 @@
 import { useUser } from '@/firebase';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { InvestmentsTable } from '@/components/admin/investments-table';
 
 export default function InvestmentsAdminPage() {
   const { user, isUserLoading } = useUser();
@@ -25,18 +25,6 @@ export default function InvestmentsAdminPage() {
   }
 
   return (
-    <div>
-        <Card>
-            <CardHeader>
-                <CardTitle>Manage Investments</CardTitle>
-                <CardDescription>
-                    This section is under construction. Soon you'll be able to add, edit, and delete investment projects.
-                </CardDescription>
-            </CardHeader>
-            <CardContent>
-                <p>Investment management functionality will be implemented here.</p>
-            </CardContent>
-        </Card>
-    </div>
+    <InvestmentsTable />
   );
 }

@@ -12,23 +12,10 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { DonationForm } from '@/components/donation-form';
 import { useState } from 'react';
 import Link from 'next/link';
-
-const initiatives = [
-  {
-    title: 'Community Green Space Initiative',
-    description: 'Developing and maintaining parks and green spaces in urban areas to promote well-being and community gathering.',
-    imageId: 'philanthropy-1',
-    goal: 50000,
-    raised: 35000,
-  },
-  {
-    title: 'Youth Education Scholarship',
-    description: 'Providing scholarships and educational resources to underprivileged students to help them achieve their potential.',
-    imageId: 'philanthropy-2',
-    goal: 75000,
-    raised: 60000,
-  },
-];
+import { useCollection, useFirestore, useMemoFirebase } from '@/firebase';
+import { collection } from 'firebase/firestore';
+import type { PhilanthropicActivity } from '@/lib/types';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const paymentChannels = [
   { name: 'M-Pesa', icon: Icons.mpesa },
@@ -36,6 +23,75 @@ const paymentChannels = [
   { name: 'PayPal', icon: Icons.paypal },
   { name: 'Crypto', icon: Icons.crypto },
 ];
+
+
+function InitiativesSection() {
+  const firestore = useFirestore();
+  const initiativesQuery = useMemoFirebase(() => {
+    if (!firestore) return null;
+    return collection(firestore, 'philanthropic_activities');
+  }, [firestore]);
+
+  const { data: initiatives, isLoading } = useCollection<PhilanthropicActivity>(initiativesQuery);
+
+  return (
+    <section className="py-16 md:py-24">
+      <div className="container">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl md:text-4xl font-headline font-bold">Our Initiatives</h2>
+          <p className="mt-2 text-lg text-muted-foreground">Making a tangible impact through dedicated projects.</p>
+        </div>
+        <div className="grid md:grid-cols-2 gap-8">
+          {isLoading && Array.from({ length: 2 }).map((_, i) => (
+            <Card key={i} className="overflow-hidden shadow-lg">
+              <Skeleton className="h-64 w-full" />
+              <CardHeader>
+                <Skeleton className="h-8 w-3/4" />
+              </CardHeader>
+              <CardContent>
+                <Skeleton className="h-4 w-full" />
+                <Skeleton className="h-4 w-5/6 mt-2" />
+                <Skeleton className="h-2 w-full mt-4" />
+                <div className="flex justify-between mt-2">
+                  <Skeleton className="h-4 w-24" />
+                  <Skeleton className="h-4 w-24" />
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+          {initiatives?.map((item) => {
+            const image = PlaceHolderImages.find(p => p.id === item.imageId);
+            const progress = (item.raised / item.goal) * 100;
+            return (
+              <Card key={item.id} className="overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+                {image && (
+                  <div className="relative h-64 w-full">
+                    <Image src={image.imageUrl || item.imageUrl || ''} alt={item.title} fill className="object-cover" data-ai-hint={image.imageHint} />
+                  </div>
+                )}
+                <CardHeader>
+                  <CardTitle className="font-headline text-2xl">{item.title}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <CardDescription className="mb-4">{item.description}</CardDescription>
+                  <Progress value={progress} className="h-2 mb-2" />
+                  <div className="flex justify-between text-sm text-muted-foreground">
+                    <span>Raised: ${item.raised.toLocaleString()}</span>
+                    <span>Goal: ${item.goal.toLocaleString()}</span>
+                  </div>
+                </CardContent>
+              </Card>
+            );
+          })}
+        </div>
+         {!isLoading && (!initiatives || initiatives.length === 0) && (
+            <p className='text-center text-muted-foreground'>No initiatives have been added yet.</p>
+        )}
+      </div>
+    </section>
+  );
+}
+
 
 export default function PhilanthropyPage() {
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -51,40 +107,7 @@ export default function PhilanthropyPage() {
         </div>
       </section>
 
-      <section className="py-16 md:py-24">
-        <div className="container">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-headline font-bold">Our Initiatives</h2>
-            <p className="mt-2 text-lg text-muted-foreground">Making a tangible impact through dedicated projects.</p>
-          </div>
-          <div className="grid md:grid-cols-2 gap-8">
-            {initiatives.map((item) => {
-              const image = PlaceHolderImages.find(p => p.id === item.imageId);
-              const progress = (item.raised / item.goal) * 100;
-              return (
-                <Card key={item.title} className="overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
-                  {image && (
-                    <div className="relative h-64 w-full">
-                      <Image src={image.imageUrl} alt={image.description} fill className="object-cover" data-ai-hint={image.imageHint} />
-                    </div>
-                  )}
-                  <CardHeader>
-                    <CardTitle className="font-headline text-2xl">{item.title}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <CardDescription className="mb-4">{item.description}</CardDescription>
-                    <Progress value={progress} className="h-2 mb-2" />
-                    <div className="flex justify-between text-sm text-muted-foreground">
-                      <span>Raised: ${item.raised.toLocaleString()}</span>
-                      <span>Goal: ${item.goal.toLocaleString()}</span>
-                    </div>
-                  </CardContent>
-                </Card>
-              );
-            })}
-          </div>
-        </div>
-      </section>
+      <InitiativesSection />
 
       <section className="py-16 md:py-24 bg-secondary/30">
         <div className="container">

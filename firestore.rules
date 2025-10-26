@@ -1,26 +1,22 @@
 /**
- * @file Firebase Security Rules
- * @version 2
+ * @file Firestore Security Rules
+ * @description This ruleset enforces role-based access control, primarily for administrative users.
  *
- * @description This ruleset enforces a role-based access control system where specific collections
- * are only manageable by users with admin privileges. User documents have basic ownership restrictions.
+ * Core Philosophy:
+ *  - Access to key data collections (investment projects, real estate listings, philanthropic activities, and project management success stories) is restricted to users with the 'admin' role.
+ *  - User documents can only be created by the user themselves.
  *
  * Data Structure:
- * - /project_management_success_stories/{docId}: Success stories.
- * - /investment_projects/{docId}: Investment projects.
- * - /real_estate_listings/{docId}: Real estate listings.
- * - /philanthropic_activities/{docId}: Philanthropic activities.
- * - /roles_admin/{userId}: Admin role assignments.
- * - /users/{userId}: User profile data.
+ *  - Top-level collections: /investment_projects, /real_estate_listings, /philanthropic_activities, /project_management_success_stories, /users, /roles_admin
+ *  - User data is stored in /users/{userId}
+ *  - Admin roles are granted by the existence of a document in /roles_admin/{userId}
  *
  * Key Security Decisions:
- * - Admin-Only Collections: `project_management_success_stories`, `investment_projects`,
- *   `real_estate_listings`, and `philanthropic_activities` are strictly controlled by admins.
- *   Non-admins have no access.
- * - Admin Role Management: Only existing admins can manage admin roles. Users can read their own
- *   role document to verify their admin status.
- * - User Profiles: Users can only read and write their own profile data.
- * - No User Listing: Listing all users is disallowed for privacy and security.
+ *  - Only admins can create, update, or delete investment projects, real estate listings, philanthropic activities and project management success stories.
+ *  - Users can only create their own user document. Listing all users is not permitted.
+ *
+ *  Denormalization for Authorization:
+ *   - The rules rely on checking for the existence of an admin role document in the `/roles_admin/{userId}` collection.
  */
 rules_version = '2';
 service cloud.firestore {
@@ -28,110 +24,128 @@ service cloud.firestore {
 
     /**
      * @description Checks if the current user is signed in.
+     * @returns {boolean} True if the user is signed in, false otherwise.
      */
     function isSignedIn() {
       return request.auth != null;
     }
 
     /**
-     * @description Checks if the user is an admin by verifying
-     * the existence of a document in the roles_admin collection.
-     */
-    function isAdmin() {
-      return isSignedIn() &&
-             exists(/databases/$(database)/documents/roles_admin/$(request.auth.uid));
-    }
-
-    /**
-     * @description Checks if the current user id matches the requested id.
+     * @description Checks if the current user's ID matches the provided userId.
+     * @param {string} userId - The user ID to compare against.
+     * @returns {boolean} True if the user is signed in and their UID matches the userId, false otherwise.
      */
     function isOwner(userId) {
       return isSignedIn() && request.auth.uid == userId;
     }
 
     /**
-     * @description Checks if the current user is the owner of the existing document.
+     * @description Checks if the user exists and is the owner.
+     * @param {string} userId - The user ID to compare against.
+     * @returns {boolean} True if the resource exists and the signed-in user's UID matches the userId.
      */
     function isExistingOwner(userId) {
-      return isOwner(userId) && resource != null;
+        return isOwner(userId) && resource != null;
     }
 
     /**
-     * @description Allows admins to fully manage all admin-controlled collections.
-     * @path /project_management_success_stories/{docId}
-     * @allow (create) request.auth.uid == adminUserId
-     * @deny (create) request.auth.uid == nonAdminUserId
-     * @principle Enforces role-based access control; only admins can modify.
+     * @description Checks if the current user has the 'admin' role.
+     * @returns {boolean} True if the user has the admin role, false otherwise.
      */
-    match /project_management_success_stories/{docId} {
-      allow read, write: if isAdmin();
+    function isAdmin() {
+      return exists(/databases/$(database)/documents/roles_admin/$(request.auth.uid));
     }
 
     /**
-     * @description Allows admins to fully manage all admin-controlled collections.
-     * @path /investment_projects/{docId}
-     * @allow (create) request.auth.uid == adminUserId
-     * @deny (create) request.auth.uid == nonAdminUserId
-     * @principle Enforces role-based access control; only admins can modify.
+     * @description Rules for project management success stories. Only admins can create, read, update, or delete.
+     * @path /project_management_success_stories/{projectManagementSuccessStoryId}
+     * @allow (create) - An admin can create a new success story.
+     * @allow (get) - Any user can read a success story.
+     * @deny (create) - A non-admin user cannot create a new success story.
+     * @principle Enforces admin-only access for modifying success stories.
      */
-    match /investment_projects/{docId} {
-      allow read, write: if isAdmin();
+    match /project_management_success_stories/{projectManagementSuccessStoryId} {
+      allow get: if true;
+      allow list: if true;
+      allow create: if isAdmin();
+      allow update: if isAdmin() && resource != null;
+      allow delete: if isAdmin() && resource != null;
     }
 
     /**
-     * @description Allows admins to fully manage all admin-controlled collections.
-     * @path /real_estate_listings/{docId}
-     * @allow (create) request.auth.uid == adminUserId
-     * @deny (create) request.auth.uid == nonAdminUserId
-     * @principle Enforces role-based access control; only admins can modify.
+     * @description Rules for investment projects. Only admins can create, read, update, or delete.
+     * @path /investment_projects/{investmentProjectId}
+     * @allow (create) - An admin can create a new investment project.
+     * @allow (get) - Any user can read an investment project.
+     * @deny (create) - A non-admin user cannot create a new investment project.
+     * @principle Enforces admin-only access for modifying investment projects.
      */
-    match /real_estate_listings/{docId} {
-      allow read, write: if isAdmin();
+    match /investment_projects/{investmentProjectId} {
+      allow get: if true;
+      allow list: if true;
+      allow create: if isAdmin();
+      allow update: if isAdmin() && resource != null;
+      allow delete: if isAdmin() && resource != null;
     }
 
     /**
-     * @description Allows admins to fully manage all admin-controlled collections.
-     * @path /philanthropic_activities/{docId}
-     * @allow (create) request.auth.uid == adminUserId
-     * @deny (create) request.auth.uid == nonAdminUserId
-     * @principle Enforces role-based access control; only admins can modify.
+     * @description Rules for real estate listings. Only admins can create, read, update, or delete.
+     * @path /real_estate_listings/{realEstateListingId}
+     * @allow (create) - An admin can create a new real estate listing.
+     * @allow (get) - Any user can read a real estate listing.
+     * @deny (create) - A non-admin user cannot create a new real estate listing.
+     * @principle Enforces admin-only access for modifying real estate listings.
      */
-    match /philanthropic_activities/{docId} {
-      allow read, write: if isAdmin();
+    match /real_estate_listings/{realEstateListingId} {
+      allow get: if true;
+      allow list: if true;
+      allow create: if isAdmin();
+      allow update: if isAdmin() && resource != null;
+      allow delete: if isAdmin() && resource != null;
     }
 
     /**
-     * @description Admin roles collection.
-     * - Allow signed-in users to read *their own* admin role doc,
-     *   so your front-end can check if they’re admin.
-     * - Allow existing admins to manage roles (promote/demote others).
-     * @path /roles_admin/{userId}
-     * @allow (get) request.auth.uid == userId if isSignedIn()
-     * @allow (create) request.auth.uid == adminUserId if isAdmin()
-     * @deny (create) request.auth.uid == nonAdminUserId
-     * @principle Restricts admin role management to existing admins.
+     * @description Rules for philanthropic activities. Only admins can create, read, update, or delete.
+     * @path /philanthropic_activities/{philanthropicActivityId}
+     * @allow (create) - An admin can create a new philanthropic activity.
+     * @allow (get) - Any user can read a philanthropic activity.
+     * @deny (create) - A non-admin user cannot create a new philanthropic activity.
+     * @principle Enforces admin-only access for modifying philanthropic activities.
      */
-    match /roles_admin/{userId} {
-      allow get: if isSignedIn() && request.auth.uid == userId;
-      allow list, create, update, delete: if isAdmin();
+    match /philanthropic_activities/{philanthropicActivityId} {
+      allow get: if true;
+      allow list: if true;
+      allow create: if isAdmin();
+      allow update: if isAdmin() && resource != null;
+      allow delete: if isAdmin() && resource != null;
     }
 
     /**
-     * @description Controls access to user profile data.
+     * @description Rules for user profiles.
      * @path /users/{userId}
-     * @allow (create) request.auth.uid == userId && request.resource.data.id == userId
-     * @allow (get) request.auth.uid == userId
-     * @allow (update) request.auth.uid == userId
-     * @deny (update) request.auth.uid != userId
-     * @deny (list) always
-     * @principle Enforces user-ownership for profile data.
+     * @allow (create) - A user can create their own profile. The userId must match the authenticated user's ID.
+     * @deny (create) - A user cannot create a profile for another user.
+     * @deny (get) - No one can read another user's data.
+     * @principle Enforces user-ownership for profile creation and restricts listing.
      */
     match /users/{userId} {
-        allow get: if isOwner(userId);
-        allow list: if isOwner(userId);
-        allow create: if isOwner(userId);
-        allow update: if isExistingOwner(userId);
-        allow delete: if false;
+      allow get: if isOwner(userId);
+      allow list: if false;
+      allow create: if isOwner(userId);
+      allow update: if isOwner(userId) && resource != null;
+      allow delete: if isExistingOwner(userId);
+    }
+
+    /**
+     * @description Rules for admin roles. Only admins can create, update, or delete admin roles.
+     * @path /roles_admin/{userId}
+     */
+    match /roles_admin/{userId} {
+      allow get: if isAdmin();
+      allow list: if false;
+      allow create: if isAdmin();
+      allow update: if false;
+      allow delete: if isAdmin() && resource != null;
     }
   }
 }

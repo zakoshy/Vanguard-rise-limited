@@ -4,7 +4,7 @@
 import { useUser } from '@/firebase';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { PhilanthropyTable } from '@/components/admin/philanthropy-table';
 
 export default function PhilanthropyAdminPage() {
   const { user, isUserLoading } = useUser();
@@ -25,18 +25,6 @@ export default function PhilanthropyAdminPage() {
   }
 
   return (
-    <div>
-        <Card>
-            <CardHeader>
-                <CardTitle>Manage Philanthropic Activities</CardTitle>
-                <CardDescription>
-                    This section is under construction. Soon you'll be able to add, edit, and delete philanthropic initiatives.
-                </CardDescription>
-            </CardHeader>
-            <CardContent>
-                <p>Philanthropy management functionality will be implemented here.</p>
-            </CardContent>
-        </Card>
-    </div>
+    <PhilanthropyTable />
   );
 }
