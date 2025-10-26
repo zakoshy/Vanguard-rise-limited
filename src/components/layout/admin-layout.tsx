@@ -1,7 +1,7 @@
 
 'use client';
 
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { getAuth, signOut } from 'firebase/auth';
 import { Briefcase, Building, Heart, Home as HomeIcon, LayoutDashboard, LogOut } from 'lucide-react';
 import Link from 'next/link';
@@ -18,7 +18,17 @@ const adminNavLinks = [
 
 export function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const router = useRouter();
   const auth = getAuth();
+
+  const handleSignOut = async () => {
+    try {
+      await signOut(auth);
+      router.push('/');
+    } catch (error) {
+      console.error("Error signing out: ", error);
+    }
+  };
 
   return (
     <div className="flex min-h-screen bg-secondary/30">
@@ -47,7 +57,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
           ))}
         </nav>
         <div>
-          <Button variant="ghost" onClick={() => signOut(auth)} className="w-full justify-start text-muted-foreground hover:text-destructive">
+          <Button variant="ghost" onClick={handleSignOut} className="w-full justify-start text-muted-foreground hover:text-destructive">
             <LogOut className="mr-2 h-5 w-5" />
             Sign Out
           </Button>
