@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Star, MapPin, Search, BedDouble, Bath } from 'lucide-react';
+import { Star, MapPin, Search } from 'lucide-react';
 import { useCollection, useFirestore, useMemoFirebase } from '@/firebase';
 import { collection } from 'firebase/firestore';
 import type { RealEstateListing } from '@/lib/types';
@@ -40,9 +40,11 @@ function FeaturedListingsSection() {
               <Skeleton className="h-6 w-3/4" />
               <Skeleton className="h-4 w-1/2" />
             </CardHeader>
-            <CardContent className="flex-grow" />
+            <CardContent className="flex-grow">
+               <Skeleton className="h-4 w-full" />
+               <Skeleton className="h-4 w-5/6 mt-2" />
+            </CardContent>
             <CardFooter className="flex justify-between border-t pt-4">
-              <Skeleton className="h-5 w-16" />
               <Skeleton className="h-5 w-16" />
             </CardFooter>
           </Card>
@@ -54,20 +56,18 @@ function FeaturedListingsSection() {
               {image && (
                 <div className="relative h-56 w-full">
                   <Image src={image.imageUrl || prop.imageUrl || ''} alt={prop.address} fill className="object-cover" data-ai-hint={image.imageHint} />
-                  <Badge className="absolute top-3 right-3 bg-accent text-accent-foreground">KES {prop.price.toLocaleString()}</Badge>
                 </div>
               )}
               <CardHeader>
-                <CardTitle className="font-headline text-xl">{prop.propertyType}</CardTitle>
-                <CardDescription className="flex items-center gap-1"><MapPin className="h-4 w-4"/>{prop.address}</CardDescription>
+                <div className="flex justify-between items-start">
+                    <CardTitle className="font-headline text-xl">{prop.propertyType}</CardTitle>
+                    <Badge className="bg-accent text-accent-foreground">KES {prop.price.toLocaleString()}</Badge>
+                </div>
+                <CardDescription className="flex items-center gap-1 pt-1"><MapPin className="h-4 w-4"/>{prop.address}</CardDescription>
               </CardHeader>
               <CardContent className="flex-grow" >
                   <p className='text-sm text-muted-foreground'>{prop.description}</p>
               </CardContent>
-              <CardFooter className="flex justify-between text-sm text-muted-foreground border-t pt-4">
-                {prop.beds && <div className="flex items-center gap-2"><BedDouble className="h-5 w-5 text-primary"/>{prop.beds} Beds</div>}
-                {prop.baths && <div className="flex items-center gap-2"><Bath className="h-5 w-5 text-primary"/>{prop.baths} Baths</div>}
-              </CardFooter>
             </Card>
           );
         })}

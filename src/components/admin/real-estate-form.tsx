@@ -31,8 +31,6 @@ const formSchema = z.object({
   description: z.string().min(10, "Description must be at least 10 characters."),
   price: z.coerce.number().min(1, "Price must be greater than 0."),
   propertyType: z.string().min(3, "Property type is required."),
-  beds: z.coerce.number().optional(),
-  baths: z.coerce.number().optional(),
   imageId: z.string().optional(),
 });
 
@@ -54,8 +52,6 @@ export function RealEstateForm({ listing, onFinished }: RealEstateFormProps) {
       description: listing?.description || "",
       price: listing?.price || 0,
       propertyType: listing?.propertyType || "",
-      beds: listing?.beds || 0,
-      baths: listing?.baths || 0,
       imageId: listing?.imageId || "",
     },
   });
@@ -72,7 +68,7 @@ export function RealEstateForm({ listing, onFinished }: RealEstateFormProps) {
     };
     
     try {
-        if (isEditing) {
+        if (isEditing && listing) {
             const docRef = doc(firestore, "real_estate_listings", listing.id);
             updateDocumentNonBlocking(docRef, listingData);
             toast({ title: "Success", description: "Listing updated successfully." });
@@ -103,7 +99,7 @@ export function RealEstateForm({ listing, onFinished }: RealEstateFormProps) {
           name="address"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Address</FormLabel>
+              <FormLabel>Location (Address)</FormLabel>
               <FormControl><Input {...field} /></FormControl>
               <FormMessage />
             </FormItem>
@@ -142,30 +138,6 @@ export function RealEstateForm({ listing, onFinished }: RealEstateFormProps) {
             </FormItem>
           )}
         />
-        <div className="grid grid-cols-2 gap-4">
-            <FormField
-            control={form.control}
-            name="beds"
-            render={({ field }) => (
-                <FormItem>
-                <FormLabel>Beds</FormLabel>
-                <FormControl><Input type="number" {...field} /></FormControl>
-                <FormMessage />
-                </FormItem>
-            )}
-            />
-            <FormField
-            control={form.control}
-            name="baths"
-            render={({ field }) => (
-                <FormItem>
-                <FormLabel>Baths</FormLabel>
-                <FormControl><Input type="number" {...field} /></FormControl>
-                <FormMessage />
-                </FormItem>
-            )}
-            />
-        </div>
         
         <FormField
           control={form.control}
