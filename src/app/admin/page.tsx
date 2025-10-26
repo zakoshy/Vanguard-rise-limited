@@ -4,17 +4,14 @@
 import { useUser } from '@/firebase';
 import { LoginForm } from '@/components/auth/login-form';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { getAuth, signOut } from 'firebase/auth';
 import Link from 'next/link';
 
 export default function AdminPage() {
   const { user, isUserLoading } = useUser();
-  const auth = getAuth();
 
   if (isUserLoading) {
     return (
-      <div className="container py-16 md:py-24 text-center">
+      <div className="container flex items-center justify-center min-h-screen py-16 md:py-24 text-center">
         <p>Loading...</p>
       </div>
     );
@@ -22,8 +19,8 @@ export default function AdminPage() {
 
   if (!user) {
     return (
-      <div className="container py-16 md:py-24">
-        <div className="max-w-md mx-auto">
+      <div className="container flex items-center justify-center min-h-screen py-16 md:py-24">
+        <div className="max-w-md w-full">
           <LoginForm />
         </div>
       </div>
@@ -31,34 +28,18 @@ export default function AdminPage() {
   }
 
   return (
-    <div className="container py-16 md:py-24">
-      <Card>
-        <CardHeader>
-          <div className="flex justify-between items-center">
-            <CardTitle>Admin Panel</CardTitle>
-            <Button variant="outline" onClick={() => signOut(auth)}>Sign Out</Button>
-          </div>
-          <CardDescription>Welcome, {user.email}. Manage your site content from here.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid gap-4">
-              <Card>
-                  <CardHeader>
-                      <CardTitle>Content Management</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                      <ul className="space-y-2">
-                          <li>
-                            <Button asChild variant="link" className="p-0">
-                                <Link href="/admin/success-stories">Manage Project Management Success Stories</Link>
-                            </Button>
-                          </li>
-                      </ul>
-                  </CardContent>
-              </Card>
-          </div>
-        </CardContent>
-      </Card>
+    <div className="p-8">
+        <Card>
+            <CardHeader>
+                <CardTitle>Welcome to the Admin Dashboard</CardTitle>
+                <CardDescription>
+                    Select a category from the sidebar to begin managing your website content.
+                </CardDescription>
+            </CardHeader>
+            <CardContent>
+                <p>You can manage success stories, investment projects, real estate listings, and philanthropic activities from here.</p>
+            </CardContent>
+        </Card>
     </div>
   );
 }
