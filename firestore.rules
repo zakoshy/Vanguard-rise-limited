@@ -1,118 +1,111 @@
 /**
- * @file This Firestore Security Rules file enforces a role-based access control model.
+ * @fileoverview Firestore Security Rules for the application.
  *
  * Core Philosophy:
- * Only authenticated admins can create, update, and delete content. Read access is public for success stories,
- * investment projects, real estate listings, and philanthropic activities. User documents can only be read or written by the user themselves.
+ * This ruleset enforces a role-based access control model, primarily focused on admin-only access for core content collections
+ * and user-specific ownership for user profiles.
  *
  * Data Structure:
- * - /project_management_success_stories/{projectManagementSuccessStoryId}
- * - /investment_projects/{investmentProjectId}
- * - /real_estate_listings/{realEstateListingId}
- * - /philanthropic_activities/{philanthropicActivityId}
- * - /users/{userId}
+ * - `/project_management_success_stories/{projectManagementSuccessStoryId}`: Stores project management success stories. Admin-only access.
+ * - `/investment_projects/{investmentProjectId}`: Stores investment projects. Admin-only access.
+ * - `/real_estate_listings/{realEstateListingId}`: Stores real estate listings. Admin-only access.
+ * - `/philanthropic_activities/{philanthropicActivityId}`: Stores philanthropic activities. Admin-only access.
+ * - `/users/{userId}`: Stores user profile information. User-owned with self-creation allowed.
  *
  * Key Security Decisions:
- * - Public read access to content collections.
- * - Strict admin-only write access to content collections.
- * - User-owned profiles with self-write access.
- * - No user listing is allowed.
+ * - Admin Role:  All `*_success_stories`, `investment_projects`, `real_estate_listings`, and `philanthropic_activities` collections
+ *   are strictly limited to admin users for all operations.
+ * - User Listing Disallowed: The `users` collection is not listable, only accessible by the individual user.
+ * - Admin role is defined inside the document, at `/users/{userId}`.
  */
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
     /**
-     * @description Allows admins to manage project management success stories. Public read access.
-     * @path /project_management_success_stories/{projectManagementSuccessStoryId}
-     * @allow (get, list) Authenticated user can read success stories.
-     * @allow (create, update, delete) Authenticated admin can manage success stories.
-     * @deny (create, update, delete) Non-admin user attempts to create, update, or delete a success story.
-     * @principle Public read, admin-only write.
+     * @description Checks if the user is signed in.
+     * @path N/A (Helper function)
+     * @allow N/A (Helper function)
+     * @deny N/A (Helper function)
+     * @principle Requires the user to be authenticated.
      */
-    match /project_management_success_stories/{projectManagementSuccessStoryId} {
-      allow get, list: if true;
-      allow create: if isAdmin();
-      allow update: if isAdmin() && resource != null;
-      allow delete: if isAdmin() && resource != null;
-    }
-
-    /**
-     * @description Allows admins to manage investment projects. Public read access.
-     * @path /investment_projects/{investmentProjectId}
-     * @allow (get, list) Authenticated user can read investment projects.
-     * @allow (create, update, delete) Authenticated admin can manage investment projects.
-     * @deny (create, update, delete) Non-admin user attempts to create, update, or delete an investment project.
-     * @principle Public read, admin-only write.
-     */
-    match /investment_projects/{investmentProjectId} {
-      allow get, list: if true;
-      allow create: if isAdmin();
-      allow update: if isAdmin() && resource != null;
-      allow delete: if isAdmin() && resource != null;
-    }
-
-    /**
-     * @description Allows admins to manage real estate listings. Public read access.
-     * @path /real_estate_listings/{realEstateListingId}
-     * @allow (get, list) Authenticated user can read real estate listings.
-     * @allow (create, update, delete) Authenticated admin can manage real estate listings.
-     * @deny (create, update, delete) Non-admin user attempts to create, update, or delete a real estate listing.
-     * @principle Public read, admin-only write.
-     */
-    match /real_estate_listings/{realEstateListingId} {
-      allow get, list: if true;
-      allow create: if isAdmin();
-      allow update: if isAdmin() && resource != null;
-      allow delete: if isAdmin() && resource != null;
-    }
-
-    /**
-     * @description Allows admins to manage philanthropic activities. Public read access.
-     * @path /philanthropic_activities/{philanthropicActivityId}
-     * @allow (get, list) Authenticated user can read philanthropic activities.
-     * @allow (create, update, delete) Authenticated admin can manage philanthropic activities.
-     * @deny (create, update, delete) Non-admin user attempts to create, update, or delete a philanthropic activity.
-     * @principle Public read, admin-only write.
-     */
-    match /philanthropic_activities/{philanthropicActivityId} {
-      allow get, list: if true;
-      allow create: if isAdmin();
-      allow update: if isAdmin() && resource != null;
-      allow delete: if isAdmin() && resource != null;
-    }
-
-    /**
-     * @description Allows a user to read and write their own user document.
-     * @path /users/{userId}
-     * @allow (get, update, delete) Authenticated user can manage their own profile.
-     * @allow (create) Authenticated user can create their own profile if the userId matches their auth.uid.
-     * @deny (get, update, delete) Authenticated user tries to manage another user's profile.
-     * @deny (list) Listing users is not permitted.
-     * @principle Enforces document ownership for user profiles.
-     */
-    match /users/{userId} {
-      allow get: if isOwner(userId);
-      allow list: if false;
-      allow create: if isOwner(userId);
-      allow update: if isOwner(userId) && resource != null;
-      allow delete: if isExistingOwner(userId);
-    }
-
     function isSignedIn() {
       return request.auth != null;
     }
 
+    /**
+     * @description Checks if the authenticated user's UID matches the provided userId.
+     * @path N/A (Helper function)
+     * @allow N/A (Helper function)
+     * @deny N/A (Helper function)
+     * @principle Enforces user-specific data access.
+     */
     function isOwner(userId) {
       return request.auth.uid == userId;
     }
 
+    /**
+     * @description Checks if the user exists and is the owner.
+     * @path N/A (Helper function)
+     * @allow N/A (Helper function)
+     * @deny N/A (Helper function)
+     * @principle Combines ownership and existence checks for safety.
+     */
     function isExistingOwner(userId) {
-      return isOwner(userId) && resource != null;
+      return isOwner(userId) && exists(/databases/$(database)/documents/users/$(userId));
     }
-
+    /**
+     * @description Checks if the user is an administrator.
+     * @path N/A (Helper function)
+     * @allow N/A (Helper function)
+     * @principle Requires the user to have the `isAdmin` field set to `true` in their user document.
+     */
     function isAdmin() {
         return isSignedIn() && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isAdmin == true;
+    }
+
+    /**
+     * @description Rules for project management success stories.
+     * @path /project_management_success_stories/{projectManagementSuccessStoryId}
+     */
+    match /project_management_success_stories/{projectManagementSuccessStoryId} {
+        allow get, list, create, update, delete: if isAdmin();
+    }
+
+    /**
+     * @description Rules for investment projects.
+     * @path /investment_projects/{investmentProjectId}
+     */
+    match /investment_projects/{investmentProjectId} {
+        allow get, list, create, update, delete: if isAdmin();
+    }
+
+    /**
+     * @description Rules for real estate listings.
+     * @path /real_estate_listings/{realEstateListingId}
+     */
+    match /real_estate_listings/{realEstateListingId} {
+        allow get, list, create, update, delete: if isAdmin();
+    }
+
+    /**
+     * @description Rules for philanthropic activities.
+     * @path /philanthropic_activities/{philanthropicActivityId}
+     */
+    match /philanthropic_activities/{philanthropicActivityId} {
+        allow get, list, create, update, delete: if isAdmin();
+    }
+
+    /**
+     * @description Rules for user profiles.
+     * @path /users/{userId}
+     */
+    match /users/{userId} {
+      allow get: if isOwner(userId);
+      allow list: if false;
+      allow create: if isOwner(userId) && request.auth.uid == userId;
+      allow update: if isExistingOwner(userId);
+      allow delete: if isExistingOwner(userId);
     }
   }
 }
