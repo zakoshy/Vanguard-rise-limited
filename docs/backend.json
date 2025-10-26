@@ -174,6 +174,12 @@
           "description": "Flag indicating if the user has admin privileges."
         }
       }
+    },
+    "AdminRole": {
+      "title": "AdminRole",
+      "description": "An empty document whose existence in the roles_admin collection signifies that the user is an admin.",
+      "type": "object",
+      "properties": {}
     }
   },
   "auth": {
@@ -233,6 +239,16 @@
             "$ref": "#/entities/user"
           },
           "description": "User profile information."
+        }
+      },
+      {
+        "path": "/roles_admin/{userId}",
+        "definition": {
+          "entityName": "AdminRole",
+          "schema": {
+            "$ref": "#/entities/AdminRole"
+          },
+          "description": "Collection where the existence of a document with a user's UID grants them admin privileges."
         }
       }
     ]
