@@ -1,0 +1,153 @@
+/**
+ * @fileoverview Firestore Security Rules for Prototyping.
+ *
+ * Core Philosophy:
+ * This ruleset enforces a role-based access control model, with a global "admin" role.
+ * All data collections (project_management_success_stories, investment_projects, real_estate_listings, philanthropic_activities) are intended to be managed by admins only.
+ *
+ * Data Structure:
+ * - /project_management_success_stories/{projectManagementSuccessStoryId}
+ * - /investment_projects/{investmentProjectId}
+ * - /real_estate_listings/{realEstateListingId}
+ * - /philanthropic_activities/{philanthropicActivityId}
+ * - /roles_admin/{userId}
+ *
+ * Key Security Decisions:
+ * - Only authenticated admins can create, read, update, and delete documents in the data collections.
+ * - The presence of a document in /roles_admin/{userId} grants admin privileges to the user with UID {userId}.
+ * - Read operations (get, list) on data collections are restricted to admins.
+ *
+ * Denormalization for Authorization:
+ * - The /roles_admin/{userId} collection is used for checking admin status.  A user is an admin if a document exists at /roles_admin/{request.auth.uid}.
+ */
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    /**
+     * @description Checks if the current user is signed in.
+     * @path N/A (Helper Function)
+     * @allow N/A (Helper Function)
+     * @deny N/A (Helper Function)
+     * @principle Authentication is required for authorization.
+     */
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    /**
+     * @description Checks if the user is an admin by verifying the existence of a document in the roles_admin collection with the user's ID.
+     * @path N/A (Helper Function)
+     * @allow N/A (Helper Function)
+     * @deny N/A (Helper Function)
+     * @principle Role-based access control; admin status is determined by document existence.
+     */
+    function isAdmin() {
+      return exists(/databases/$(database)/documents/roles_admin/$(request.auth.uid));
+    }
+
+    /**
+     * @description Collection of project management success stories, editable by admins.
+     * @path /project_management_success_stories/{projectManagementSuccessStoryId}
+     * @allow (create) If the user is an admin, they can create a new success story.
+     * @deny (create) If the user is not an admin, they cannot create a new success story.
+     * @allow (get) If the user is an admin, they can read a success story.
+     * @deny (get) If the user is not an admin, they cannot read a success story.
+     * @allow (list) If the user is an admin, they can list success stories.
+     * @deny (list) If the user is not an admin, they cannot list success stories.
+     * @allow (update) If the user is an admin, they can update a success story.
+     * @deny (update) If the user is not an admin, they cannot update a success story.
+     * @allow (delete) If the user is an admin, they can delete a success story.
+     * @deny (delete) If the user is not an admin, they cannot delete a success story.
+     * @principle Restricts all access to admins only.
+     */
+    match /project_management_success_stories/{projectManagementSuccessStoryId} {
+      allow get: if isAdmin();
+      allow list: if isAdmin();
+      allow create: if isAdmin();
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    /**
+     * @description Collection of investment projects, editable by admins.
+     * @path /investment_projects/{investmentProjectId}
+     * @allow (create) If the user is an admin, they can create a new investment project.
+     * @deny (create) If the user is not an admin, they cannot create a new investment project.
+     * @allow (get) If the user is an admin, they can read an investment project.
+     * @deny (get) If the user is not an admin, they cannot read an investment project.
+     * @allow (list) If the user is an admin, they can list investment projects.
+     * @deny (list) If the user is not an admin, they cannot list investment projects.
+     * @allow (update) If the user is an admin, they can update an investment project.
+     * @deny (update) If the user is not an admin, they cannot update an investment project.
+     * @allow (delete) If the user is an admin, they can delete an investment project.
+     * @deny (delete) If the user is not an admin, they cannot delete an investment project.
+     * @principle Restricts all access to admins only.
+     */
+    match /investment_projects/{investmentProjectId} {
+      allow get: if isAdmin();
+      allow list: if isAdmin();
+      allow create: if isAdmin();
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    /**
+     * @description Collection of real estate listings, editable by admins.
+     * @path /real_estate_listings/{realEstateListingId}
+     * @allow (create) If the user is an admin, they can create a new real estate listing.
+     * @deny (create) If the user is not an admin, they cannot create a new real estate listing.
+     * @allow (get) If the user is an admin, they can read a real estate listing.
+     * @deny (get) If the user is not an admin, they cannot read a real estate listing.
+     * @allow (list) If the user is an admin, they can list real estate listings.
+     * @deny (list) If the user is not an admin, they cannot list real estate listings.
+     * @allow (update) If the user is an admin, they can update a real estate listing.
+     * @deny (update) If the user is not an admin, they cannot update a real estate listing.
+     * @allow (delete) If the user is an admin, they can delete a real estate listing.
+     * @deny (delete) If the user is not an admin, they cannot delete a real estate listing.
+     * @principle Restricts all access to admins only.
+     */
+    match /real_estate_listings/{realEstateListingId} {
+      allow get: if isAdmin();
+      allow list: if isAdmin();
+      allow create: if isAdmin();
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    /**
+     * @description Collection of philanthropic activities, editable by admins.
+     * @path /philanthropic_activities/{philanthropicActivityId}
+     * @allow (create) If the user is an admin, they can create a new philanthropic activity.
+     * @deny (create) If the user is not an admin, they cannot create a new philanthropic activity.
+     * @allow (get) If the user is an admin, they can read a philanthropic activity.
+     * @deny (get) If the user is not an admin, they cannot read a philanthropic activity.
+     * @allow (list) If the user is an admin, they can list philanthropic activities.
+     * @deny (list) If the user is not an admin, they cannot list philanthropic activities.
+     * @allow (update) If the user is an admin, they can update a philanthropic activity.
+     * @deny (update) If the user is not an admin, they cannot update a philanthropic activity.
+     * @allow (delete) If the user is an admin, they can delete a philanthropic activity.
+     * @deny (delete) If the user is not an admin, they cannot delete a philanthropic activity.
+     * @principle Restricts all access to admins only.
+     */
+    match /philanthropic_activities/{philanthropicActivityId} {
+      allow get: if isAdmin();
+      allow list: if isAdmin();
+      allow create: if isAdmin();
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    /**
+     * @description Documents in this collection indicate admin status for the associated user ID.
+     * @path /roles_admin/{userId}
+     */
+    match /roles_admin/{userId} {
+        allow get: if isAdmin();
+        allow list: if isAdmin();
+        allow create: if isAdmin();
+        allow update: if isAdmin();
+        allow delete: if isAdmin();
+    }
+  }
+}

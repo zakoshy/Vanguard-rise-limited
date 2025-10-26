@@ -1,0 +1,257 @@
+{
+  "entities": {
+    "ProjectManagementSuccessStory": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "ProjectManagementSuccessStory",
+      "type": "object",
+      "description": "Represents a success story within the Project Management service, editable by an admin.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Project Management Success Story."
+        },
+        "title": {
+          "type": "string",
+          "description": "Title of the success story."
+        },
+        "content": {
+          "type": "string",
+          "description": "Detailed description of the success story."
+        },
+        "imageUrl": {
+          "type": "string",
+          "description": "URL of the image associated with the success story.",
+          "format": "uri"
+        },
+        "datePublished": {
+          "type": "string",
+          "description": "Date when the success story was published.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "title",
+        "content",
+        "imageUrl",
+        "datePublished"
+      ]
+    },
+    "InvestmentProject": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "InvestmentProject",
+      "type": "object",
+      "description": "Represents an investment project displayed in the Investment Portfolio Viewer, editable by an admin.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the investment project."
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the investment project."
+        },
+        "description": {
+          "type": "string",
+          "description": "Detailed description of the investment project."
+        },
+        "imageUrl": {
+          "type": "string",
+          "description": "URL of the image representing the project.",
+          "format": "uri"
+        },
+        "startDate": {
+          "type": "string",
+          "description": "Start date of the investment project.",
+          "format": "date-time"
+        },
+        "endDate": {
+          "type": "string",
+          "description": "End date of the investment project (if completed).",
+          "format": "date-time"
+        },
+        "investmentValue": {
+          "type": "number",
+          "description": "The total investment value"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "description",
+        "imageUrl",
+        "startDate",
+        "investmentValue"
+      ]
+    },
+    "RealEstateListing": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "RealEstateListing",
+      "type": "object",
+      "description": "Represents a real estate listing, editable by an admin.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the real estate listing."
+        },
+        "address": {
+          "type": "string",
+          "description": "Address of the property."
+        },
+        "description": {
+          "type": "string",
+          "description": "Detailed description of the property."
+        },
+        "price": {
+          "type": "number",
+          "description": "Price of the property."
+        },
+        "imageUrl": {
+          "type": "string",
+          "description": "URL of the image of the property.",
+          "format": "uri"
+        },
+        "propertyType": {
+          "type": "string",
+          "description": "type of the property"
+        }
+      },
+      "required": [
+        "id",
+        "address",
+        "description",
+        "price",
+        "imageUrl",
+        "propertyType"
+      ]
+    },
+    "PhilanthropicActivity": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "PhilanthropicActivity",
+      "type": "object",
+      "description": "Represents a philanthropic activity or CSR initiative, editable by an admin.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the philanthropic activity."
+        },
+        "title": {
+          "type": "string",
+          "description": "Title of the philanthropic activity."
+        },
+        "description": {
+          "type": "string",
+          "description": "Detailed description of the activity."
+        },
+        "imageUrl": {
+          "type": "string",
+          "description": "URL of the image associated with the activity.",
+          "format": "uri"
+        },
+        "date": {
+          "type": "string",
+          "description": "Date when the activity took place.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "title",
+        "description",
+        "imageUrl",
+        "date"
+      ]
+    }
+  },
+  "auth": {
+    "providers": [
+      "password",
+      "anonymous"
+    ]
+  },
+  "firestore": {
+    "structure": [
+      {
+        "path": "/project_management_success_stories/{projectManagementSuccessStoryId}",
+        "definition": {
+          "entityName": "ProjectManagementSuccessStory",
+          "schema": {
+            "$ref": "#/backend/entities/ProjectManagementSuccessStory"
+          },
+          "description": "Collection of project management success stories, editable by admins. Requires admin role check for all operations.",
+          "params": [
+            {
+              "name": "projectManagementSuccessStoryId",
+              "description": "Unique identifier for the project management success story."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/investment_projects/{investmentProjectId}",
+        "definition": {
+          "entityName": "InvestmentProject",
+          "schema": {
+            "$ref": "#/backend/entities/InvestmentProject"
+          },
+          "description": "Collection of investment projects, editable by admins. Requires admin role check for all operations.",
+          "params": [
+            {
+              "name": "investmentProjectId",
+              "description": "Unique identifier for the investment project."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/real_estate_listings/{realEstateListingId}",
+        "definition": {
+          "entityName": "RealEstateListing",
+          "schema": {
+            "$ref": "#/backend/entities/RealEstateListing"
+          },
+          "description": "Collection of real estate listings, editable by admins. Requires admin role check for all operations.",
+          "params": [
+            {
+              "name": "realEstateListingId",
+              "description": "Unique identifier for the real estate listing."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/philanthropic_activities/{philanthropicActivityId}",
+        "definition": {
+          "entityName": "PhilanthropicActivity",
+          "schema": {
+            "$ref": "#/backend/entities/PhilanthropicActivity"
+          },
+          "description": "Collection of philanthropic activities, editable by admins. Requires admin role check for all operations.",
+          "params": [
+            {
+              "name": "philanthropicActivityId",
+              "description": "Unique identifier for the philanthropic activity."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/roles_admin/{userId}",
+        "definition": {
+          "entityName": "adminRole",
+          "schema": {
+            "$ref": "#/backend/entities/user"
+          },
+          "description": "Documents in this collection indicate admin status for the associated user ID. Existence of a document grants admin privileges.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The Firebase Auth UID of the user."
+            }
+          ]
+        }
+      }
+    ],
+    "reasoning": "The Firestore structure is designed to manage content related to real estate, project management, investment, and philanthropic activities, all editable by admins. Authorization Independence is achieved by leveraging dedicated collections for each entity type, ensuring that each document's access control can be determined independently without needing to fetch parent document data. Since all data is edited by the admin, global role checks will determine authorization.\n\nQAPs (Rules are Not Filters) are supported through structural segregation.  Each entity type (ProjectManagementSuccessStory, InvestmentProject, RealEstateListing, PhilanthropicActivity) resides in its own top-level collection, preventing the need to filter data based on authorization rules during `list` operations.  The admin role check on each collection ensures that only authorized users can access and modify the data, simplifying security rules and improving performance."
+  }
+}
