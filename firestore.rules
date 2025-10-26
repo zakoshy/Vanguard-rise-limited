@@ -1,53 +1,51 @@
 /**
  * @file Firestore Security Rules
- * @description This ruleset enforces a role-based access control model, primarily for administrative access to key data collections.
+ * @description This ruleset enforces a role-based access control model, primarily for admin-managed content.
  *
  * Data Structure:
- * - /project_management_success_stories/{projectManagementSuccessStoryId}: Stores success stories.
- * - /investment_projects/{investmentProjectId}: Stores investment projects.
- * - /real_estate_listings/{realEstateListingId}: Stores real estate listings.
- * - /philanthropic_activities/{philanthropicActivityId}: Stores philanthropic activities.
- * - /users/{userId}: Stores user profile data; currently only supports a single isAdmin flag.
+ * - /project_management_success_stories/{projectManagementSuccessStoryId}: Success stories for project management.
+ * - /investment_projects/{investmentProjectId}: Investment projects.
+ * - /real_estate_listings/{realEstateListingId}: Real estate listings.
+ * - /philanthropic_activities/{philanthropicActivityId}: Philanthropic activities.
+ * - /users/{userId}: User profile information.
  *
  * Key Security Decisions:
- * - Admin Role Required: The core security decision is that create, update, and delete operations for project management success stories,
- *   investment projects, real estate listings, and philanthropic activities are restricted to users with the `isAdmin` flag set to true in their user document.
- * - No Public Listing: Listing of any collections other than stories is forbidden.
- * - User Data Ownership: Users can only read/write their own user document.
- *
- * Denormalization for Authorization:
- * - The `isAdmin` flag is denormalized on the user document to avoid additional reads during authorization checks. This allows for simple, performant rules.
- *
- * Structural Segregation:
- * - No structural segregation is used in this ruleset. All collections are top-level.
+ * - Admin-Only Content: The success stories, investment projects, real estate listings, and philanthropic activities collections are designed to be edited only by admin users.
+ * - No Public Listing: To enhance security, listing of success stories, investment projects, real estate listings, and philanthropic activities is explicitly denied.
+ * - User Profile Ownership: Users can only read and modify their own profile data.
  */
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
     /**
-     * @description Grants admin-only access to project management success stories.
+     * @description Grants admin-only access to manage project management success stories.
      * @path /project_management_success_stories/{projectManagementSuccessStoryId}
-     * @allow (create, update, delete) User with isAdmin set to true in their user document can create, update, and delete a story.
-     * @deny (create, update, delete) User without isAdmin cannot create, update, or delete a story.
-     * @principle Requires admin role for write operations. Allows public read access.
+     * @allow (create, update, delete) - If the user is an admin.
+     * @allow (get) - If the user is an admin.
+     * @deny (create) - If the user is not an admin.
+     * @deny (get) - If the user is not an admin.
+     * @principle Enforces admin-only access for content management.
      */
     match /project_management_success_stories/{projectManagementSuccessStoryId} {
-      allow get, list: if true;
+      allow get: if isAdmin();
+      allow list: if false;
       allow create: if isAdmin();
       allow update: if isAdmin() && resource != null;
       allow delete: if isAdmin() && resource != null;
     }
 
     /**
-     * @description Grants admin-only access to investment projects.
+     * @description Grants admin-only access to manage investment projects.
      * @path /investment_projects/{investmentProjectId}
-     * @allow (create, update, delete) User with isAdmin set to true in their user document can create, update, and delete a project.
-     * @deny (create, update, delete) User without isAdmin cannot create, update, or delete a project.
-     * @principle Requires admin role for write operations.
+     * @allow (create, update, delete) - If the user is an admin.
+     * @allow (get) - If the user is an admin.
+     * @deny (create) - If the user is not an admin.
+     * @deny (get) - If the user is not an admin.
+     * @principle Enforces admin-only access for content management.
      */
     match /investment_projects/{investmentProjectId} {
-      allow get: if true;
+      allow get: if isAdmin();
       allow list: if false;
       allow create: if isAdmin();
       allow update: if isAdmin() && resource != null;
@@ -55,14 +53,16 @@ service cloud.firestore {
     }
 
     /**
-     * @description Grants admin-only access to real estate listings.
+     * @description Grants admin-only access to manage real estate listings.
      * @path /real_estate_listings/{realEstateListingId}
-     * @allow (create, update, delete) User with isAdmin set to true in their user document can create, update, and delete a listing.
-     * @deny (create, update, delete) User without isAdmin cannot create, update, or delete a listing.
-     * @principle Requires admin role for write operations.
+     * @allow (create, update, delete) - If the user is an admin.
+     * @allow (get) - If the user is an admin.
+     * @deny (create) - If the user is not an admin.
+     * @deny (get) - If the user is not an admin.
+     * @principle Enforces admin-only access for content management.
      */
     match /real_estate_listings/{realEstateListingId} {
-      allow get: if true;
+      allow get: if isAdmin();
       allow list: if false;
       allow create: if isAdmin();
       allow update: if isAdmin() && resource != null;
@@ -70,14 +70,16 @@ service cloud.firestore {
     }
 
     /**
-     * @description Grants admin-only access to philanthropic activities.
+     * @description Grants admin-only access to manage philanthropic activities.
      * @path /philanthropic_activities/{philanthropicActivityId}
-     * @allow (create, update, delete) User with isAdmin set to true in their user document can create, update, and delete an activity.
-     * @deny (create, update, delete) User without isAdmin cannot create, update, or delete an activity.
-     * @principle Requires admin role for write operations.
+     * @allow (create, update, delete) - If the user is an admin.
+     * @allow (get) - If the user is an admin.
+     * @deny (create) - If the user is not an admin.
+     * @deny (get) - If the user is not an admin.
+     * @principle Enforces admin-only access for content management.
      */
     match /philanthropic_activities/{philanthropicActivityId} {
-      allow get: if true;
+      allow get: if isAdmin();
       allow list: if false;
       allow create: if isAdmin();
       allow update: if isAdmin() && resource != null;
@@ -85,22 +87,21 @@ service cloud.firestore {
     }
 
     /**
-     * @description Controls access to user profiles.  Users can only read/write their own profile.
+     * @description Manages user profile access, allowing users to only access their own data.
      * @path /users/{userId}
-     * @allow (get, update, delete) Authenticated user can access their own user document.
-     * @allow (create) Authenticated user can create their own user document.
-     * @deny (get, update, delete) Authenticated user cannot access another user's document.
-     * @principle Enforces user ownership for profile data.
+     * @allow (get, update, delete) - If the user is the owner of the profile.
+     * @allow (create) - If the user is creating their own profile.
+     * @deny (get, update, delete) - If the user is not the owner of the profile.
+     * @principle Enforces user-ownership for profile data.
      */
     match /users/{userId} {
       allow get: if isOwner(userId);
       allow list: if false;
-      allow create: if isOwner(userId);
-      allow update: if isOwner(userId) && resource != null;
+      allow create: if isOwner(userId) && request.resource.data.id == userId;
+      allow update: if isOwner(userId) && resource != null && request.resource.data.id == resource.data.id;
       allow delete: if isOwner(userId) && resource != null;
     }
 
-    // Helper functions
     function isSignedIn() {
       return request.auth != null;
     }
