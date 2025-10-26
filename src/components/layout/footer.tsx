@@ -78,6 +78,7 @@ export function Footer() {
       <div className="border-t bg-secondary/50 py-4">
         <div className="container text-center text-xs text-muted-foreground">
           &copy; {new Date().getFullYear()} Vanguard Rise Limited. All Rights Reserved.
+          <Link href="/admin" className="ml-4 text-xs text-muted-foreground hover:text-primary">Admin</Link>
         </div>
       </div>
     </footer>

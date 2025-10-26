@@ -16,6 +16,13 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 
+const mainLinks = [
+  { href: '/', label: 'Home' },
+  { href: '/about', label: 'About Us' },
+  { href: '/services', label: 'Services' },
+  { href: '/contact', label: 'Contact' },
+];
+
 const serviceLinks = [
   { href: '/project-management', label: 'Project Management' },
   { href: '/investments', label: 'Investments' },
@@ -23,88 +30,109 @@ const serviceLinks = [
   { href: '/philanthropy', label: 'Philanthropy' },
 ];
 
+
 export function Header() {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  const renderNavLinks = (isMobile = false) => (
-    <>
-      <Link
-        href="/"
-        onClick={() => isMobile && setIsMobileMenuOpen(false)}
-        className={cn(
-          'text-sm font-medium transition-colors hover:text-primary',
-          pathname === '/' ? 'text-primary font-bold' : 'text-muted-foreground',
-          isMobile && 'block py-2 text-lg'
-        )}
-      >
-        Home
-      </Link>
-
-      <Link
-        href="/about"
-        onClick={() => isMobile && setIsMobileMenuOpen(false)}
-        className={cn(
-          'text-sm font-medium transition-colors hover:text-primary',
-          pathname === '/about' ? 'text-primary font-bold' : 'text-muted-foreground',
-          isMobile && 'block py-2 text-lg'
-        )}
-      >
-        About Us
-      </Link>
-      
-      {isMobile ? (
-        <div className="flex flex-col space-y-2">
-          <span className="text-lg font-medium text-muted-foreground">Services</span>
-          {serviceLinks.map(link => (
-             <Link
-              key={link.href}
-              href={link.href}
+  const renderNavLinks = (isMobile = false) => {
+    const allLinks = [
+      { href: '/', label: 'Home' },
+      { href: '/about', label: 'About Us' },
+    ];
+    
+    return (
+      <>
+        <Link
+          href="/"
+          onClick={() => isMobile && setIsMobileMenuOpen(false)}
+          className={cn(
+            'text-sm font-medium transition-colors hover:text-primary',
+            pathname === '/' ? 'text-primary font-bold' : 'text-muted-foreground',
+            isMobile && 'block py-2 text-lg'
+          )}
+        >
+          Home
+        </Link>
+  
+        <Link
+          href="/about"
+          onClick={() => isMobile && setIsMobileMenuOpen(false)}
+          className={cn(
+            'text-sm font-medium transition-colors hover:text-primary',
+            pathname === '/about' ? 'text-primary font-bold' : 'text-muted-foreground',
+            isMobile && 'block py-2 text-lg'
+          )}
+        >
+          About Us
+        </Link>
+        
+        {isMobile ? (
+          <div className="flex flex-col space-y-2">
+            <Link
+              href="/services"
               onClick={() => setIsMobileMenuOpen(false)}
               className={cn(
-                'text-sm transition-colors hover:text-primary pl-4',
-                 pathname.startsWith(link.href) ? 'text-primary font-bold' : 'text-muted-foreground',
-                 'block py-2 text-lg'
+                'text-lg font-medium transition-colors hover:text-primary',
+                pathname === '/services' ? 'text-primary font-bold' : 'text-muted-foreground',
               )}
             >
-              {link.label}
-            </Link>
-          ))}
-        </div>
-      ) : (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className={cn(
-              "flex items-center gap-1 text-sm font-medium text-muted-foreground hover:text-primary px-0",
-              serviceLinks.some(l => pathname.startsWith(l.href)) && "text-primary font-bold"
-            )}>
               Services
-              <ChevronDown className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="start">
-            {serviceLinks.map((link) => (
-              <DropdownMenuItem key={link.href} asChild>
-                <Link href={link.href} className={cn(pathname.startsWith(link.href) && "font-bold")}>{link.label}</Link>
-              </DropdownMenuItem>
+            </Link>
+            {serviceLinks.map(link => (
+               <Link
+                key={link.href}
+                href={link.href}
+                onClick={() => setIsMobileMenuOpen(false)}
+                className={cn(
+                  'text-sm transition-colors hover:text-primary pl-4',
+                   pathname.startsWith(link.href) ? 'text-primary font-bold' : 'text-muted-foreground',
+                   'block py-2 text-lg'
+                )}
+              >
+                {link.label}
+              </Link>
             ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
-      )}
-
-      <Link
-        href="/contact"
-        onClick={() => isMobile && setIsMobileMenuOpen(false)}
-        className={cn(
-          'text-sm font-medium transition-colors hover:text-primary',
-          pathname === '/contact' ? 'text-primary font-bold' : 'text-muted-foreground',
-          isMobile && 'block py-2 text-lg'
+          </div>
+        ) : (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className={cn(
+                "flex items-center gap-1 text-sm font-medium text-muted-foreground hover:text-primary px-0",
+                (pathname === '/services' || serviceLinks.some(l => pathname.startsWith(l.href))) && "text-primary font-bold"
+              )}>
+                Services
+                <ChevronDown className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start">
+               <DropdownMenuItem asChild>
+                  <Link href="/services" className={cn(pathname === '/services' && "font-bold")}>All Services</Link>
+                </DropdownMenuItem>
+              {serviceLinks.map((link) => (
+                <DropdownMenuItem key={link.href} asChild>
+                  <Link href={link.href} className={cn(pathname.startsWith(link.href) && "font-bold")}>{link.label}</Link>
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
         )}
-      >
-        Contact
-      </Link>
-    </>
-  );
+  
+        <Link
+          href="/contact"
+          onClick={() => isMobile && setIsMobileMenuOpen(false)}
+          className={cn(
+            'text-sm font-medium transition-colors hover:text-primary',
+            pathname === '/contact' ? 'text-primary font-bold' : 'text-muted-foreground',
+            isMobile && 'block py-2 text-lg'
+          )}
+        >
+          Contact
+        </Link>
+      </>
+    );
+  }
+
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">

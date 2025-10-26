@@ -1,37 +1,11 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowRight, Building, Heart, Home as HomeIcon, Briefcase } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-
-const services = [
-  {
-    icon: <Briefcase className="h-10 w-10 text-primary" />,
-    title: 'Project Management',
-    description: 'Expert oversight from inception to completion, ensuring your projects are delivered on time and within budget.',
-    link: '/project-management',
-  },
-  {
-    icon: <Building className="h-10 w-10 text-primary" />,
-    title: 'Investment & Development',
-    description: 'Strategic investment opportunities and comprehensive project development services for maximum returns.',
-    link: '/investments',
-  },
-  {
-    icon: <HomeIcon className="h-10 w-10 text-primary" />,
-    title: 'Real Estate Consultancy',
-    description: 'In-depth market analysis and advisory to help you navigate the complexities of real estate.',
-    link: '/real-estate',
-  },
-  {
-    icon: <Heart className="h-10 w-10 text-primary" />,
-    title: 'Philanthropic Initiatives',
-    description: 'Driving positive change through community development and corporate social responsibility.',
-    link: '/philanthropy',
-  },
-];
+import { services } from '@/lib/services';
 
 export default function Home() {
   const heroImage = PlaceHolderImages.find(p => p.id === 'hero-1');
@@ -72,7 +46,7 @@ export default function Home() {
           <div className="p-8 rounded-lg">
             <h2 className="text-3xl md:text-4xl font-headline font-bold mb-4">Our Mission</h2>
             <p className="text-muted-foreground text-lg">
-              At Vanguard Rise Limited, our mission is to build a future where progress and compassion go hand in hand. We deliver exceptional real estate, project management and investment solutions while championing social responsibility through philanthropic initiatives that uplift lives, strengthen communities and nurture lasting impact.
+              At vanguard rise limited, our mission is to build a future where progress and compassion go hand in hand. we deliver exceptional real estate, project management and investment solutions while championing social responsbility through philantropic initiatives that uplift lives,strengthen communities and nuture lasting impact
             </p>
           </div>
           <div className="p-8 rounded-lg">
