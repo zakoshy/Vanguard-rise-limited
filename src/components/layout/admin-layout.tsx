@@ -26,7 +26,8 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
     try {
       await signOut(auth);
       router.push('/');
-    } catch (error)      console.error("Error signing out: ", error);
+    } catch (error) {
+      console.error("Error signing out: ", error);
     }
   };
 
