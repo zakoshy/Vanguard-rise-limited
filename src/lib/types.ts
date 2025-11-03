@@ -27,6 +27,7 @@ export type RealEstateListing = {
     imageUrl?: string;
     imageId?: string;
     propertyType: string;
+    status: 'Available' | 'Sold';
 };
 
 export type PhilanthropicActivity = {

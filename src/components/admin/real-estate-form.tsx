@@ -32,6 +32,7 @@ const formSchema = z.object({
   price: z.coerce.number().min(1, "Price must be greater than 0."),
   propertyType: z.string().min(3, "Property type is required."),
   imageId: z.string().optional(),
+  status: z.enum(['Available', 'Sold']),
 });
 
 type RealEstateFormProps = {
@@ -53,6 +54,7 @@ export function RealEstateForm({ listing, onFinished }: RealEstateFormProps) {
       price: listing?.price || 0,
       propertyType: listing?.propertyType || "",
       imageId: listing?.imageId || "",
+      status: listing?.status || "Available",
     },
   });
 
@@ -127,17 +129,40 @@ export function RealEstateForm({ listing, onFinished }: RealEstateFormProps) {
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="price"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Price (KES)</FormLabel>
-              <FormControl><Input type="number" {...field} /></FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <div className="grid grid-cols-2 gap-4">
+            <FormField
+            control={form.control}
+            name="price"
+            render={({ field }) => (
+                <FormItem>
+                <FormLabel>Price (KES)</FormLabel>
+                <FormControl><Input type="number" {...field} /></FormControl>
+                <FormMessage />
+                </FormItem>
+            )}
+            />
+            <FormField
+            control={form.control}
+            name="status"
+            render={({ field }) => (
+                <FormItem>
+                <FormLabel>Status</FormLabel>
+                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                        <SelectTrigger>
+                            <SelectValue placeholder="Select status" />
+                        </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                        <SelectItem value="Available">Available</SelectItem>
+                        <SelectItem value="Sold">Sold</SelectItem>
+                    </SelectContent>
+                </Select>
+                <FormMessage />
+                </FormItem>
+            )}
+            />
+        </div>
         
         <FormField
           control={form.control}

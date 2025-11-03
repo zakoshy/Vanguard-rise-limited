@@ -14,6 +14,7 @@ import { useCollection, useFirestore, useMemoFirebase } from '@/firebase';
 import { collection } from 'firebase/firestore';
 import type { RealEstateListing } from '@/lib/types';
 import { Skeleton } from '@/components/ui/skeleton';
+import { cn } from '@/lib/utils';
 
 const testimonials = [
   { name: 'Asha Njeri', role: 'Home Buyer', text: "The team at Vanguard Rise made our home buying process seamless and stress-free. Their market knowledge is unparalleled.", imageId: 'testimonial-1' },
@@ -53,11 +54,12 @@ function FeaturedListingsSection() {
           const image = PlaceHolderImages.find(p => p.id === prop.imageId);
           return (
             <Card key={prop.id} className="overflow-hidden shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 flex flex-col">
-              {image && (
-                <div className="relative h-56 w-full">
+              <div className="relative h-56 w-full">
+                {image && (
                   <Image src={image.imageUrl || prop.imageUrl || ''} alt={prop.address} fill className="object-cover" data-ai-hint={image.imageHint} />
-                </div>
-              )}
+                )}
+                 <Badge className={cn("absolute top-2 right-2", prop.status === 'Sold' ? 'bg-red-500' : 'bg-green-500')}>{prop.status}</Badge>
+              </div>
               <CardHeader>
                 <div className="flex justify-between items-start">
                     <CardTitle className="font-headline text-xl">{prop.propertyType}</CardTitle>

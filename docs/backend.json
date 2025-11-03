@@ -116,6 +116,11 @@
         "propertyType": {
           "type": "string",
           "description": "type of the property"
+        },
+        "status": {
+            "type": "string",
+            "description": "Availability status of the property.",
+            "enum": ["Available", "Sold"]
         }
       },
       "required": [
@@ -124,7 +129,8 @@
         "description",
         "price",
         "imageUrl",
-        "propertyType"
+        "propertyType",
+        "status"
       ]
     },
     "PhilanthropicActivity": {

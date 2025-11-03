@@ -46,6 +46,8 @@ import { RealEstateForm } from './real-estate-form';
 import { Skeleton } from '../ui/skeleton';
 import { deleteDocumentNonBlocking } from '@/firebase/non-blocking-updates';
 import { useToast } from '@/hooks/use-toast';
+import { Badge } from '../ui/badge';
+import { cn } from '@/lib/utils';
 
 export function RealEstateTable() {
     const firestore = useFirestore();
@@ -119,6 +121,7 @@ export function RealEstateTable() {
                     <TableHead>Address</TableHead>
                     <TableHead>Type</TableHead>
                     <TableHead>Price</TableHead>
+                    <TableHead>Status</TableHead>
                     <TableHead>
                     <span className="sr-only">Actions</span>
                     </TableHead>
@@ -131,6 +134,7 @@ export function RealEstateTable() {
                             <TableCell><Skeleton className="h-5 w-48" /></TableCell>
                             <TableCell><Skeleton className="h-5 w-24" /></TableCell>
                             <TableCell><Skeleton className="h-5 w-32" /></TableCell>
+                            <TableCell><Skeleton className="h-5 w-20" /></TableCell>
                             <TableCell><Skeleton className="h-8 w-8" /></TableCell>
                         </TableRow>
                     ))
@@ -141,6 +145,13 @@ export function RealEstateTable() {
                         <TableCell className="font-medium">{listing.address}</TableCell>
                         <TableCell>{listing.propertyType}</TableCell>
                         <TableCell>KES {listing.price.toLocaleString()}</TableCell>
+                        <TableCell>
+                            <Badge variant={listing.status === 'Sold' ? 'secondary' : 'default'} className={cn(
+                                listing.status === 'Sold' ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'
+                            )}>
+                                {listing.status}
+                            </Badge>
+                        </TableCell>
                         <TableCell>
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
@@ -159,7 +170,7 @@ export function RealEstateTable() {
                     </TableRow>
                     ))
                 ) : (
-                    !isLoading && <TableRow><TableCell colSpan={4} className="text-center">No listings found.</TableCell></TableRow>
+                    !isLoading && <TableRow><TableCell colSpan={5} className="text-center">No listings found.</TableCell></TableRow>
                 )}
                 </TableBody>
             </Table>
