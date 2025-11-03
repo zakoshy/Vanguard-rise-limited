@@ -7,15 +7,17 @@ import { useEffect, useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { PaymentLinkForm } from '@/components/admin/payment-link-form';
 import { Button } from '@/components/ui/button';
-import { Copy, Share2 } from 'lucide-react';
+import { Copy, PlusCircle, Share2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 
 export default function PaymentsAdminPage() {
   const { user, isUserLoading } = useUser();
   const router = useRouter();
   const { toast } = useToast();
   const [generatedLink, setGeneratedLink] = useState<string | null>(null);
-  const [whatsAppLink, setWhatsAppLInk] = useState<string | null>(null);
+  const [whatsAppLink, setWhatsAppLink] = useState<string | null>(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   useEffect(() => {
     if (!isUserLoading && !user) {
@@ -31,9 +33,10 @@ export default function PaymentsAdminPage() {
     );
   }
 
-  const handleLinkGenerated = (link: string, whatsApp: string) => {
+  const handleLinkGenerated = (link: string, whatsappLink: string) => {
     setGeneratedLink(link);
-    setWhatsAppLInk(whatsApp);
+    setWhatsAppLink(whatsappLink);
+    setDialogOpen(false);
   };
   
   const copyLink = () => {
@@ -56,23 +59,40 @@ export default function PaymentsAdminPage() {
     <div>
         <div className="flex items-center justify-between mb-8">
             <div>
-                <h2 className="text-2xl font-bold tracking-tight">Generate Payment Link</h2>
+                <h2 className="text-2xl font-bold tracking-tight">Payments</h2>
                 <p className="text-muted-foreground">
-                    Create a unique payment link for a customer.
+                    Create and manage customer payment links.
                 </p>
             </div>
+             <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+                <DialogTrigger asChild>
+                    <Button>
+                        <PlusCircle className="mr-2 h-4 w-4" /> Generate New Link
+                    </Button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-[480px]">
+                    <DialogHeader>
+                        <DialogTitle className="font-headline text-2xl">
+                           Generate Payment Link
+                        </DialogTitle>
+                        <DialogDescription>
+                           Fill in the customer and payment details below.
+                        </DialogDescription>
+                    </DialogHeader>
+                    <PaymentLinkForm onLinkGenerated={handleLinkGenerated} />
+                </DialogContent>
+            </Dialog>
         </div>
-        <Card>
-            <CardHeader>
-                <CardTitle>Customer & Payment Details</CardTitle>
-                <CardDescription>Fill in the form below to generate a new payment link.</CardDescription>
-            </CardHeader>
-            <CardContent>
-                <PaymentLinkForm onLinkGenerated={handleLinkGenerated} />
-
-                {generatedLink && (
-                    <div className="mt-8 p-4 border rounded-lg bg-secondary/50">
-                        <p className="text-sm font-medium">Generated Link:</p>
+        
+        {generatedLink && (
+            <Card>
+                <CardHeader>
+                    <CardTitle>Last Generated Link</CardTitle>
+                    <CardDescription>Share this link with your customer to receive payment.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <div className="p-4 border rounded-lg bg-secondary/50">
+                        <p className="text-sm font-medium">Payment URL:</p>
                         <a href={generatedLink} target="_blank" rel="noopener noreferrer" className="text-primary underline break-all">
                             {generatedLink}
                         </a>
@@ -87,9 +107,9 @@ export default function PaymentsAdminPage() {
                             </Button>
                         </div>
                     </div>
-                )}
-            </CardContent>
-        </Card>
+                </CardContent>
+            </Card>
+        )}
     </div>
   );
 }
