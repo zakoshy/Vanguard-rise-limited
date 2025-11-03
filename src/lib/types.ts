@@ -40,3 +40,15 @@ export type PhilanthropicActivity = {
     goal: number;
     raised: number;
 };
+
+export type PaymentLink = {
+    id: string;
+    orderId: string;
+    customerName: string;
+    customerEmail: string;
+    customerPhone: string;
+    amount: number;
+    currency: string;
+    status: 'pending' | 'paid' | 'expired';
+    createdAt: string;
+}
