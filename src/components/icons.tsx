@@ -18,7 +18,7 @@ export const Icons = {
     <svg viewBox="0 0 100 40" xmlns="http://www.w3.org/2000/svg" {...props}>
       <rect width="100" height="40" rx="6" fill="#43BF43"/>
       <path d="M12 10h8v20h-4v-12h-4z" fill="#EE2A24"/>
-      <text x="28" y="27" fill="white" font-family="Arial, sans-serif" font-weight="900" font-size="20">M-PESA</text>
+      <text x="28" y="27" fill="white" fontFamily="Arial, sans-serif" fontWeight="900" fontSize="20">M-PESA</text>
     </svg>
   ),
   logo: (props: SVGProps<SVGSVGElement>) => (
