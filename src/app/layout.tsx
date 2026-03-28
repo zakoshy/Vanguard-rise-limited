@@ -1,64 +1,36 @@
-
-'use client';
-
-import { usePathname } from 'next/navigation';
+import type { Metadata } from 'next';
+import { Inter, Montserrat } from 'next/font/google';
 import { cn } from '@/lib/utils';
 import { Toaster } from '@/components/ui/toaster';
-import { Header } from '@/components/layout/header';
-import { Footer } from '@/components/layout/footer';
 import './globals.css';
-import { FirebaseClientProvider, useUser } from '@/firebase';
-import { AdminLayout } from '@/components/layout/admin-layout';
+import { FirebaseClientProvider } from '@/firebase';
+import { AppLayout } from '@/components/layout/app-layout';
 
-function AppLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  const pathname = usePathname();
-  const { user, isUserLoading } = useUser();
-  const isAdminSection = pathname.startsWith('/admin');
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-inter',
+  display: 'swap',
+});
 
-  if (isAdminSection) {
-    if (isUserLoading) {
-      return <div className="flex justify-center items-center h-screen"><p>Loading...</p></div>;
-    }
-    if (user) {
-      return <AdminLayout>{children}</AdminLayout>;
-    }
-  }
-  
-  return (
-    <div className={cn("relative flex min-h-screen flex-col bg-background", { 'h-screen': isAdminSection && !user})}>
-      {!isAdminSection && <Header />}
-      <main className="flex-1">{children}</main>
-      {!isAdminSection && <Footer />}
-    </div>
-  );
-}
+const montserrat = Montserrat({
+  subsets: ['latin'],
+  variable: '--font-montserrat',
+  display: 'swap',
+});
 
+export const metadata: Metadata = {
+  title: 'Vanguard Rise Limited',
+  description: 'Professional real estate, project management, and investment consultancy.',
+  keywords: ['real estate', 'project management', 'investment', 'consultancy', 'philanthropy'],
+};
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const metadata = {
-    title: 'Vanguard Rise Limited',
-    description: 'Professional real estate, project management, and investment consultancy.',
-    keywords: ['real estate', 'project management', 'investment', 'consultancy', 'philanthropy'],
-  };
-
   return (
-    <html lang="en" suppressHydrationWarning>
-      <head>
-        <title>{metadata.title}</title>
-        <meta name="description" content={metadata.description} />
-        <meta name="keywords" content={metadata.keywords.join(', ')} />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet" />
-      </head>
+    <html lang="en" suppressHydrationWarning className={cn(inter.variable, montserrat.variable)}>
       <body className={cn('min-h-screen font-body antialiased')}>
         <FirebaseClientProvider>
             <AppLayout>{children}</AppLayout>

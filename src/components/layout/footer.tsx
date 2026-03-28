@@ -1,3 +1,6 @@
+'use client';
+
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Linkedin, Facebook, Mail, Phone } from 'lucide-react';
@@ -21,6 +24,12 @@ const quickLinks = [
 ];
 
 export function Footer() {
+  const [year, setYear] = useState<number | null>(null);
+
+  useEffect(() => {
+    setYear(new Date().getFullYear());
+  }, []);
+
   return (
     <footer className="border-t bg-secondary/30">
       <div className="container py-12 md:py-16">
@@ -44,7 +53,7 @@ export function Footer() {
             </p>
             <div className="flex space-x-4 pt-2">
               {socialLinks.map((social) => (
-                <a key={social.name} href={social.href} target="_blank" rel="noreferrer" className="text-muted-foreground hover:text-primary">
+                <a key={social.name} href={social.href} target="_blank" rel="noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
                   <social.icon className="h-5 w-5" />
                   <span className="sr-only">{social.name}</span>
                 </a>
@@ -54,7 +63,7 @@ export function Footer() {
 
           <div className="grid grid-cols-2 md:grid-cols-2 col-span-1 md:col-span-2 gap-8">
               <div>
-                <h4 className="font-semibold mb-4 font-headline">Quick Links</h4>
+                <h4 className="font-semibold mb-4 font-headline text-foreground">Quick Links</h4>
                 <ul className="space-y-2">
                   {quickLinks.map((link) => (
                     <li key={link.href}>
@@ -67,7 +76,7 @@ export function Footer() {
               </div>
 
               <div>
-                <h4 className="font-semibold mb-4 font-headline">Contact Us</h4>
+                <h4 className="font-semibold mb-4 font-headline text-foreground">Contact Us</h4>
                 <ul className="space-y-3 text-sm">
                   <li className="flex items-start gap-2 text-muted-foreground">
                     <Mail className="h-4 w-4 shrink-0 mt-1" />
@@ -83,9 +92,9 @@ export function Footer() {
         </div>
       </div>
       <div className="border-t bg-secondary/50 py-4">
-        <div className="container text-center text-xs text-muted-foreground">
-          &copy; {new Date().getFullYear()} Vanguard Rise Limited. All Rights Reserved.
-          <Link href="/admin" className="ml-4 text-xs text-muted-foreground hover:text-primary">Admin Login</Link>
+        <div className="container text-center text-xs text-muted-foreground flex flex-col md:flex-row justify-center items-center gap-4">
+          <span>&copy; {year ?? 2025} Vanguard Rise Limited. All Rights Reserved.</span>
+          <Link href="/admin" className="text-muted-foreground hover:text-primary transition-colors">Admin Login</Link>
         </div>
       </div>
     </footer>
