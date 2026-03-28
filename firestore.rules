@@ -12,11 +12,13 @@ service cloud.firestore {
 
     /**
      * @description Checks if the user is an admin by verifying
-     * the existence of a document in the roles_admin collection.
+     * the existence of a document in the roles_admin collection
+     * or checking for the project owner's email for bootstrapping.
      */
     function isAdmin() {
       return isSignedIn() &&
-             exists(/databases/$(database)/documents/roles_admin/$(request.auth.uid));
+             (exists(/databases/$(database)/documents/roles_admin/$(request.auth.uid)) || 
+              request.auth.token.email == 'vanguardriselimited@gmail.com');
     }
     
     // Publicly readable collections for website content
