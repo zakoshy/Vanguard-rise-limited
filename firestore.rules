@@ -19,78 +19,59 @@ service cloud.firestore {
              exists(/databases/$(database)/documents/roles_admin/$(request.auth.uid));
     }
     
-    // Publicly readable collections
+    // Publicly readable collections for website content
+    // But only admins can create, update, or delete.
+    
     match /project_management_success_stories/{docId} {
-      allow get: if true;
-      allow list, create, update, delete: if isAdmin();
+      allow read: if true;
+      allow write: if isAdmin();
     }
 
     match /investment_projects/{docId} {
-      allow get: if true;
-      allow list, create, update, delete: if isAdmin();
+      allow read: if true;
+      allow write: if isAdmin();
     }
 
     match /real_estate_listings/{docId} {
-      allow get: if true;
-      allow list, create, update, delete: if isAdmin();
+      allow read: if true;
+      allow write: if isAdmin();
     }
 
     match /philanthropic_activities/{docId} {
-      allow get: if true;
-      allow list, create, update, delete: if isAdmin();
+      allow read: if true;
+      allow write: if isAdmin();
     }
 
     match /payment_links/{docId} {
-      allow get: if true; // Allows customers to view their payment page
-      allow list, create, update, delete: if isAdmin();
+      // Allow get so customers can view their specific payment page
+      allow get: if true;
+      // Listing and writing is for admins only
+      allow list, write: if isAdmin();
     }
 
     /**
      * Admin roles collection.
-     * - Allow signed-in users to read *their own* admin role doc,
-     *   so your front-end can check if they’re admin.
-     * - Allow existing admins to manage roles (promote/demote others).
+     * - Allow signed-in users to read *their own* admin role doc.
+     * - Allow existing admins to manage roles.
      */
     match /roles_admin/{userId} {
-      // A user can read their own admin record to check if they're admin
       allow get: if isSignedIn() && request.auth.uid == userId;
-
-      // Existing admins can list, create, update, and delete admin records
       allow list, create, update, delete: if isAdmin();
     }
 
     /**
      * @description Rules for user profiles.
-     * @path /users/{userId}
-     * @allow (create) - A user can create their own profile. The userId must match the authenticated user's ID.
-     * @deny (create) - A user cannot create a profile for another user.
-     * @deny (get) - No one can read another user's data.
-     * @principle Enforces user-ownership for profile creation and restricts listing.
      */
     match /users/{userId} {
       allow get: if isOwner(userId);
       allow list: if false;
       allow create: if isOwner(userId);
       allow update: if isOwner(userId) && resource != null;
-      allow delete: if isExistingOwner(userId);
+      allow delete: if isOwner(userId) && resource != null;
     }
     
-    /**
-     * @description Checks if the current user's ID matches the provided userId.
-     * @param {string} userId - The user ID to compare against.
-     * @returns {boolean} True if the user is signed in and their UID matches the userId, false otherwise.
-     */
     function isOwner(userId) {
       return isSignedIn() && request.auth.uid == userId;
-    }
-
-    /**
-     * @description Checks if the user exists and is the owner.
-     * @param {string} userId - The user ID to compare against.
-     * @returns {boolean} True if the resource exists and the signed-in user's UID matches the userId.
-     */
-    function isExistingOwner(userId) {
-        return isOwner(userId) && resource != null;
     }
   }
 }
