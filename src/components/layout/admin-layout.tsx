@@ -1,7 +1,7 @@
-
 'use client';
 
 import { usePathname, useRouter } from 'next/navigation';
+import Image from 'next/image';
 import { getAuth, signOut } from 'firebase/auth';
 import { Briefcase, Building, Heart, Home as HomeIcon, LayoutDashboard, LogOut, BarChart3 } from 'lucide-react';
 import Link from 'next/link';
@@ -34,7 +34,16 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex min-h-screen bg-secondary/30">
       <aside className="w-64 bg-background border-r flex flex-col p-4">
-        <div className="font-headline font-bold text-xl mb-8 p-2">Admin Panel</div>
+        <div className="flex items-center gap-3 mb-8 p-2">
+          <Image 
+            src="/logo.png" 
+            alt="Vanguard Rise Limited Logo" 
+            width={35} 
+            height={30} 
+            className="object-contain"
+          />
+          <div className="font-headline font-bold text-lg leading-tight">Admin Panel</div>
+        </div>
         <nav className="flex flex-col space-y-2 flex-grow">
           <Link href="/admin">
             <Button

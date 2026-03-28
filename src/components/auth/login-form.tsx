@@ -1,10 +1,10 @@
-
 'use client';
 
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { useState } from "react";
+import Image from 'next/image';
 
 import { Button } from "@/components/ui/button"
 import {
@@ -79,59 +79,70 @@ export function LoginForm() {
   }
 
   return (
-    <Card className="shadow-lg">
-        <CardHeader>
-          <CardTitle className="font-headline text-2xl md:text-3xl">Admin Login</CardTitle>
-          <CardDescription>Enter your credentials to access the admin panel.</CardDescription>
-        </CardHeader>
-        <CardContent>
-            <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                <FormField
-                    control={form.control}
-                    name="email"
-                    render={({ field }) => (
-                    <FormItem>
-                        <FormLabel>Email Address</FormLabel>
-                        <FormControl>
-                        <Input placeholder="you@example.com" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                    </FormItem>
-                    )}
-                />
-                 <FormField
-                    control={form.control}
-                    name="password"
-                    render={({ field }) => (
-                    <FormItem>
-                        <FormLabel>Password</FormLabel>
-                        <div className="relative">
-                            <FormControl>
-                                <Input type={showPassword ? "text" : "password"} placeholder="••••••••" {...field} />
-                            </FormControl>
-                            <button
-                                type="button"
-                                onClick={() => setShowPassword(!showPassword)}
-                                className="absolute inset-y-0 right-0 flex items-center pr-3 text-muted-foreground"
-                            >
-                                {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
-                            </button>
-                        </div>
-                        <FormMessage />
-                    </FormItem>
-                    )}
-                />
+    <div className="flex flex-col items-center">
+      <div className="mb-8">
+        <Image 
+          src="/logo.png" 
+          alt="Vanguard Rise Limited Logo" 
+          width={100} 
+          height={100} 
+          className="object-contain drop-shadow-md"
+        />
+      </div>
+      <Card className="shadow-lg w-full">
+          <CardHeader>
+            <CardTitle className="font-headline text-2xl md:text-3xl text-center">Admin Login</CardTitle>
+            <CardDescription className="text-center">Enter your credentials to access the admin panel.</CardDescription>
+          </CardHeader>
+          <CardContent>
+              <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                  <FormField
+                      control={form.control}
+                      name="email"
+                      render={({ field }) => (
+                      <FormItem>
+                          <FormLabel>Email Address</FormLabel>
+                          <FormControl>
+                          <Input placeholder="you@example.com" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                      </FormItem>
+                      )}
+                  />
+                   <FormField
+                      control={form.control}
+                      name="password"
+                      render={({ field }) => (
+                      <FormItem>
+                          <FormLabel>Password</FormLabel>
+                          <div className="relative">
+                              <FormControl>
+                                  <Input type={showPassword ? "text" : "password"} placeholder="••••••••" {...field} />
+                              </FormControl>
+                              <button
+                                  type="button"
+                                  onClick={() => setShowPassword(!showPassword)}
+                                  className="absolute inset-y-0 right-0 flex items-center pr-3 text-muted-foreground"
+                              >
+                                  {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                              </button>
+                          </div>
+                          <FormMessage />
+                      </FormItem>
+                      )}
+                  />
 
-                {error && <p className="text-sm font-medium text-destructive">{error}</p>}
+                  {error && <p className="text-sm font-medium text-destructive">{error}</p>}
 
-                <Button type="submit" size="lg" className="w-full" disabled={isLoading}>
-                    {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                    Log In
-                </Button>
-            </form>
-            </Form>
-        </CardContent>
-    </Card>
+                  <Button type="submit" size="lg" className="w-full" disabled={isLoading}>
+                      {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                      Log In
+                  </Button>
+              </form>
+              </Form>
+          </CardContent>
+      </Card>
+    </div>
   )
 }
