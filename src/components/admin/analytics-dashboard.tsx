@@ -13,26 +13,46 @@ import {
   Tooltip, 
   CartesianGrid 
 } from "recharts";
-import { Users, Eye, MousePointer2, TrendingUp } from "lucide-react";
-
-const visitData = [
-  { name: "Mon", visits: 400 },
-  { name: "Tue", visits: 300 },
-  { name: "Wed", visits: 200 },
-  { name: "Thu", visits: 278 },
-  { name: "Fri", visits: 189 },
-  { name: "Sat", visits: 239 },
-  { name: "Sun", visits: 349 },
-];
-
-const interactionData = [
-  { name: "Success Stories", count: 120 },
-  { name: "Investments", count: 80 },
-  { name: "Real Estate", count: 150 },
-  { name: "Philanthropy", count: 45 },
-];
+import { Users, Eye, MousePointer2, TrendingUp, Loader2 } from "lucide-react";
+import { useCollection, useFirestore, useMemoFirebase, useDoc } from "@/firebase";
+import { collection, doc } from "firebase/firestore";
 
 export function AnalyticsDashboard() {
+  const firestore = useFirestore();
+
+  // Fetch collections to get actual counts
+  const storiesQuery = useMemoFirebase(() => collection(firestore, 'project_management_success_stories'), [firestore]);
+  const investmentsQuery = useMemoFirebase(() => collection(firestore, 'investment_projects'), [firestore]);
+  const listingsQuery = useMemoFirebase(() => collection(firestore, 'real_estate_listings'), [firestore]);
+  const philanthropyQuery = useMemoFirebase(() => collection(firestore, 'philanthropic_activities'), [firestore]);
+
+  const { data: stories } = useCollection(storiesQuery);
+  const { data: investments } = useCollection(investmentsQuery);
+  const { data: listings } = useCollection(listingsQuery);
+  const { data: philanthropy } = useCollection(philanthropyQuery);
+
+  // Fetch aggregated site stats
+  const statsDocRef = useMemoFirebase(() => doc(firestore, 'site_analytics', 'summary'), [firestore]);
+  const { data: stats, isLoading: statsLoading } = useDoc(statsDocRef);
+
+  const interactionData = [
+    { name: "Success Stories", count: stories?.length || 0 },
+    { name: "Investments", count: investments?.length || 0 },
+    { name: "Real Estate", count: listings?.length || 0 },
+    { name: "Philanthropy", count: philanthropy?.length || 0 },
+  ];
+
+  // Fallback for chart data if site_analytics isn't populated yet
+  const visitData = stats?.dailyVisits || [
+    { name: "Mon", visits: 0 },
+    { name: "Tue", visits: 0 },
+    { name: "Wed", visits: 0 },
+    { name: "Thu", visits: 0 },
+    { name: "Fri", visits: 0 },
+    { name: "Sat", visits: 0 },
+    { name: "Sun", visits: 0 },
+  ];
+
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
       <Card>
@@ -41,8 +61,10 @@ export function AnalyticsDashboard() {
           <Users className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold">1,284</div>
-          <p className="text-xs text-muted-foreground">+20.1% from last month</p>
+          <div className="text-2xl font-bold">
+            {statsLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : (stats?.totalVisitors || 0).toLocaleString()}
+          </div>
+          <p className="text-xs text-muted-foreground">Unique site visits</p>
         </CardContent>
       </Card>
       <Card>
@@ -51,18 +73,22 @@ export function AnalyticsDashboard() {
           <Eye className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold">5,231</div>
-          <p className="text-xs text-muted-foreground">+12% from last week</p>
+          <div className="text-2xl font-bold">
+            {statsLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : (stats?.totalPageViews || 0).toLocaleString()}
+          </div>
+          <p className="text-xs text-muted-foreground">Total views across all pages</p>
         </CardContent>
       </Card>
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Engagement Rate</CardTitle>
+          <CardTitle className="text-sm font-medium">Active Content</CardTitle>
           <MousePointer2 className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold">4.2%</div>
-          <p className="text-xs text-muted-foreground">+1.5% from last week</p>
+          <div className="text-2xl font-bold">
+            {(stories?.length || 0) + (investments?.length || 0) + (listings?.length || 0) + (philanthropy?.length || 0)}
+          </div>
+          <p className="text-xs text-muted-foreground">Total published items</p>
         </CardContent>
       </Card>
       <Card>
@@ -71,8 +97,10 @@ export function AnalyticsDashboard() {
           <TrendingUp className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold">+18%</div>
-          <p className="text-xs text-muted-foreground">Active since launch</p>
+          <div className="text-2xl font-bold">
+            {investments && investments.length > 0 ? `+${investments.length}` : '0'}
+          </div>
+          <p className="text-xs text-muted-foreground">New projects this period</p>
         </CardContent>
       </Card>
 
@@ -101,8 +129,8 @@ export function AnalyticsDashboard() {
 
       <Card className="col-span-full lg:col-span-2">
         <CardHeader>
-          <CardTitle>Popular Sections</CardTitle>
-          <CardDescription>Total clicks per category.</CardDescription>
+          <CardTitle>Content Summary</CardTitle>
+          <CardDescription>Total count of items per category.</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="h-[300px]">

@@ -170,6 +170,25 @@
         "date"
       ]
     },
+    "SiteAnalytics": {
+      "title": "SiteAnalytics",
+      "description": "Summary data for site traffic and interactions.",
+      "type": "object",
+      "properties": {
+        "totalVisitors": { "type": "number" },
+        "totalPageViews": { "type": "number" },
+        "dailyVisits": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "date": { "type": "string" },
+              "count": { "type": "number" }
+            }
+          }
+        }
+      }
+    },
     "user": {
       "title": "user",
       "description": "Represents a user profile with an optional admin role.",
@@ -235,6 +254,16 @@
             "$ref": "#/entities/PhilanthropicActivity"
           },
           "description": "Collection of philanthropic activities, editable by admins. Requires admin role check for all operations."
+        }
+      },
+      {
+        "path": "/site_analytics/{docId}",
+        "definition": {
+          "entityName": "SiteAnalytics",
+          "schema": {
+            "$ref": "#/entities/SiteAnalytics"
+          },
+          "description": "Collection storing aggregated site interaction statistics."
         }
       },
       {
