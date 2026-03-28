@@ -3,7 +3,7 @@
 
 import { usePathname, useRouter } from 'next/navigation';
 import { getAuth, signOut } from 'firebase/auth';
-import { Briefcase, Building, Heart, Home as HomeIcon, LayoutDashboard, LogOut, CreditCard } from 'lucide-react';
+import { Briefcase, Building, Heart, Home as HomeIcon, LayoutDashboard, LogOut, BarChart3 } from 'lucide-react';
 import Link from 'next/link';
 
 import { cn } from '@/lib/utils';
@@ -14,7 +14,7 @@ const adminNavLinks = [
   { href: '/admin/investments', label: 'Investments', icon: <Building className="h-5 w-5" /> },
   { href: '/admin/real-estate', label: 'Real Estate', icon: <HomeIcon className="h-5 w-5" /> },
   { href: '/admin/philanthropy', label: 'Philanthropy', icon: <Heart className="h-5 w-5" /> },
-  { href: '/admin/payments', label: 'Payments', icon: <CreditCard className="h-5 w-5" /> },
+  { href: '/admin/analytics', label: 'Analytics', icon: <BarChart3 className="h-5 w-5" /> },
 ];
 
 export function AdminLayout({ children }: { children: React.ReactNode }) {

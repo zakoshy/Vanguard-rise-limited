@@ -25,12 +25,14 @@ import { addDocumentNonBlocking, updateDocumentNonBlocking } from "@/firebase/no
 import { collection, doc } from "firebase/firestore";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
+import { ImageUpload } from "./image-upload";
 
 const formSchema = z.object({
   address: z.string().min(10, "Address must be at least 10 characters."),
   description: z.string().min(10, "Description must be at least 10 characters."),
   price: z.coerce.number().min(1, "Price must be greater than 0."),
   propertyType: z.string().min(3, "Property type is required."),
+  imageUrl: z.string().optional(),
   imageId: z.string().optional(),
   status: z.enum(['Available', 'Sold']),
 });
@@ -53,6 +55,7 @@ export function RealEstateForm({ listing, onFinished }: RealEstateFormProps) {
       description: listing?.description || "",
       price: listing?.price || 0,
       propertyType: listing?.propertyType || "",
+      imageUrl: listing?.imageUrl || "",
       imageId: listing?.imageId || "",
       status: listing?.status || "Available",
     },
@@ -62,21 +65,14 @@ export function RealEstateForm({ listing, onFinished }: RealEstateFormProps) {
     if (!firestore) return;
     setIsSubmitting(true);
 
-    const selectedImage = PlaceHolderImages.find(img => img.id === values.imageId);
-
-    const listingData = {
-        ...values,
-        imageUrl: selectedImage?.imageUrl || '',
-    };
-    
     try {
         if (isEditing && listing) {
             const docRef = doc(firestore, "real_estate_listings", listing.id);
-            updateDocumentNonBlocking(docRef, listingData);
+            updateDocumentNonBlocking(docRef, values);
             toast({ title: "Success", description: "Listing updated successfully." });
         } else {
             const colRef = collection(firestore, "real_estate_listings");
-            await addDocumentNonBlocking(colRef, listingData);
+            await addDocumentNonBlocking(colRef, values);
             toast({ title: "Success", description: "Listing added successfully." });
         }
         form.reset();
@@ -164,28 +160,53 @@ export function RealEstateForm({ listing, onFinished }: RealEstateFormProps) {
             />
         </div>
         
-        <FormField
-          control={form.control}
-          name="imageId"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Image</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                    <FormControl>
-                        <SelectTrigger>
-                            <SelectValue placeholder="Select an image" />
-                        </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                        {PlaceHolderImages.filter(p => p.id.startsWith('real-estate')).map(image => (
-                            <SelectItem key={image.id} value={image.id}>{image.description}</SelectItem>
-                        ))}
-                    </SelectContent>
-                </Select>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <div className="grid grid-cols-1 gap-6">
+          <FormField
+            control={form.control}
+            name="imageUrl"
+            render={({ field }) => (
+              <FormItem>
+                <ImageUpload 
+                  defaultValue={field.value} 
+                  onUploadSuccess={(url) => field.onChange(url)} 
+                />
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <span className="w-full border-t" />
+            </div>
+            <div className="relative flex justify-center text-xs uppercase">
+              <span className="bg-background px-2 text-muted-foreground">Or select placeholder</span>
+            </div>
+          </div>
+
+          <FormField
+            control={form.control}
+            name="imageId"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Placeholder Image</FormLabel>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <FormControl>
+                          <SelectTrigger>
+                              <SelectValue placeholder="Select an image" />
+                          </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                          {PlaceHolderImages.filter(p => p.id.startsWith('real-estate')).map(image => (
+                              <SelectItem key={image.id} value={image.id}>{image.description}</SelectItem>
+                          ))}
+                      </SelectContent>
+                  </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
 
         <Button type="submit" disabled={isSubmitting} className="w-full">
             {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}

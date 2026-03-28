@@ -24,7 +24,7 @@ function SuccessStoriesSection() {
     return collection(firestore, 'project_management_success_stories');
   }, [firestore]);
 
-  const { data: successStories, isLoading } = useCollection<Omit<ProjectManagementSuccessStory, 'id'>>(storiesQuery);
+  const { data: successStories, isLoading } = useCollection<ProjectManagementSuccessStory>(storiesQuery);
 
   return (
     <section className="py-16 md:py-24 bg-secondary/30">
