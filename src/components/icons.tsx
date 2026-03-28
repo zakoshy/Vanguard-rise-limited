@@ -1,3 +1,4 @@
+
 import type { SVGProps } from "react";
 
 export const Icons = {
@@ -8,17 +9,16 @@ export const Icons = {
     </svg>
   ),
   paypal: (props: SVGProps<SVGSVGElement>) => (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" {...props}>
-      <path fill="#003087" d="M20.067 6.378c-.134-1.144-.54-2.08-1.218-2.808C17.81 2.458 16.14 2 14.14 2H6.667a.667.667 0 0 0-.658.552L3.033 21.448a.333.333 0 0 0 .329.385h4.134l1.01-6.378a.667.667 0 0 1 .658-.552h2.37c3.333 0 5.233-1.63 5.933-4.852.267-1.222.2-2.311-.6-3.673z"/>
-      <path fill="#009cde" d="M16.14 6.472c-.42-.56-1.04-.9-1.815-.983h-2.37l-.81 4.882c.225.676.84 1.156 1.575 1.156h.435c.78 0 1.41-.48 1.56-.9.21-.614.135-1.274-.225-1.8z"/>
-      <path fill="#012169" d="M10.155 12.39L8.69 3.545h3.816l1.465 8.844z"/>
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" {...props}>
+      <path d="M7.076 21.337H9.47l.964-6.106h2.394c3.333 0 5.233-1.63 5.933-4.852.267-1.222.2-2.311-.6-3.673-.134-1.144-.54-2.08-1.218-2.808C15.81 2.458 14.14 2 12.14 2H4.667a.667.667 0 0 0-.658.552L1.033 21.448a.333.333 0 0 0 .329.385h4.134l1.01-6.378a.667.667 0 0 1 .658-.552h.572l-.66 4.434z" fill="#003087"/>
+      <path d="M13.14 6.472c-.42-.56-1.04-.9-1.815-.983H8.955l-.81 4.882c.225.676.84 1.156 1.575 1.156h.435c.78 0 1.41-.48 1.56-.9.21-.614.135-1.274-.225-1.8z" fill="#009cde"/>
     </svg>
   ),
   mpesa: (props: SVGProps<SVGSVGElement>) => (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 40" {...props}>
-        <rect width="128" height="40" rx="4" fill="#43BF43" />
-        <path d="M15 10 L25 10 L25 30 L20 30 L20 15 L15 15 Z" fill="#EE2A24" />
-        <text x="68" y="26" fontFamily="Arial, sans-serif" fontSize="22" fontWeight="900" fill="white" letterSpacing="1">PESA</text>
+    <svg viewBox="0 0 100 40" xmlns="http://www.w3.org/2000/svg" {...props}>
+      <rect width="100" height="40" rx="6" fill="#43BF43"/>
+      <path d="M12 10h8v20h-4v-12h-4z" fill="#EE2A24"/>
+      <text x="28" y="27" fill="white" font-family="Arial, sans-serif" font-weight="900" font-size="20">M-PESA</text>
     </svg>
   ),
   logo: (props: SVGProps<SVGSVGElement>) => (
