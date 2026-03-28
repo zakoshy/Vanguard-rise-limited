@@ -1,3 +1,4 @@
+
 "use client"
 
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -24,7 +25,6 @@ const paymentMethods = [
     { name: "M-Pesa", value: "mpesa", icon: Icons.mpesa },
     { name: "MasterCard", value: "mastercard", icon: Icons.mastercard },
     { name: "PayPal", value: "paypal", icon: Icons.paypal },
-    { name: "Crypto", value: "crypto", icon: Icons.crypto },
 ];
 
 const formSchema = z.object({
@@ -37,7 +37,7 @@ const formSchema = z.object({
   amount: z.coerce.number().min(1, {
       message: "Amount must be at least $1."
   }),
-  paymentMethod: z.enum(["mpesa", "mastercard", "paypal", "crypto"], {
+  paymentMethod: z.enum(["mpesa", "mastercard", "paypal"], {
       required_error: "You need to select a payment method."
   })
 })

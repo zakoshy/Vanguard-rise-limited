@@ -21,7 +21,6 @@ const paymentChannels = [
   { name: 'M-Pesa', icon: Icons.mpesa },
   { name: 'MasterCard', icon: Icons.mastercard },
   { name: 'PayPal', icon: Icons.paypal },
-  { name: 'Crypto', icon: Icons.crypto },
 ];
 
 
