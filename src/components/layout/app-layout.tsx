@@ -6,13 +6,14 @@ import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
 import { useUser } from '@/firebase';
 import { AdminLayout } from '@/components/layout/admin-layout';
+import { FloatingWhatsApp } from '@/components/ui/floating-whatsapp';
 
 interface AppLayoutProps {
   children: React.ReactNode;
 }
 
 export function AppLayout({ children }: AppLayoutProps) {
-  const pathname = usePathname();
+  const pathname = usePathname() || '';
   const { user, isUserLoading } = useUser();
   const isAdminSection = pathname.startsWith('/admin');
 
@@ -20,7 +21,7 @@ export function AppLayout({ children }: AppLayoutProps) {
     if (isUserLoading) {
       return (
         <div className="flex justify-center items-center h-screen bg-background">
-          <p className="text-muted-foreground animate-pulse">Verifying access...</p>
+          <p className="text-muted-foreground animate-pulse font-headline">Verifying access...</p>
         </div>
       );
     }
@@ -34,6 +35,7 @@ export function AppLayout({ children }: AppLayoutProps) {
       {!isAdminSection && <Header />}
       <main className="flex-1">{children}</main>
       {!isAdminSection && <Footer />}
+      <FloatingWhatsApp />
     </div>
   );
 }

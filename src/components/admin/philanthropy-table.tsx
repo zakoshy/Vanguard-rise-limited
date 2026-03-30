@@ -88,7 +88,7 @@ export function PhilanthropyTable() {
     <>
         <div className="flex items-center justify-between mb-8">
             <div>
-                <h2 className="text-2xl font-bold tracking-tight">Philanthropic Activities</h2>
+                <h2 className="text-2xl font-bold tracking-tight font-headline text-primary">Philanthropic Activities</h2>
                 <p className="text-muted-foreground">
                     Manage the philanthropic activities here.
                 </p>
@@ -100,8 +100,8 @@ export function PhilanthropyTable() {
                     </Button>
                 </DialogTrigger>
                 <DialogContent className="sm:max-w-[600px] p-0 flex flex-col max-h-[90vh] overflow-hidden">
-                    <DialogHeader className="p-6 pb-4 border-b shrink-0">
-                        <DialogTitle className="font-headline text-2xl">
+                    <DialogHeader className="p-6 pb-4 border-b shrink-0 bg-secondary/10">
+                        <DialogTitle className="font-headline text-2xl text-primary">
                             {selectedActivity ? 'Edit Activity' : 'Add New Activity'}
                         </DialogTitle>
                         <DialogDescription>
@@ -116,14 +116,14 @@ export function PhilanthropyTable() {
                 </DialogContent>
             </Dialog>
         </div>
-        <div className="rounded-md border">
+        <div className="rounded-md border shadow-sm bg-card">
             <Table>
                 <TableHeader>
-                <TableRow>
-                    <TableHead>Title</TableHead>
-                    <TableHead>Goal</TableHead>
-                    <TableHead>Raised</TableHead>
-                    <TableHead className="hidden md:table-cell">Date</TableHead>
+                <TableRow className="bg-secondary/5">
+                    <TableHead className="font-headline">Title</TableHead>
+                    <TableHead className="font-headline">Goal</TableHead>
+                    <TableHead className="font-headline">Raised</TableHead>
+                    <TableHead className="hidden md:table-cell font-headline">Date</TableHead>
                     <TableHead>
                     <span className="sr-only">Actions</span>
                     </TableHead>
@@ -143,11 +143,11 @@ export function PhilanthropyTable() {
                 )}
                 {activities && activities.length > 0 ? (
                     activities.map((activity) => (
-                    <TableRow key={activity.id}>
-                        <TableCell className="font-medium">{activity.title}</TableCell>
-                        <TableCell>{activity.currency || 'USD'} {activity.goal.toLocaleString()}</TableCell>
-                        <TableCell>{activity.currency || 'USD'} {activity.raised.toLocaleString()}</TableCell>
-                        <TableCell className="hidden md:table-cell">
+                    <TableRow key={activity.id} className="hover:bg-secondary/5">
+                        <TableCell className="font-medium text-primary">{activity.title}</TableCell>
+                        <TableCell className="font-semibold">{activity.currency || 'USD'} {activity.goal.toLocaleString()}</TableCell>
+                        <TableCell className="text-green-600 font-semibold">{activity.currency || 'USD'} {activity.raised.toLocaleString()}</TableCell>
+                        <TableCell className="hidden md:table-cell text-muted-foreground">
                          {activity.date ? new Date(activity.date).toLocaleDateString() : 'N/A'}
                         </TableCell>
                         <TableCell>
@@ -161,7 +161,7 @@ export function PhilanthropyTable() {
                             <DropdownMenuContent align="end">
                                 <DropdownMenuLabel>Actions</DropdownMenuLabel>
                                 <DropdownMenuItem onSelect={() => handleEdit(activity)}>Edit</DropdownMenuItem>
-                                <DropdownMenuItem onSelect={() => handleDelete(activity)} className="text-destructive">Delete</DropdownMenuItem>
+                                <DropdownMenuItem onSelect={() => handleDelete(activity)} className="text-destructive font-semibold">Delete</DropdownMenuItem>
                             </DropdownMenuContent>
                         </DropdownMenu>
                         </TableCell>
@@ -177,14 +177,14 @@ export function PhilanthropyTable() {
         <AlertDialog open={!!activityToDelete} onOpenChange={(open) => !open && setActivityToDelete(null)}>
             <AlertDialogContent>
                 <AlertDialogHeader>
-                    <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                    <AlertDialogTitle className="font-headline text-destructive">Are you sure?</AlertDialogTitle>
                     <AlertDialogDescription>
                         This action cannot be undone. This will permanently delete the activity titled "{activityToDelete?.title}".
                     </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
-                    <AlertDialogCancel onClick={() => setActivityToDelete(null)}>Cancel</AlertDialogCancel>
-                    <AlertDialogAction onClick={confirmDelete}>Delete</AlertDialogAction>
+                    <AlertDialogCancel onClick={() => setActivityToDelete(null)} className="font-semibold">Cancel</AlertDialogCancel>
+                    <AlertDialogAction onClick={confirmDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90 font-semibold">Delete</AlertDialogAction>
                 </AlertDialogFooter>
             </AlertDialogContent>
         </AlertDialog>
