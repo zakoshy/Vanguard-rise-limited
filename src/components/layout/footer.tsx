@@ -7,10 +7,10 @@ import { Linkedin, Facebook, Mail, Phone } from 'lucide-react';
 import { Icons } from '@/components/icons';
 
 const socialLinks = [
-  { name: 'LinkedIn', icon: Linkedin, href: '#' },
-  { name: 'Twitter', icon: Icons.x, href: '#' },
-  { name: 'Facebook', icon: Facebook, href: '#' },
-  { name: 'WhatsApp', icon: Icons.whatsapp, href: '#' },
+  { name: 'LinkedIn', icon: Linkedin, href: 'https://www.linkedin.com/in/erick-musonye-3a450828a/' },
+  { name: 'Twitter', icon: Icons.x, href: 'https://x.com/NyamariPat31017' },
+  { name: 'Facebook', icon: Facebook, href: 'https://www.facebook.com/profile.php?id=61582204540365' },
+  { name: 'WhatsApp', icon: Icons.whatsapp, href: 'https://wa.me/254795472495' },
 ];
 
 const quickLinks = [
