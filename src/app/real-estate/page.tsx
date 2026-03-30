@@ -51,19 +51,24 @@ function FeaturedListingsSection() {
           </Card>
         ))}
         {properties?.map(prop => {
-          const image = PlaceHolderImages.find(p => p.id === prop.imageId);
+          const placeholder = PlaceHolderImages.find(p => p.id === prop.imageId);
+          const imageSrc = prop.imageUrl || placeholder?.imageUrl || 'https://picsum.photos/seed/realestate/600/400';
           return (
             <Card key={prop.id} className="overflow-hidden shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 flex flex-col">
               <div className="relative h-56 w-full">
-                {image && (
-                  <Image src={image.imageUrl || prop.imageUrl || ''} alt={prop.address} fill className="object-cover" data-ai-hint={image.imageHint} />
-                )}
+                <Image 
+                  src={imageSrc} 
+                  alt={prop.address} 
+                  fill 
+                  className="object-cover" 
+                  data-ai-hint={placeholder?.imageHint || 'real estate'} 
+                />
                  <Badge className={cn("absolute top-2 right-2", prop.status === 'Sold' ? 'bg-red-500' : 'bg-green-500')}>{prop.status}</Badge>
               </div>
               <CardHeader>
                 <div className="flex justify-between items-start">
                     <CardTitle className="font-headline text-xl">{prop.propertyType}</CardTitle>
-                    <Badge className="bg-accent text-accent-foreground">KES {prop.price.toLocaleString()}</Badge>
+                    <Badge className="bg-accent text-accent-foreground">{prop.currency || 'KES'} {prop.price.toLocaleString()}</Badge>
                 </div>
                 <CardDescription className="flex items-center gap-1 pt-1"><MapPin className="h-4 w-4"/>{prop.address}</CardDescription>
               </CardHeader>

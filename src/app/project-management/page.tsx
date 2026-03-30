@@ -47,16 +47,17 @@ function SuccessStoriesSection() {
              </Card>
           ))}
           {!isLoading && successStories?.map((story) => {
-            const image = PlaceHolderImages.find(p => p.id === story.imageId) ?? { imageUrl: story.imageUrl, description: story.title, imageHint: 'project management' };
+            const placeholder = PlaceHolderImages.find(p => p.id === story.imageId);
+            const imageSrc = story.imageUrl || placeholder?.imageUrl || 'https://picsum.photos/seed/placeholder/600/400';
             return (
               <Card key={story.id} className="overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
                 <div className="relative h-64 w-full">
                     <Image
-                    src={image.imageUrl || 'https://picsum.photos/seed/placeholder/600/400'}
-                    alt={image.description || story.title}
+                    src={imageSrc}
+                    alt={story.title}
                     fill
                     className="object-cover"
-                    data-ai-hint={image.imageHint}
+                    data-ai-hint={placeholder?.imageHint || 'project management'}
                     />
                 </div>
                 <CardHeader>

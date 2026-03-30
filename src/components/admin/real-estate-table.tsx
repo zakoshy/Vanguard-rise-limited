@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -101,7 +102,7 @@ export function RealEstateTable() {
                         <PlusCircle className="mr-2 h-4 w-4" /> Add New
                     </Button>
                 </DialogTrigger>
-                <DialogContent className="sm:max-w-[600px] p-0 flex flex-col max-h-[90vh]">
+                <DialogContent className="sm:max-w-[600px] p-0 flex flex-col max-h-[90vh] overflow-hidden">
                     <DialogHeader className="p-6 pb-4 border-b shrink-0">
                         <DialogTitle className="font-headline text-2xl">
                             {selectedListing ? 'Edit Listing' : 'Add New Listing'}
@@ -110,7 +111,7 @@ export function RealEstateTable() {
                             {selectedListing ? 'Update the details for this listing.' : 'Fill in the details for the new listing.'}
                         </DialogDescription>
                     </DialogHeader>
-                    <ScrollArea className="flex-grow overflow-y-auto">
+                    <ScrollArea className="flex-grow">
                         <div className="p-6 pb-8">
                             <RealEstateForm listing={selectedListing} onFinished={() => setDialogOpen(false)} />
                         </div>
