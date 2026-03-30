@@ -102,7 +102,7 @@ export function RealEstateTable() {
                     </Button>
                 </DialogTrigger>
                 <DialogContent className="sm:max-w-[600px] p-0 flex flex-col max-h-[90vh]">
-                    <DialogHeader className="p-6 pb-4 border-b">
+                    <DialogHeader className="p-6 pb-4 border-b shrink-0">
                         <DialogTitle className="font-headline text-2xl">
                             {selectedListing ? 'Edit Listing' : 'Add New Listing'}
                         </DialogTitle>
@@ -110,7 +110,7 @@ export function RealEstateTable() {
                             {selectedListing ? 'Update the details for this listing.' : 'Fill in the details for the new listing.'}
                         </DialogDescription>
                     </DialogHeader>
-                    <ScrollArea className="flex-grow">
+                    <ScrollArea className="flex-grow overflow-y-auto">
                         <div className="p-6 pb-8">
                             <RealEstateForm listing={selectedListing} onFinished={() => setDialogOpen(false)} />
                         </div>

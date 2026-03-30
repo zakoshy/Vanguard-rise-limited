@@ -67,7 +67,7 @@ export function PhilanthropyTable() {
         setDialogOpen(true);
     };
     
-    const handleAddNew = () => {
+    handleAddNew = () => {
         setSelectedActivity(null);
         setDialogOpen(true);
     };
@@ -100,7 +100,7 @@ export function PhilanthropyTable() {
                     </Button>
                 </DialogTrigger>
                 <DialogContent className="sm:max-w-[600px] p-0 flex flex-col max-h-[90vh]">
-                    <DialogHeader className="p-6 pb-4 border-b">
+                    <DialogHeader className="p-6 pb-4 border-b shrink-0">
                         <DialogTitle className="font-headline text-2xl">
                             {selectedActivity ? 'Edit Activity' : 'Add New Activity'}
                         </DialogTitle>
@@ -108,7 +108,7 @@ export function PhilanthropyTable() {
                             {selectedActivity ? 'Update the details for this activity.' : 'Fill in the details for the new activity.'}
                         </DialogDescription>
                     </DialogHeader>
-                    <ScrollArea className="flex-grow">
+                    <ScrollArea className="flex-grow overflow-y-auto">
                         <div className="p-6 pb-8">
                             <PhilanthropyForm activity={selectedActivity} onFinished={() => setDialogOpen(false)} />
                         </div>

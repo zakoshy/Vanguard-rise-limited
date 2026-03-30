@@ -100,7 +100,7 @@ export function InvestmentsTable() {
                     </Button>
                 </DialogTrigger>
                 <DialogContent className="sm:max-w-[600px] p-0 flex flex-col max-h-[90vh]">
-                    <DialogHeader className="p-6 pb-4 border-b">
+                    <DialogHeader className="p-6 pb-4 border-b shrink-0">
                         <DialogTitle className="font-headline text-2xl">
                             {selectedProject ? 'Edit Project' : 'Add New Project'}
                         </DialogTitle>
@@ -108,7 +108,7 @@ export function InvestmentsTable() {
                             {selectedProject ? 'Update the details for this project.' : 'Fill in the details for the new project.'}
                         </DialogDescription>
                     </DialogHeader>
-                    <ScrollArea className="flex-grow">
+                    <ScrollArea className="flex-grow overflow-y-auto">
                         <div className="p-6 pb-8">
                             <InvestmentForm project={selectedProject} onFinished={() => setDialogOpen(false)} />
                         </div>
