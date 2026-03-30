@@ -108,8 +108,8 @@ export function InvestmentsTable() {
                             {selectedProject ? 'Update the details for this project.' : 'Fill in the details for the new project.'}
                         </DialogDescription>
                     </DialogHeader>
-                    <ScrollArea className="flex-grow p-6">
-                        <div className="pb-8">
+                    <ScrollArea className="flex-grow">
+                        <div className="p-6 pb-8">
                             <InvestmentForm project={selectedProject} onFinished={() => setDialogOpen(false)} />
                         </div>
                     </ScrollArea>

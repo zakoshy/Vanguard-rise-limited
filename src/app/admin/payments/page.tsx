@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useUser } from '@/firebase';
@@ -10,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Copy, PlusCircle, Share2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 export default function PaymentsAdminPage() {
   const { user, isUserLoading } = useUser();
@@ -70,8 +70,8 @@ export default function PaymentsAdminPage() {
                         <PlusCircle className="mr-2 h-4 w-4" /> Generate New Link
                     </Button>
                 </DialogTrigger>
-                <DialogContent className="sm:max-w-[480px]">
-                    <DialogHeader>
+                <DialogContent className="sm:max-w-[500px] p-0 flex flex-col max-h-[90vh]">
+                    <DialogHeader className="p-6 pb-4 border-b">
                         <DialogTitle className="font-headline text-2xl">
                            Generate Payment Link
                         </DialogTitle>
@@ -79,7 +79,11 @@ export default function PaymentsAdminPage() {
                            Fill in the customer and payment details below.
                         </DialogDescription>
                     </DialogHeader>
-                    <PaymentLinkForm onLinkGenerated={handleLinkGenerated} />
+                    <ScrollArea className="flex-grow">
+                        <div className="p-6 pb-8">
+                            <PaymentLinkForm onLinkGenerated={handleLinkGenerated} />
+                        </div>
+                    </ScrollArea>
                 </DialogContent>
             </Dialog>
         </div>

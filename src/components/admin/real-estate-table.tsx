@@ -110,8 +110,8 @@ export function RealEstateTable() {
                             {selectedListing ? 'Update the details for this listing.' : 'Fill in the details for the new listing.'}
                         </DialogDescription>
                     </DialogHeader>
-                    <ScrollArea className="flex-grow p-6">
-                        <div className="pb-8">
+                    <ScrollArea className="flex-grow">
+                        <div className="p-6 pb-8">
                             <RealEstateForm listing={selectedListing} onFinished={() => setDialogOpen(false)} />
                         </div>
                     </ScrollArea>

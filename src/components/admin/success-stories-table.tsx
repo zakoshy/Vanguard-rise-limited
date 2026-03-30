@@ -108,8 +108,8 @@ export function SuccessStoriesTable() {
                             {selectedStory ? 'Update the details for this success story.' : 'Fill in the details for the new success story.'}
                         </DialogDescription>
                     </DialogHeader>
-                    <ScrollArea className="flex-grow p-6">
-                        <div className="pb-8">
+                    <ScrollArea className="flex-grow">
+                        <div className="p-6 pb-8">
                             <SuccessStoryForm story={selectedStory} onFinished={() => setDialogOpen(false)} />
                         </div>
                     </ScrollArea>

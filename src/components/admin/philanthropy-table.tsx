@@ -108,8 +108,8 @@ export function PhilanthropyTable() {
                             {selectedActivity ? 'Update the details for this activity.' : 'Fill in the details for the new activity.'}
                         </DialogDescription>
                     </DialogHeader>
-                    <ScrollArea className="flex-grow p-6">
-                        <div className="pb-8">
+                    <ScrollArea className="flex-grow">
+                        <div className="p-6 pb-8">
                             <PhilanthropyForm activity={selectedActivity} onFinished={() => setDialogOpen(false)} />
                         </div>
                     </ScrollArea>
