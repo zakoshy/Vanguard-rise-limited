@@ -99,8 +99,8 @@ export function InvestmentsTable() {
                         <PlusCircle className="mr-2 h-4 w-4" /> Add New
                     </Button>
                 </DialogTrigger>
-                <DialogContent className="sm:max-w-[550px] p-0">
-                    <DialogHeader className="p-6 pb-0">
+                <DialogContent className="sm:max-w-[600px] p-0 flex flex-col max-h-[90vh]">
+                    <DialogHeader className="p-6 pb-4 border-b">
                         <DialogTitle className="font-headline text-2xl">
                             {selectedProject ? 'Edit Project' : 'Add New Project'}
                         </DialogTitle>
@@ -108,8 +108,10 @@ export function InvestmentsTable() {
                             {selectedProject ? 'Update the details for this project.' : 'Fill in the details for the new project.'}
                         </DialogDescription>
                     </DialogHeader>
-                    <ScrollArea className="max-h-[80vh] p-6 pt-2">
-                        <InvestmentForm project={selectedProject} onFinished={() => setDialogOpen(false)} />
+                    <ScrollArea className="flex-grow p-6">
+                        <div className="pb-8">
+                            <InvestmentForm project={selectedProject} onFinished={() => setDialogOpen(false)} />
+                        </div>
                     </ScrollArea>
                 </DialogContent>
             </Dialog>
@@ -163,7 +165,7 @@ export function InvestmentsTable() {
                     </TableRow>
                     ))
                 ) : (
-                    !isLoading && <TableRow><TableCell colSpan={4} className="text-center">No projects found.</TableCell></TableRow>
+                    !isLoading && <TableRow><TableCell colSpan={4} className="text-center py-8 text-muted-foreground italic">No projects found.</TableCell></TableRow>
                 )}
                 </TableBody>
             </Table>
