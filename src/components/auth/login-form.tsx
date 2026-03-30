@@ -1,3 +1,4 @@
+
 'use client';
 
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -79,32 +80,33 @@ export function LoginForm() {
   }
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center justify-center w-full animate-in fade-in zoom-in duration-300">
       <div className="mb-8">
         <Image 
           src="/logo.png" 
           alt="Vanguard Rise Limited Logo" 
-          width={100} 
-          height={100} 
-          className="object-contain drop-shadow-md"
+          width={120} 
+          height={120} 
+          className="object-contain drop-shadow-lg"
+          priority
         />
       </div>
-      <Card className="shadow-lg w-full">
-          <CardHeader>
-            <CardTitle className="font-headline text-2xl md:text-3xl text-center">Admin Login</CardTitle>
-            <CardDescription className="text-center">Enter your credentials to access the admin panel.</CardDescription>
+      <Card className="shadow-2xl w-full border-t-4 border-t-primary bg-card">
+          <CardHeader className="space-y-2 pb-6">
+            <CardTitle className="font-headline text-3xl text-center text-primary">Admin Access</CardTitle>
+            <CardDescription className="text-center text-muted-foreground">Secure gateway to Vanguard Rise management portal.</CardDescription>
           </CardHeader>
           <CardContent>
               <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
                   <FormField
                       control={form.control}
                       name="email"
                       render={({ field }) => (
                       <FormItem>
-                          <FormLabel>Email Address</FormLabel>
+                          <FormLabel className="text-foreground font-semibold">Corporate Email</FormLabel>
                           <FormControl>
-                          <Input placeholder="you@example.com" {...field} />
+                          <Input placeholder="admin@vanguardrise.com" {...field} className="h-12 border-muted-foreground/40" />
                           </FormControl>
                           <FormMessage />
                       </FormItem>
@@ -115,15 +117,20 @@ export function LoginForm() {
                       name="password"
                       render={({ field }) => (
                       <FormItem>
-                          <FormLabel>Password</FormLabel>
+                          <FormLabel className="text-foreground font-semibold">Security Credential</FormLabel>
                           <div className="relative">
                               <FormControl>
-                                  <Input type={showPassword ? "text" : "password"} placeholder="••••••••" {...field} />
+                                  <Input 
+                                    type={showPassword ? "text" : "password"} 
+                                    placeholder="••••••••" 
+                                    {...field} 
+                                    className="h-12 border-muted-foreground/40 pr-12" 
+                                  />
                               </FormControl>
                               <button
                                   type="button"
                                   onClick={() => setShowPassword(!showPassword)}
-                                  className="absolute inset-y-0 right-0 flex items-center pr-3 text-muted-foreground"
+                                  className="absolute inset-y-0 right-0 flex items-center pr-4 text-muted-foreground hover:text-primary transition-colors"
                               >
                                   {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                               </button>
@@ -133,16 +140,25 @@ export function LoginForm() {
                       )}
                   />
 
-                  {error && <p className="text-sm font-medium text-destructive">{error}</p>}
+                  {error && (
+                    <div className="p-3 rounded-md bg-destructive/10 border border-destructive/20 text-sm font-medium text-destructive text-center">
+                        {error}
+                    </div>
+                  )}
 
-                  <Button type="submit" size="lg" className="w-full" disabled={isLoading}>
-                      {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                      Log In
+                  <Button type="submit" size="lg" className="w-full h-12 text-base font-bold shadow-md hover:shadow-lg transition-all" disabled={isLoading}>
+                      {isLoading && <Loader2 className="mr-2 h-5 w-5 animate-spin" />}
+                      {isLoading ? 'Authenticating...' : 'Sign In to Dashboard'}
                   </Button>
               </form>
               </Form>
           </CardContent>
       </Card>
+      <div className="mt-8">
+        <Button variant="link" asChild className="text-muted-foreground">
+          <Link href="/">← Return to Public Website</Link>
+        </Button>
+      </div>
     </div>
   )
 }

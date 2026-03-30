@@ -3,9 +3,9 @@
 
 import { useUser, useFirestore, useCollection, useMemoFirebase } from '@/firebase';
 import { LoginForm } from '@/components/auth/login-form';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Briefcase, Building, Heart, Home as HomeIcon, ArrowRight, TrendingUp, DollarSign, MapPin } from 'lucide-react';
+import { Briefcase, Building, Heart, Home as HomeIcon, ArrowRight, TrendingUp } from 'lucide-react';
 import Link from 'next/link';
 import { collection } from 'firebase/firestore';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -109,15 +109,15 @@ export default function AdminPage() {
 
   if (isUserLoading) {
     return (
-      <div className="container flex items-center justify-center min-h-screen py-16 md:py-24 text-center">
-        <p>Verifying session...</p>
+      <div className="flex items-center justify-center h-screen w-full text-center">
+        <p className="text-muted-foreground animate-pulse font-headline">Verifying session...</p>
       </div>
     );
   }
 
   if (!user) {
     return (
-      <div className="container flex items-center justify-center min-h-screen py-16 md:py-24">
+      <div className="flex items-center justify-center min-h-screen w-full bg-secondary/10 px-4">
         <div className="max-w-md w-full">
           <LoginForm />
         </div>
@@ -126,9 +126,9 @@ export default function AdminPage() {
   }
 
   // Calculated Stats
-  const totalInvestmentValue = investments?.reduce((acc, curr) => acc + curr.investmentValue, 0) || 0;
+  const totalInvestmentValue = investments?.reduce((acc, curr) => acc + (curr.investmentValue || 0), 0) || 0;
   const availableListings = listings?.filter(l => l.status === 'Available').length || 0;
-  const totalRaised = philanthropy?.reduce((acc, curr) => acc + curr.raised, 0) || 0;
+  const totalRaised = philanthropy?.reduce((acc, curr) => acc + (curr.raised || 0), 0) || 0;
 
   return (
     <div className="space-y-8">
@@ -192,7 +192,7 @@ export default function AdminPage() {
           renderItem={(item: InvestmentProject) => (
             <div className="flex justify-between items-center">
               <span className="font-semibold text-foreground line-clamp-1">{item.name}</span>
-              <span className="text-xs font-mono font-bold text-green-600">${item.investmentValue.toLocaleString()}</span>
+              <span className="text-xs font-mono font-bold text-green-600">${(item.investmentValue || 0).toLocaleString()}</span>
             </div>
           )}
         />
@@ -224,36 +224,18 @@ export default function AdminPage() {
             <div className="flex flex-col space-y-1">
               <div className="flex justify-between">
                 <span className="font-semibold text-foreground line-clamp-1">{item.title}</span>
-                <span className="text-xs font-bold">${item.raised.toLocaleString()}</span>
+                <span className="text-xs font-bold">${(item.raised || 0).toLocaleString()}</span>
               </div>
               <div className="w-full bg-secondary h-1 rounded-full overflow-hidden">
                 <div 
                   className="bg-primary h-full transition-all" 
-                  style={{ width: `${Math.min((item.raised / item.goal) * 100, 100)}%` }} 
+                  style={{ width: `${Math.min(((item.raised || 0) / (item.goal || 1)) * 100, 100)}%` }} 
                 />
               </div>
             </div>
           )}
         />
       </div>
-      
-      <Card className="bg-primary text-primary-foreground">
-        <CardHeader>
-          <CardTitle className="font-headline">Quick Actions</CardTitle>
-          <CardDescription className="text-primary-foreground/80">Jump straight to content creation</CardDescription>
-        </CardHeader>
-        <CardContent className="flex flex-wrap gap-4">
-          <Button variant="secondary" size="sm" asChild>
-            <Link href="/admin/real-estate">Add New Listing</Link>
-          </Button>
-          <Button variant="secondary" size="sm" asChild>
-            <Link href="/admin/investments">New Project</Link>
-          </Button>
-          <Button variant="outline" size="sm" className="bg-transparent border-primary-foreground/20 hover:bg-white/10" asChild>
-            <Link href="/admin/analytics">View Detailed Analytics</Link>
-          </Button>
-        </CardContent>
-      </Card>
     </div>
   );
 }

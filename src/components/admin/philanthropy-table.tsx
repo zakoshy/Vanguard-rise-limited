@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -145,8 +146,8 @@ export function PhilanthropyTable() {
                     activities.map((activity) => (
                     <TableRow key={activity.id} className="hover:bg-secondary/5">
                         <TableCell className="font-medium text-primary">{activity.title}</TableCell>
-                        <TableCell className="font-semibold">{activity.currency || 'USD'} {activity.goal.toLocaleString()}</TableCell>
-                        <TableCell className="text-green-600 font-semibold">{activity.currency || 'USD'} {activity.raised.toLocaleString()}</TableCell>
+                        <TableCell className="font-semibold">{activity.currency || 'USD'} {(activity.goal || 0).toLocaleString()}</TableCell>
+                        <TableCell className="text-green-600 font-semibold">{activity.currency || 'USD'} {(activity.raised || 0).toLocaleString()}</TableCell>
                         <TableCell className="hidden md:table-cell text-muted-foreground">
                          {activity.date ? new Date(activity.date).toLocaleDateString() : 'N/A'}
                         </TableCell>
