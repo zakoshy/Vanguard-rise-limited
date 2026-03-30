@@ -1,4 +1,3 @@
-
 'use client';
 
 import { usePathname } from 'next/navigation';
@@ -32,7 +31,7 @@ export function AppLayout({ children }: AppLayoutProps) {
   }
   
   return (
-    <div className={cn("relative flex min-h-screen flex-col bg-background", { 'h-screen overflow-hidden': isAdminSection && !user })}>
+    <div className={cn("relative flex min-h-screen flex-col bg-background")}>
       {!isAdminSection && <Header />}
       <main className="flex-1">{children}</main>
       {!isAdminSection && <Footer />}

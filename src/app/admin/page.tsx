@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useUser, useFirestore, useCollection, useMemoFirebase } from '@/firebase';
@@ -117,10 +116,8 @@ export default function AdminPage() {
 
   if (!user) {
     return (
-      <div className="flex items-center justify-center min-h-full h-full w-full bg-secondary/10 px-4 py-20">
-        <div className="max-w-md w-full">
-          <LoginForm />
-        </div>
+      <div className="flex items-center justify-center min-h-screen w-full bg-secondary/10 px-4">
+        <LoginForm />
       </div>
     );
   }

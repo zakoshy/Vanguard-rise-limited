@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState } from 'react';
@@ -111,7 +110,7 @@ export function RealEstateTable() {
                             {selectedListing ? 'Update the details for this listing.' : 'Fill in the details for the new listing.'}
                         </DialogDescription>
                     </DialogHeader>
-                    <ScrollArea className="flex-grow">
+                    <ScrollArea className="flex-grow overflow-y-auto">
                         <div className="p-6 pb-8">
                             <RealEstateForm listing={selectedListing} onFinished={() => setDialogOpen(false)} />
                         </div>

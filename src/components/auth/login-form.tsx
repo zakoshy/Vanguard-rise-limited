@@ -1,4 +1,3 @@
-
 'use client';
 
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -81,7 +80,7 @@ export function LoginForm() {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center w-full animate-in fade-in zoom-in duration-300">
+    <div className="flex flex-col items-center justify-center w-full animate-in fade-in zoom-in duration-300 py-10">
       <div className="mb-8">
         <Image 
           src="/logo.png" 
@@ -92,7 +91,7 @@ export function LoginForm() {
           priority
         />
       </div>
-      <Card className="shadow-2xl w-full border-t-4 border-t-primary bg-card">
+      <Card className="shadow-2xl w-full border-t-4 border-t-primary bg-card max-w-md">
           <CardHeader className="space-y-2 pb-6">
             <CardTitle className="font-headline text-3xl text-center text-primary">Admin Access</CardTitle>
             <CardDescription className="text-center text-muted-foreground">Secure gateway to Vanguard Rise management portal.</CardDescription>
@@ -107,7 +106,7 @@ export function LoginForm() {
                       <FormItem>
                           <FormLabel className="text-foreground font-semibold">Corporate Email</FormLabel>
                           <FormControl>
-                          <Input placeholder="admin@vanguardrise.com" {...field} className="h-12 border-muted-foreground/40" />
+                          <Input placeholder="admin@vanguardrise.com" {...field} />
                           </FormControl>
                           <FormMessage />
                       </FormItem>
@@ -125,7 +124,7 @@ export function LoginForm() {
                                     type={showPassword ? "text" : "password"} 
                                     placeholder="••••••••" 
                                     {...field} 
-                                    className="h-12 border-muted-foreground/40 pr-12" 
+                                    className="pr-12" 
                                   />
                               </FormControl>
                               <button

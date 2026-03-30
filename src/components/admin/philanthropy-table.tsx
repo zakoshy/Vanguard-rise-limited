@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState } from 'react';
@@ -109,7 +108,7 @@ export function PhilanthropyTable() {
                             {selectedActivity ? 'Update the details for this activity.' : 'Fill in the details for the new activity.'}
                         </DialogDescription>
                     </DialogHeader>
-                    <ScrollArea className="flex-grow">
+                    <ScrollArea className="flex-grow overflow-y-auto">
                         <div className="p-6 pb-8">
                             <PhilanthropyForm activity={selectedActivity} onFinished={() => setDialogOpen(false)} />
                         </div>
