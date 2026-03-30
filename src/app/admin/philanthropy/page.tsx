@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useUser } from '@/firebase';
@@ -12,7 +11,7 @@ export default function PhilanthropyAdminPage() {
 
   useEffect(() => {
     if (!isUserLoading && !user) {
-      router.push('/admin');
+      router.push('/admin/login');
     }
   }, [user, isUserLoading, router]);
 

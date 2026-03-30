@@ -1,4 +1,3 @@
-
 'use client';
 
 import { SuccessStoriesTable } from '@/components/admin/success-stories-table';
@@ -12,7 +11,7 @@ export default function SuccessStoriesAdminPage() {
 
   useEffect(() => {
     if (!isUserLoading && !user) {
-      router.push('/admin');
+      router.push('/admin/login');
     }
   }, [user, isUserLoading, router]);
 

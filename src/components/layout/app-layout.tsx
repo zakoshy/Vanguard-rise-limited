@@ -16,8 +16,9 @@ export function AppLayout({ children }: AppLayoutProps) {
   const pathname = usePathname() || '';
   const { user, isUserLoading } = useUser();
   const isAdminSection = pathname.startsWith('/admin');
+  const isLoginPage = pathname === '/admin/login';
 
-  if (isAdminSection) {
+  if (isAdminSection && !isLoginPage) {
     if (isUserLoading) {
       return (
         <div className="flex justify-center items-center h-screen bg-background">

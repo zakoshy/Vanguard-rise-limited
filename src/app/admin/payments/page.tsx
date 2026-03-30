@@ -21,7 +21,7 @@ export default function PaymentsAdminPage() {
 
   useEffect(() => {
     if (!isUserLoading && !user) {
-      router.push('/admin');
+      router.push('/admin/login');
     }
   }, [user, isUserLoading, router]);
 

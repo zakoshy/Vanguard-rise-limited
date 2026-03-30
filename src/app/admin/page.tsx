@@ -1,7 +1,8 @@
 'use client';
 
 import { useUser, useFirestore, useCollection, useMemoFirebase } from '@/firebase';
-import { LoginForm } from '@/components/auth/login-form';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Briefcase, Building, Heart, Home as HomeIcon, ArrowRight, TrendingUp } from 'lucide-react';
@@ -92,7 +93,14 @@ function SectionPreview({
 
 export default function AdminPage() {
   const { user, isUserLoading } = useUser();
+  const router = useRouter();
   const firestore = useFirestore();
+
+  useEffect(() => {
+    if (!isUserLoading && !user) {
+      router.push('/admin/login');
+    }
+  }, [user, isUserLoading, router]);
 
   // Queries
   const storiesQuery = useMemoFirebase(() => collection(firestore, 'project_management_success_stories'), [firestore]);
@@ -106,18 +114,10 @@ export default function AdminPage() {
   const { data: listings, isLoading: loadingListings } = useCollection<RealEstateListing>(listingsQuery);
   const { data: philanthropy, isLoading: loadingPhilanthropy } = useCollection<PhilanthropicActivity>(philanthropyQuery);
 
-  if (isUserLoading) {
+  if (isUserLoading || !user) {
     return (
       <div className="flex items-center justify-center h-screen w-full text-center">
         <p className="text-muted-foreground animate-pulse font-headline">Verifying session...</p>
-      </div>
-    );
-  }
-
-  if (!user) {
-    return (
-      <div className="flex items-center justify-center min-h-screen w-full bg-secondary/10 px-4">
-        <LoginForm />
       </div>
     );
   }

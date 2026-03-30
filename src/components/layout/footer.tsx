@@ -94,7 +94,6 @@ export function Footer() {
       <div className="border-t bg-secondary/50 py-4">
         <div className="container text-center text-xs text-muted-foreground flex flex-col md:flex-row justify-center items-center gap-4">
           <span>&copy; {year ?? 2025} Vanguard Rise Limited. All Rights Reserved.</span>
-          <Link href="/admin" className="text-muted-foreground hover:text-primary transition-colors">Admin Login</Link>
         </div>
       </div>
     </footer>
