@@ -1,4 +1,3 @@
-
 'use client';
 
 import Image from 'next/image';
@@ -8,9 +7,6 @@ import { Button } from '@/components/ui/button';
 import { Icons } from '@/components/icons';
 import { Progress } from '@/components/ui/progress';
 import { Heart, Users } from 'lucide-react';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { DonationForm } from '@/components/donation-form';
-import { useState } from 'react';
 import Link from 'next/link';
 import { useCollection, useFirestore, useMemoFirebase } from '@/firebase';
 import { collection } from 'firebase/firestore';
@@ -23,6 +19,7 @@ const paymentChannels = [
   { name: 'PayPal', icon: Icons.paypal },
 ];
 
+const PAYSTACK_LINK = 'https://paystack.shop/pay/jjozt-ygt3';
 
 function InitiativesSection() {
   const firestore = useFirestore();
@@ -93,8 +90,6 @@ function InitiativesSection() {
 
 
 export default function PhilanthropyPage() {
-  const [dialogOpen, setDialogOpen] = useState(false);
-
   return (
     <>
       <section className="bg-secondary/30 py-16 md:py-24">
@@ -117,20 +112,11 @@ export default function PhilanthropyPage() {
                 Your contribution can help us expand our reach and support more communities. Partner with us or make a donation today.
               </p>
               <div className="mt-6 flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
-                  <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-                    <DialogTrigger asChild>
-                      <Button size="lg"><Heart className="mr-2 h-5 w-5" /> Donate Now</Button>
-                    </DialogTrigger>
-                    <DialogContent className="sm:max-w-[480px]">
-                      <DialogHeader>
-                        <DialogTitle className="font-headline text-2xl">Make a Donation</DialogTitle>
-                        <DialogDescription>
-                          Your support helps us create a lasting impact in our communities.
-                        </DialogDescription>
-                      </DialogHeader>
-                      <DonationForm setDialogOpen={setDialogOpen} />
-                    </DialogContent>
-                  </Dialog>
+                  <Button size="lg" asChild>
+                    <a href={PAYSTACK_LINK} target="_blank" rel="noopener noreferrer">
+                      <Heart className="mr-2 h-5 w-5" /> Donate Now
+                    </a>
+                  </Button>
                   <Button size="lg" variant="outline" asChild>
                     <Link href="/contact">
                       <Users className="mr-2 h-5 w-5" /> Become a Partner
