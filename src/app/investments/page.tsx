@@ -1,4 +1,3 @@
-
 'use client';
 
 import Image from 'next/image';
@@ -8,7 +7,6 @@ import { collection } from 'firebase/firestore';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { InvestmentChart } from '@/components/investment-chart';
 import Link from 'next/link';
 import { useCollection, useFirestore, useMemoFirebase } from '@/firebase';
 import type { InvestmentProject } from '@/lib/types';
@@ -36,50 +34,55 @@ function InvestmentPortfolioSection() {
                     <h2 className="text-3xl md:text-4xl font-headline font-bold">Our Investment Portfolio</h2>
                     <p className="mt-2 text-lg text-muted-foreground">A glance at our diverse and profitable portfolio.</p>
                 </div>
-                <div className="grid lg:grid-cols-5 gap-8 items-stretch">
-                    <div className="lg:col-span-3">
-                        <InvestmentChart />
-                    </div>
-                    <div className="lg:col-span-2 flex flex-col space-y-8">
-                        {isLoading && Array.from({ length: 2 }).map((_, i) => (
-                             <Card key={i} className="flex flex-1 overflow-hidden shadow-lg">
-                                <div className="relative w-2/5">
-                                    <Skeleton className="h-full w-full" />
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {isLoading && Array.from({ length: 3 }).map((_, i) => (
+                         <Card key={i} className="flex flex-col overflow-hidden shadow-lg h-full">
+                            <div className="relative h-48 w-full">
+                                <Skeleton className="h-full w-full" />
+                            </div>
+                            <div className="flex flex-col p-6 space-y-4">
+                                <Skeleton className="h-6 w-3/4" />
+                                <Skeleton className="h-4 w-full" />
+                                <Skeleton className="h-4 w-5/6" />
+                                <Skeleton className="h-10 w-1/3" />
+                            </div>
+                         </Card>
+                    ))}
+                    {!isLoading && portfolioItems?.map(item => {
+                        const image = PlaceHolderImages.find(p => p.id === item.imageId);
+                        return (
+                            <Card key={item.id} className="flex flex-col overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 h-full">
+                                <div className="relative h-48 w-full">
+                                    <Image 
+                                        src={item.imageUrl || image?.imageUrl || 'https://picsum.photos/seed/invest/600/400'} 
+                                        alt={item.name} 
+                                        fill 
+                                        className="object-cover" 
+                                        data-ai-hint="investment project" 
+                                    />
                                 </div>
-                                <div className="w-3/5 flex flex-col p-4">
-                                    <Skeleton className="h-6 w-3/4 mb-2" />
-                                    <Skeleton className="h-4 w-1/2 mb-4" />
-                                    <Skeleton className="h-5 w-1/3" />
+                                <div className="flex flex-col flex-grow">
+                                    <CardHeader>
+                                        <CardTitle className="font-headline text-xl leading-tight">{item.name}</CardTitle>
+                                        <CardDescription className="text-lg font-bold text-primary">
+                                            Investment Value: ${item.investmentValue.toLocaleString()}
+                                        </CardDescription>
+                                    </CardHeader>
+                                    <CardContent className="flex-grow">
+                                        <p className="text-muted-foreground line-clamp-3 mb-4">{item.description}</p>
+                                        <Button variant="outline" size="sm" asChild className="w-full">
+                                            <Link href="/contact">Inquire Details <ArrowUpRight className="h-4 w-4 ml-1" /></Link>
+                                        </Button>
+                                    </CardContent>
                                 </div>
-                             </Card>
-                        ))}
-                        {portfolioItems?.map(item => {
-                            const image = PlaceHolderImages.find(p => p.id === item.imageId);
-                            return (
-                                <Card key={item.id} className="flex flex-1 overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
-                                    {image && <div className="relative w-2/5">
-                                        <Image src={image.imageUrl} alt={image.description} fill className="object-cover" data-ai-hint={image.imageHint} />
-                                    </div>}
-                                    <div className="w-3/5 flex flex-col">
-                                        <CardHeader>
-                                            <CardTitle className="font-headline text-lg leading-tight">{item.name}</CardTitle>
-                                            <CardDescription>${item.investmentValue.toLocaleString()}</CardDescription>
-                                        </CardHeader>
-                                        <CardContent className="flex-grow flex flex-col justify-end">
-                                            <p className="font-semibold text-primary">{item.description}</p>
-                                            <Button variant="link" size="sm" asChild className="p-0 h-auto mt-2 text-primary justify-start">
-                                                <Link href="#">View Details <ArrowUpRight className="h-4 w-4 ml-1" /></Link>
-                                            </Button>
-                                        </CardContent>
-                                    </div>
-                                </Card>
-                            );
-                        })}
-                         {!isLoading && (!portfolioItems || portfolioItems.length === 0) && (
-                            <p className='text-center text-muted-foreground col-span-full'>No investment projects have been added yet.</p>
-                        )}
-                    </div>
+                            </Card>
+                        );
+                    })}
                 </div>
+                {!isLoading && (!portfolioItems || portfolioItems.length === 0) && (
+                    <p className='text-center text-muted-foreground mt-8'>No investment projects have been added yet.</p>
+                )}
             </div>
         </section>
     );

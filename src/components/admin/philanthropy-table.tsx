@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState } from 'react';
@@ -40,6 +39,7 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
+import { ScrollArea } from "@/components/ui/scroll-area"
 
 import type { PhilanthropicActivity } from '@/lib/types';
 import { PhilanthropyForm } from './philanthropy-form';
@@ -99,8 +99,8 @@ export function PhilanthropyTable() {
                         <PlusCircle className="mr-2 h-4 w-4" /> Add New
                     </Button>
                 </DialogTrigger>
-                <DialogContent className="sm:max-w-[480px]">
-                    <DialogHeader>
+                <DialogContent className="sm:max-w-[550px] p-0">
+                    <DialogHeader className="p-6 pb-0">
                         <DialogTitle className="font-headline text-2xl">
                             {selectedActivity ? 'Edit Activity' : 'Add New Activity'}
                         </DialogTitle>
@@ -108,7 +108,9 @@ export function PhilanthropyTable() {
                             {selectedActivity ? 'Update the details for this activity.' : 'Fill in the details for the new activity.'}
                         </DialogDescription>
                     </DialogHeader>
-                    <PhilanthropyForm activity={selectedActivity} onFinished={() => setDialogOpen(false)} />
+                    <ScrollArea className="max-h-[80vh] p-6 pt-2">
+                        <PhilanthropyForm activity={selectedActivity} onFinished={() => setDialogOpen(false)} />
+                    </ScrollArea>
                 </DialogContent>
             </Dialog>
         </div>

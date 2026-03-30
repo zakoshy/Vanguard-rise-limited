@@ -1,8 +1,7 @@
-
 'use client';
 
 import { useState } from 'react';
-import { collection } from 'firebase/firestore';
+import { collection, doc } from 'firebase/firestore';
 import { MoreHorizontal, PlusCircle } from 'lucide-react';
 
 import { useCollection, useFirestore, useMemoFirebase } from '@/firebase';
@@ -40,11 +39,11 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
+import { ScrollArea } from "@/components/ui/scroll-area"
 
 import type { ProjectManagementSuccessStory } from '@/lib/types';
 import { SuccessStoryForm } from './success-story-form';
 import { Skeleton } from '../ui/skeleton';
-import { doc } from 'firebase/firestore';
 import { deleteDocumentNonBlocking } from '@/firebase/non-blocking-updates';
 import { useToast } from '@/hooks/use-toast';
 
@@ -100,8 +99,8 @@ export function SuccessStoriesTable() {
                         <PlusCircle className="mr-2 h-4 w-4" /> Add New
                     </Button>
                 </DialogTrigger>
-                <DialogContent className="sm:max-w-[480px]">
-                    <DialogHeader>
+                <DialogContent className="sm:max-w-[550px] p-0">
+                    <DialogHeader className="p-6 pb-0">
                         <DialogTitle className="font-headline text-2xl">
                             {selectedStory ? 'Edit Success Story' : 'Add New Success Story'}
                         </DialogTitle>
@@ -109,7 +108,9 @@ export function SuccessStoriesTable() {
                             {selectedStory ? 'Update the details for this success story.' : 'Fill in the details for the new success story.'}
                         </DialogDescription>
                     </DialogHeader>
-                    <SuccessStoryForm story={selectedStory} onFinished={() => setDialogOpen(false)} />
+                    <ScrollArea className="max-h-[80vh] p-6 pt-2">
+                        <SuccessStoryForm story={selectedStory} onFinished={() => setDialogOpen(false)} />
+                    </ScrollArea>
                 </DialogContent>
             </Dialog>
         </div>

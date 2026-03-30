@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState } from 'react';
@@ -40,6 +39,7 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
+import { ScrollArea } from "@/components/ui/scroll-area"
 
 import type { RealEstateListing } from '@/lib/types';
 import { RealEstateForm } from './real-estate-form';
@@ -101,8 +101,8 @@ export function RealEstateTable() {
                         <PlusCircle className="mr-2 h-4 w-4" /> Add New
                     </Button>
                 </DialogTrigger>
-                <DialogContent className="sm:max-w-[480px]">
-                    <DialogHeader>
+                <DialogContent className="sm:max-w-[550px] p-0">
+                    <DialogHeader className="p-6 pb-0">
                         <DialogTitle className="font-headline text-2xl">
                             {selectedListing ? 'Edit Listing' : 'Add New Listing'}
                         </DialogTitle>
@@ -110,7 +110,9 @@ export function RealEstateTable() {
                             {selectedListing ? 'Update the details for this listing.' : 'Fill in the details for the new listing.'}
                         </DialogDescription>
                     </DialogHeader>
-                    <RealEstateForm listing={selectedListing} onFinished={() => setDialogOpen(false)} />
+                    <ScrollArea className="max-h-[80vh] p-6 pt-2">
+                        <RealEstateForm listing={selectedListing} onFinished={() => setDialogOpen(false)} />
+                    </ScrollArea>
                 </DialogContent>
             </Dialog>
         </div>
