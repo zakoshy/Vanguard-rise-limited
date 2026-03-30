@@ -1,8 +1,9 @@
+
 'use client';
 
 import Image from 'next/image';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Icons } from '@/components/icons';
 import { Progress } from '@/components/ui/progress';
@@ -59,23 +60,38 @@ function InitiativesSection() {
             const image = PlaceHolderImages.find(p => p.id === item.imageId);
             const progress = (item.raised / item.goal) * 100;
             return (
-              <Card key={item.id} className="overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
-                {image && (
-                  <div className="relative h-64 w-full">
-                    <Image src={image.imageUrl || item.imageUrl || ''} alt={item.title} fill className="object-cover" data-ai-hint={image.imageHint} />
-                  </div>
-                )}
+              <Card key={item.id} className="overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col">
+                <div className="relative h-64 w-full">
+                  <Image 
+                    src={item.imageUrl || image?.imageUrl || 'https://picsum.photos/seed/charity/600/400'} 
+                    alt={item.title} 
+                    fill 
+                    className="object-cover" 
+                    data-ai-hint="charity project" 
+                  />
+                </div>
                 <CardHeader>
                   <CardTitle className="font-headline text-2xl">{item.title}</CardTitle>
                 </CardHeader>
-                <CardContent>
-                  <CardDescription className="mb-4">{item.description}</CardDescription>
-                  <Progress value={progress} className="h-2 mb-2" />
-                  <div className="flex justify-between text-sm text-muted-foreground">
-                    <span>Raised: ${item.raised.toLocaleString()}</span>
-                    <span>Goal: ${item.goal.toLocaleString()}</span>
+                <CardContent className="flex-grow">
+                  <CardDescription className="mb-4 line-clamp-4">{item.description}</CardDescription>
+                  <div className="space-y-4">
+                    <div>
+                      <Progress value={progress} className="h-2 mb-2" />
+                      <div className="flex justify-between text-sm text-muted-foreground">
+                        <span>Raised: {item.currency || 'USD'} {item.raised.toLocaleString()}</span>
+                        <span>Goal: {item.currency || 'USD'} {item.goal.toLocaleString()}</span>
+                      </div>
+                    </div>
                   </div>
                 </CardContent>
+                <CardFooter className="pt-0 pb-6 px-6">
+                  <Button className="w-full" asChild>
+                    <a href={PAYSTACK_LINK} target="_blank" rel="noopener noreferrer">
+                      <Heart className="mr-2 h-4 w-4" /> Donate Now
+                    </a>
+                  </Button>
+                </CardFooter>
               </Card>
             );
           })}
