@@ -121,7 +121,7 @@ export function InvestmentsTable() {
                 <TableHeader>
                 <TableRow>
                     <TableHead>Name</TableHead>
-                    <TableHead>Investment Value</TableHead>
+                    <TableHead>Value</TableHead>
                     <TableHead className="hidden md:table-cell">Start Date</TableHead>
                     <TableHead>
                     <span className="sr-only">Actions</span>
@@ -143,7 +143,7 @@ export function InvestmentsTable() {
                     projects.map((project) => (
                     <TableRow key={project.id}>
                         <TableCell className="font-medium">{project.name}</TableCell>
-                        <TableCell>${project.investmentValue.toLocaleString()}</TableCell>
+                        <TableCell>{project.currency || 'USD'} {project.investmentValue.toLocaleString()}</TableCell>
                         <TableCell className="hidden md:table-cell">
                         {project.startDate ? new Date(project.startDate).toLocaleDateString() : 'N/A'}
                         </TableCell>

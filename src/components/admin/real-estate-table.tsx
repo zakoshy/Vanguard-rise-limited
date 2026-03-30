@@ -148,7 +148,7 @@ export function RealEstateTable() {
                     <TableRow key={listing.id}>
                         <TableCell className="font-medium">{listing.address}</TableCell>
                         <TableCell>{listing.propertyType}</TableCell>
-                        <TableCell>KES {listing.price.toLocaleString()}</TableCell>
+                        <TableCell>{listing.currency || 'KES'} {listing.price.toLocaleString()}</TableCell>
                         <TableCell>
                             <Badge variant={listing.status === 'Sold' ? 'secondary' : 'default'} className={cn(
                                 listing.status === 'Sold' ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'

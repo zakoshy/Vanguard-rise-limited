@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState } from 'react';
@@ -47,17 +46,17 @@ export function ImageUpload({ onUploadSuccess, defaultValue }: ImageUploadProps)
         onUploadSuccess(data.secure_url);
         toast({
           title: "Upload Successful",
-          description: "Image has been uploaded to Cloudinary.",
+          description: "Image has been uploaded.",
         });
       } else {
         throw new Error(data.error?.message || 'Upload failed');
       }
     } catch (error: any) {
-      console.error('Cloudinary Upload Error:', error);
+      console.error('Upload Error:', error);
       toast({
         variant: "destructive",
         title: "Upload Failed",
-        description: error.message || "Could not upload image to Cloudinary.",
+        description: error.message || "Could not upload image.",
       });
     } finally {
       setIsUploading(false);
@@ -66,10 +65,10 @@ export function ImageUpload({ onUploadSuccess, defaultValue }: ImageUploadProps)
 
   return (
     <div className="space-y-4">
-      <Label>Image Upload (Cloudinary)</Label>
+      <Label className="text-foreground font-semibold">Image Upload</Label>
       <div className="flex flex-col items-center gap-4 p-4 border-2 border-dashed rounded-lg border-muted-foreground/25 bg-secondary/10">
         {preview ? (
-          <div className="relative w-full aspect-video rounded-md overflow-hidden bg-muted">
+          <div className="relative w-full aspect-video rounded-md overflow-hidden bg-muted border border-border">
             <img src={preview} alt="Preview" className="w-full h-full object-cover" />
             {isUploading && (
               <div className="absolute inset-0 flex items-center justify-center bg-black/40">
@@ -78,7 +77,7 @@ export function ImageUpload({ onUploadSuccess, defaultValue }: ImageUploadProps)
             )}
           </div>
         ) : (
-          <div className="flex flex-col items-center text-muted-foreground">
+          <div className="flex flex-col items-center text-muted-foreground py-4">
             <Upload className="h-10 w-10 mb-2 opacity-20" />
             <p className="text-sm">Click below to upload a file</p>
           </div>
@@ -89,11 +88,11 @@ export function ImageUpload({ onUploadSuccess, defaultValue }: ImageUploadProps)
           accept="image/*" 
           onChange={handleFileChange} 
           disabled={isUploading}
-          className="cursor-pointer"
+          className="cursor-pointer border-muted-foreground/40"
         />
         
         {!isUploading && preview && (
-           <p className="text-xs text-green-600 flex items-center gap-1">
+           <p className="text-xs text-green-600 flex items-center gap-1 font-medium">
              <CheckCircle2 className="h-3 w-3" /> Ready to save
            </p>
         )}

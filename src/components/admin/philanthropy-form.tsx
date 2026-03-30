@@ -23,12 +23,14 @@ import { useFirestore } from "@/firebase";
 import { addDocumentNonBlocking, updateDocumentNonBlocking } from "@/firebase/non-blocking-updates";
 import { collection, doc } from "firebase/firestore";
 import { ImageUpload } from "./image-upload";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 
 const formSchema = z.object({
   title: z.string().min(5, "Title must be at least 5 characters."),
   description: z.string().min(10, "Description must be at least 10 characters."),
   goal: z.coerce.number().min(1, "Goal must be greater than 0."),
   raised: z.coerce.number().min(0),
+  currency: z.string().default("USD"),
   imageUrl: z.string().optional(),
 });
 
@@ -50,6 +52,7 @@ export function PhilanthropyForm({ activity, onFinished }: PhilanthropyFormProps
       description: activity?.description || "",
       goal: activity?.goal || 0,
       raised: activity?.raised || 0,
+      currency: activity?.currency || "USD",
       imageUrl: activity?.imageUrl || "",
     },
   });
@@ -67,20 +70,19 @@ export function PhilanthropyForm({ activity, onFinished }: PhilanthropyFormProps
         if (isEditing) {
             const docRef = doc(firestore, "philanthropic_activities", activity.id);
             updateDocumentNonBlocking(docRef, activityData);
-            toast({ title: "Success", description: "Activity updated successfully." });
+            toast({ title: "Success", description: "Activity updated." });
         } else {
             const colRef = collection(firestore, "philanthropic_activities");
             await addDocumentNonBlocking(colRef, activityData);
-            toast({ title: "Success", description: "Activity added successfully." });
+            toast({ title: "Success", description: "Activity added." });
         }
         form.reset();
         onFinished();
     } catch (error) {
-        console.error("Error saving activity: ", error);
         toast({
             variant: "destructive",
             title: "Error",
-            description: "An error occurred while saving the activity.",
+            description: "An error occurred while saving.",
         });
     } finally {
         setIsSubmitting(false);
@@ -95,8 +97,8 @@ export function PhilanthropyForm({ activity, onFinished }: PhilanthropyFormProps
           name="title"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Activity Title</FormLabel>
-              <FormControl><Input {...field} /></FormControl>
+              <FormLabel>Initiative Title</FormLabel>
+              <FormControl><Input placeholder="e.g., Community School Building" {...field} /></FormControl>
               <FormMessage />
             </FormItem>
           )}
@@ -106,19 +108,41 @@ export function PhilanthropyForm({ activity, onFinished }: PhilanthropyFormProps
           name="description"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Description</FormLabel>
-              <FormControl><Textarea rows={3} {...field} /></FormControl>
+              <FormLabel>Purpose & Impact</FormLabel>
+              <FormControl><Textarea rows={4} placeholder="Describe the community benefit..." {...field} /></FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        <div className="grid grid-cols-2 gap-4">
+        
+        <FormField
+            control={form.control}
+            name="currency"
+            render={({ field }) => (
+                <FormItem>
+                    <FormLabel>Currency</FormLabel>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                            <SelectTrigger>
+                                <SelectValue />
+                            </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                            <SelectItem value="USD">USD</SelectItem>
+                            <SelectItem value="KES">KES</SelectItem>
+                        </SelectContent>
+                    </Select>
+                </FormItem>
+            )}
+        />
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <FormField
             control={form.control}
             name="goal"
             render={({ field }) => (
                 <FormItem>
-                <FormLabel>Goal (USD)</FormLabel>
+                <FormLabel>Fundraising Goal</FormLabel>
                 <FormControl><Input type="number" {...field} /></FormControl>
                 <FormMessage />
                 </FormItem>
@@ -129,7 +153,7 @@ export function PhilanthropyForm({ activity, onFinished }: PhilanthropyFormProps
             name="raised"
             render={({ field }) => (
                 <FormItem>
-                <FormLabel>Raised (USD)</FormLabel>
+                <FormLabel>Currently Raised</FormLabel>
                 <FormControl><Input type="number" {...field} /></FormControl>
                 <FormMessage />
                 </FormItem>
@@ -151,9 +175,9 @@ export function PhilanthropyForm({ activity, onFinished }: PhilanthropyFormProps
           )}
         />
 
-        <Button type="submit" disabled={isSubmitting} className="w-full">
-            {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            {isEditing ? 'Update Activity' : 'Add Activity'}
+        <Button type="submit" disabled={isSubmitting} className="w-full h-12 text-lg">
+            {isSubmitting && <Loader2 className="mr-2 h-5 w-5 animate-spin" />}
+            {isEditing ? 'Update Activity' : 'Start Initiative'}
         </Button>
       </form>
     </Form>

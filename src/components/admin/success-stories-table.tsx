@@ -99,8 +99,8 @@ export function SuccessStoriesTable() {
                         <PlusCircle className="mr-2 h-4 w-4" /> Add New
                     </Button>
                 </DialogTrigger>
-                <DialogContent className="sm:max-w-[550px] p-0">
-                    <DialogHeader className="p-6 pb-0">
+                <DialogContent className="sm:max-w-[600px] p-0 flex flex-col max-h-[90vh]">
+                    <DialogHeader className="p-6 pb-4 border-b">
                         <DialogTitle className="font-headline text-2xl">
                             {selectedStory ? 'Edit Success Story' : 'Add New Success Story'}
                         </DialogTitle>
@@ -108,8 +108,10 @@ export function SuccessStoriesTable() {
                             {selectedStory ? 'Update the details for this success story.' : 'Fill in the details for the new success story.'}
                         </DialogDescription>
                     </DialogHeader>
-                    <ScrollArea className="max-h-[80vh] p-6 pt-2">
-                        <SuccessStoryForm story={selectedStory} onFinished={() => setDialogOpen(false)} />
+                    <ScrollArea className="flex-grow p-6">
+                        <div className="pb-8">
+                            <SuccessStoryForm story={selectedStory} onFinished={() => setDialogOpen(false)} />
+                        </div>
                     </ScrollArea>
                 </DialogContent>
             </Dialog>
@@ -163,7 +165,7 @@ export function SuccessStoriesTable() {
                     </TableRow>
                     ))
                 ) : (
-                    !isLoading && <TableRow><TableCell colSpan={4} className="text-center">No stories found.</TableCell></TableRow>
+                    !isLoading && <TableRow><TableCell colSpan={4} className="text-center py-8 text-muted-foreground italic">No stories found.</TableCell></TableRow>
                 )}
                 </TableBody>
             </Table>

@@ -16,6 +16,7 @@ export type InvestmentProject = {
     imageUrl?: string;
     imageId?: string;
     investmentValue: number;
+    currency?: string;
     startDate: string;
 };
 
@@ -24,6 +25,7 @@ export type RealEstateListing = {
     address: string;
     description: string;
     price: number;
+    currency?: string;
     imageUrl?: string;
     imageId?: string;
     propertyType: string;
@@ -39,6 +41,7 @@ export type PhilanthropicActivity = {
     date: string;
     goal: number;
     raised: number;
+    currency?: string;
 };
 
 export type PaymentLink = {

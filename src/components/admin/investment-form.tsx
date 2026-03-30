@@ -23,11 +23,13 @@ import { useFirestore } from "@/firebase";
 import { addDocumentNonBlocking, updateDocumentNonBlocking } from "@/firebase/non-blocking-updates";
 import { collection, doc } from "firebase/firestore";
 import { ImageUpload } from "./image-upload";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 
 const formSchema = z.object({
   name: z.string().min(5, "Name must be at least 5 characters."),
   description: z.string().min(10, "Description must be at least 10 characters."),
-  investmentValue: z.coerce.number().min(1, "Investment value must be greater than 0."),
+  investmentValue: z.coerce.number().min(1, "Value must be greater than 0."),
+  currency: z.string().default("USD"),
   imageUrl: z.string().optional(),
 });
 
@@ -48,6 +50,7 @@ export function InvestmentForm({ project, onFinished }: InvestmentFormProps) {
       name: project?.name || "",
       description: project?.description || "",
       investmentValue: project?.investmentValue || 0,
+      currency: project?.currency || "USD",
       imageUrl: project?.imageUrl || "",
     },
   });
@@ -65,20 +68,19 @@ export function InvestmentForm({ project, onFinished }: InvestmentFormProps) {
         if (isEditing) {
             const docRef = doc(firestore, "investment_projects", project.id);
             updateDocumentNonBlocking(docRef, projectData);
-            toast({ title: "Success", description: "Project updated successfully." });
+            toast({ title: "Success", description: "Project updated." });
         } else {
             const colRef = collection(firestore, "investment_projects");
             await addDocumentNonBlocking(colRef, projectData);
-            toast({ title: "Success", description: "Project added successfully." });
+            toast({ title: "Success", description: "Project added." });
         }
         form.reset();
         onFinished();
     } catch (error) {
-        console.error("Error saving project: ", error);
         toast({
             variant: "destructive",
             title: "Error",
-            description: "An error occurred while saving the project.",
+            description: "An error occurred while saving.",
         });
     } finally {
         setIsSubmitting(false);
@@ -94,7 +96,7 @@ export function InvestmentForm({ project, onFinished }: InvestmentFormProps) {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Project Name</FormLabel>
-              <FormControl><Input {...field} /></FormControl>
+              <FormControl><Input placeholder="e.g., Downtown Commercial Hub" {...field} /></FormControl>
               <FormMessage />
             </FormItem>
           )}
@@ -105,24 +107,46 @@ export function InvestmentForm({ project, onFinished }: InvestmentFormProps) {
           name="description"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Description</FormLabel>
-              <FormControl><Textarea rows={3} {...field} /></FormControl>
+              <FormLabel>Investment Description</FormLabel>
+              <FormControl><Textarea rows={4} placeholder="Summarize the investment potential..." {...field} /></FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
 
-        <FormField
-          control={form.control}
-          name="investmentValue"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Investment Value (USD)</FormLabel>
-              <FormControl><Input type="number" {...field} /></FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <div className="flex gap-2 items-end">
+            <FormField
+                control={form.control}
+                name="currency"
+                render={({ field }) => (
+                    <FormItem className="w-32">
+                        <FormLabel>Currency</FormLabel>
+                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                            <FormControl>
+                                <SelectTrigger>
+                                    <SelectValue />
+                                </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                                <SelectItem value="USD">USD</SelectItem>
+                                <SelectItem value="KES">KES</SelectItem>
+                            </SelectContent>
+                        </Select>
+                    </FormItem>
+                )}
+            />
+            <FormField
+                control={form.control}
+                name="investmentValue"
+                render={({ field }) => (
+                    <FormItem className="flex-1">
+                        <FormLabel>Total Investment Value</FormLabel>
+                        <FormControl><Input type="number" {...field} /></FormControl>
+                        <FormMessage />
+                    </FormItem>
+                )}
+            />
+        </div>
         
         <FormField
           control={form.control}
@@ -138,9 +162,9 @@ export function InvestmentForm({ project, onFinished }: InvestmentFormProps) {
           )}
         />
 
-        <Button type="submit" disabled={isSubmitting} className="w-full">
-            {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            {isEditing ? 'Update Project' : 'Add Project'}
+        <Button type="submit" disabled={isSubmitting} className="w-full h-12 text-lg">
+            {isSubmitting && <Loader2 className="mr-2 h-5 w-5 animate-spin" />}
+            {isEditing ? 'Update Project' : 'Add to Portfolio'}
         </Button>
       </form>
     </Form>
